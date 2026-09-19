@@ -47,8 +47,12 @@ test('filters by dictionary values and resets the filters', async ({ page }) => 
   await openApp(page);
   await page.getByRole('button', { name: 'Фильтры' }).click();
   await page.getByLabel('Тег').selectOption('network');
-  await expect.poll(() => api.callsTo('GET', '/v1/tickets').at(-1)?.search.get('tag')).toBe('network');
-  await expect(page.getByLabel('Тег').locator('option', { hasText: 'Оплата (архив)' })).toHaveCount(1);
+  await expect
+    .poll(() => api.callsTo('GET', '/v1/tickets').at(-1)?.search.get('tag'))
+    .toBe('network');
+  await expect(page.getByLabel('Тег').locator('option', { hasText: 'Оплата (архив)' })).toHaveCount(
+    1,
+  );
   await page.getByRole('button', { name: 'Сбросить' }).click();
   // The unfiltered list is served from the query cache, so there may be no new request.
   await expect(page.getByLabel('Тег')).toHaveValue('');
@@ -58,7 +62,9 @@ test('filters by dictionary values and resets the filters', async ({ page }) => 
 test('sorts the queue', async ({ page }) => {
   await openApp(page);
   await page.getByLabel('Сортировка').selectOption('newest');
-  await expect.poll(() => api.callsTo('GET', '/v1/tickets').at(-1)?.search.get('sort')).toBe('newest');
+  await expect
+    .poll(() => api.callsTo('GET', '/v1/tickets').at(-1)?.search.get('sort'))
+    .toBe('newest');
 });
 
 test('returns to the sign-in screen when the session expires', async ({ page }) => {

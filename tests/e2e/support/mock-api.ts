@@ -48,7 +48,10 @@ const GET_ROUTES: [RegExp, Handler][] = [
   [/^\/v1\/employees$/, () => ({ items: EMPLOYEES })],
   [/^\/v1\/notifications$/, () => ({ items: NOTIFICATIONS })],
   [/^\/v1\/tickets$/, (call) => ticketPage(call.search)],
-  [/^\/v1\/tickets\/[^/]+\/messages$/, () => ({ items: MESSAGES, has_more: false, next_before: 0 })],
+  [
+    /^\/v1\/tickets\/[^/]+\/messages$/,
+    () => ({ items: MESSAGES, has_more: false, next_before: 0 }),
+  ],
   [/^\/v1\/tickets\/[^/]+$/, (call) => byId(call.path.split('/')[3] ?? '')],
   [/^\/v1\/admin\/employees$/, () => ({ items: EMPLOYEES })],
   [/^\/v1\/admin\/templates$/, () => ({ items: TEMPLATES })],
