@@ -1,0 +1,183 @@
+// @ts-check
+import js from '@eslint/js';
+import prettier from 'eslint-config-prettier';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import boundaries from 'eslint-plugin-boundaries';
+import importX from 'eslint-plugin-import-x';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import unicorn from 'eslint-plugin-unicorn';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+/** Features and the shared kernel are consumed only through their public `index.ts`. */
+const publicApi = (/** @type {string} */ type) => ({
+  element: { type, fileInternalPath: 'index.ts' },
+});
+
+export default tseslint.config(
+  {
+    ignores: ['dist/**', 'node_modules/**', 'test-results/**', 'playwright-report/**'],
+  },
+  js.configs.recommended,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
+  react.configs.flat.recommended,
+  react.configs.flat['jsx-runtime'],
+  reactHooks.configs.flat.recommended,
+  jsxA11y.flatConfigs.recommended,
+  {
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
+    },
+    settings: { react: { version: 'detect' } },
+  },
+  // Before the budget block: eslint-config-prettier turns off `curly` and `max-len`,
+  // which are deliberately re-enabled below.
+  prettier,
+
+  // Readability budget: the rules that keep the code from sliding back into dense one-liners.
+  {
+    plugins: { 'import-x': importX, unicorn, 'react-refresh': reactRefresh },
+    settings: {
+      'import-x/resolver-next': [createTypeScriptImportResolver()],
+    },
+    rules: {
+      'max-lines': ['error', { max: 250, skipBlankLines: true, skipComments: true }],
+      'max-lines-per-function': ['error', { max: 60, skipBlankLines: true, skipComments: true }],
+      complexity: ['error', 12],
+      'max-depth': ['error', 3],
+      'max-nested-callbacks': ['error', 3],
+      '@typescript-eslint/max-params': ['error', { max: 4 }],
+      '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+      'max-statements-per-line': ['error', { max: 1 }],
+      'max-len': [
+        'error',
+        {
+          code: 120,
+          ignoreUrls: true,
+          ignoreRegExpLiterals: true,
+          ignoreTemplateLiterals: true,
+          ignoreStrings: false,
+        },
+      ],
+      curly: ['error', 'all'],
+      'no-nested-ternary': 'error',
+      'id-length': [
+        'error',
+        { min: 2, exceptions: ['_', 'i', 'j', 'x', 'y'], properties: 'never' },
+      ],
+      // `type` and `interface` are both fine; forcing interfaces drops implicit index signatures.
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
+      '@typescript-eslint/consistent-type-exports': 'error',
+      'import-x/no-cycle': 'error',
+      'import-x/no-self-import': 'error',
+      'import-x/no-duplicates': ['error', { 'prefer-inline': true }],
+      'import-x/no-useless-path-segments': 'error',
+      'import-x/no-default-export': 'error',
+      'import-x/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal', 'parent', ['sibling', 'index']],
+          pathGroups: [{ pattern: '@/**', group: 'internal' }],
+          'newlines-between': 'always',
+          alphabetize: { order: 'asc', caseInsensitive: true },
+        },
+      ],
+      'no-restricted-imports': [
+        'error',
+        { patterns: [{ group: ['../../*'], message: 'Use the @/ alias instead of ../../.' }] },
+      ],
+      // Components are PascalCase.tsx; everything else is kebab-case.
+      'unicorn/filename-case': ['error', { cases: { kebabCase: true, pascalCase: true } }],
+      'react/no-multi-comp': 'error',
+      'react/jsx-max-depth': ['error', { max: 6 }],
+      'react/jsx-no-leaked-render': 'error',
+      'react/jsx-no-useless-fragment': 'error',
+      'react-refresh/only-export-components': 'error',
+    },
+  },
+  {
+    files: ['**/*.tsx'],
+    rules: {
+      'max-lines-per-function': ['error', { max: 120, skipBlankLines: true, skipComments: true }],
+    },
+  },
+
+  // Architecture: where files may live and what they may import.
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    plugins: { boundaries },
+    settings: {
+      'import/resolver': { typescript: { alwaysTryTypes: true } },
+      'boundaries/include': ['src/**/*.{ts,tsx}'],
+      'boundaries/ignore': ['src/vite-env.d.ts'],
+      'boundaries/elements': [
+        { type: 'app', pattern: 'src/app', partialMatch: false },
+        { type: 'feature', pattern: 'src/features/*', capture: ['name'], partialMatch: false },
+        { type: 'shared', pattern: 'src/shared', partialMatch: false },
+        // Temporary: files not yet moved into the layout above. Nothing new may depend on them.
+        { type: 'legacy', pattern: 'src', partialMatch: false },
+      ],
+    },
+    rules: {
+      'boundaries/no-unknown-files': 'error',
+      'boundaries/dependencies': [
+        'error',
+        {
+          default: 'disallow',
+          message:
+            'Architecture boundary: features are importable only via their index.ts, shared ' +
+            'code never imports features, and features never import the app. See ARCHITECTURE.md.',
+          policies: [
+            { allow: { to: { module: { origin: ['external', 'core'] } } } },
+            { allow: { dependency: { relationship: { to: 'internal' } } } },
+            {
+              from: { element: { type: 'shared' } },
+              allow: { to: { element: { type: 'shared' } } },
+            },
+            {
+              from: { element: { type: 'feature' } },
+              allow: { to: [{ element: { type: 'shared' } }, publicApi('feature')] },
+            },
+            {
+              from: { element: { type: 'app' } },
+              allow: {
+                to: [
+                  { element: { type: 'shared' } },
+                  publicApi('feature'),
+                  { element: { type: 'legacy' } },
+                ],
+              },
+            },
+            {
+              from: { element: { type: 'legacy' } },
+              allow: { to: { element: { type: ['legacy', 'shared', 'feature', 'app'] } } },
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  {
+    files: ['tests/**/*.ts'],
+    rules: {
+      'max-lines-per-function': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+  {
+    files: ['**/*.js'],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+  {
+    files: ['eslint.config.js', 'vite.config.ts', 'playwright.config.ts', 'stylelint.config.mjs'],
+    rules: { 'import-x/no-default-export': 'off' },
+  },
+);

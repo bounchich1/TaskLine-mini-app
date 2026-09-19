@@ -113,11 +113,12 @@ export class MockApi {
       body: parseBody(request),
     };
     this.calls.push(call);
-    const override = this.overrides.findIndex(
+    const index = this.overrides.findIndex(
       (item) => item.method === call.method && item.path.test(call.path),
     );
-    if (override >= 0) {
-      const [{ status }] = this.overrides.splice(override, 1) as [{ status: number }];
+    const [override] = index >= 0 ? this.overrides.splice(index, 1) : [];
+    if (override) {
+      const { status } = override;
       await route.fulfill({ status, json: { code: 'test_failure', message: `HTTP ${status}` } });
       return;
     }
