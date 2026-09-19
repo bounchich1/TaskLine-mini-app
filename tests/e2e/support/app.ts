@@ -1,0 +1,33 @@
+import { expect, type Page } from '@playwright/test';
+
+/** Opens the app (demo sign-in) and waits for the ticket queue. */
+export async function openApp(page: Page): Promise<void> {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1, name: /Обращения/ })).toBeVisible();
+}
+
+/** The toggle button in a queue row, e.g. "№000002". */
+export function ticketRow(page: Page, number: string) {
+  return page.getByRole('button', { name: new RegExp(`№${number}`) });
+}
+
+/** Expands a ticket from the queue and waits for its card. */
+export async function openTicket(page: Page, number: string): Promise<void> {
+  await ticketRow(page, number).click();
+  await expect(page.getByRole('region', { name: `Обращение №${number}` })).toBeVisible();
+}
+
+export function ticketCard(page: Page, number: string) {
+  return page.getByRole('region', { name: `Обращение №${number}` });
+}
+
+const SECTIONS = { tickets: 0, notifications: 1, admin: 2 };
+
+/**
+ * Opens a section from the sidebar. By position: at tablet width the sidebar shows icons only
+ * and the buttons have no accessible name.
+ */
+export async function openSection(page: Page, section: keyof typeof SECTIONS): Promise<void> {
+  const navigation = page.getByRole('navigation', { name: 'Основная навигация' });
+  await navigation.getByRole('button').nth(SECTIONS[section]).click();
+}
