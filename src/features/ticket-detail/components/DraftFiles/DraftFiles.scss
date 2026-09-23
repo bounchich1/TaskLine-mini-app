@@ -1,0 +1,29 @@
+@use 'abstracts' as *;
+
+.draft-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.draft-files__item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #f1f5f3;
+  padding: 6px 8px;
+  font-size: 10px;
+  border-radius: 4px;
+}
+
+.draft-files__status {
+  font-size: 8px;
+  color: #8da099;
+}
+
+.draft-files__remove {
+  background: none;
+  display: flex;
+  color: #7d9488;
+}

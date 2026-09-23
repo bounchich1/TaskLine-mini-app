@@ -4,6 +4,8 @@ import type { Draft, Upload } from '@/features/ticket-detail/model/draft';
 import { api } from '@/shared/api/http';
 import { Icon } from '@/shared/ui';
 
+import './DraftFiles.scss';
+
 type DraftFilesProps = {
   uploads: Upload[];
   setDraft: Dispatch<SetStateAction<Draft>>;
@@ -21,11 +23,14 @@ export function DraftFiles({ uploads, setDraft }: DraftFilesProps) {
   return (
     <div className="draft-files">
       {uploads.map((file) => (
-        <span key={file.id}>
+        <span className="draft-files__item" key={file.id}>
           <Icon name="clip" size={14} />
           {file.filename}
-          <small>{file.status === 'clean' ? 'Готов к отправке' : 'Проверка файла'}</small>
+          <small className="draft-files__status">
+            {file.status === 'clean' ? 'Готов к отправке' : 'Проверка файла'}
+          </small>
           <button
+            className="draft-files__remove"
             type="button"
             aria-label={`Убрать ${file.filename}`}
             onClick={() => {

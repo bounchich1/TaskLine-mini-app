@@ -2,6 +2,8 @@ import { Button } from '@maxhub/max-ui';
 
 import type { TicketList } from '@/features/ticket-queue/hooks/use-ticket-list';
 
+import './QueueFooter.scss';
+
 /** How many tickets are shown, and "show more" while there are further pages. */
 export function QueueFooter({
   ticketList,
@@ -24,7 +26,7 @@ export function QueueFooter({
           Показать ещё
         </Button>
       ) : (
-        <span>Часовой пояс: {timezone}</span>
+        <span className="queue-footer__timezone">Часовой пояс: {timezone}</span>
       )}
     </div>
   );

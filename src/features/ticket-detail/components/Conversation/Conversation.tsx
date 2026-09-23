@@ -6,6 +6,8 @@ import { ErrorNotice } from '@/shared/ui';
 
 import { MessageItem } from '../MessageItem/MessageItem';
 
+import './Conversation.scss';
+
 type ConversationProps = {
   ticket: Ticket;
   messages: Message[];
@@ -21,12 +23,12 @@ type ConversationProps = {
 export function Conversation({ ticket, messages, history, ...messageProps }: ConversationProps) {
   return (
     <>
-      <div className="conversation-header">
-        <h3>Переписка</h3>
-        <span>{messages.length} сообщений загружено</span>
+      <div className="conversation__header">
+        <h3 className="conversation__title">Переписка</h3>
+        <span className="conversation__count">{messages.length} сообщений загружено</span>
       </div>
       <ErrorNotice error={history.error} />
-      <div className="conversation" aria-label="История переписки">
+      <div className="conversation__list" aria-label="История переписки">
         {history.hasNextPage ? (
           <Button
             variant="ghost"

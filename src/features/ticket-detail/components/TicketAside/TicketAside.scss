@@ -1,0 +1,18 @@
+@use 'abstracts' as *;
+
+.ticket-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  @include respond-to(tablet) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  @include respond-to(phone) {
+    display: flex;
+    flex-direction: column;
+  }
+}

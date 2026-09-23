@@ -1,0 +1,87 @@
+@use 'abstracts' as *;
+
+.message {
+  max-width: 92%;
+  align-self: flex-start;
+  width: fit-content;
+  min-width: 170px;
+
+  @include respond-to(phone) {
+    max-width: 95%;
+  }
+
+  &--staff {
+    align-self: flex-end;
+  }
+
+  // Bot and system notes span the conversation, centred.
+  &--bot,
+  &--system {
+    align-self: center;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+
+    @include respond-to(phone) {
+      max-width: 95%;
+    }
+  }
+}
+
+.message__meta {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 8px;
+  color: #94a3ad;
+  margin-bottom: 6px;
+
+  @include respond-to(phone) {
+    font-size: 7px;
+  }
+
+  .message--staff & {
+    justify-content: flex-end;
+  }
+
+  .message--bot &,
+  .message--system & {
+    justify-content: center;
+  }
+}
+
+.message__author {
+  color: #6a8390;
+  font-size: 10px;
+  font-weight: 550;
+}
+
+.message__body {
+  font-size: 12px;
+  line-height: 1.7;
+  background: #fff;
+  border: 1px solid #e5edef;
+  padding: 11px 14px;
+  border-radius: 0 9px 9px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  @include respond-to(phone) {
+    font-size: 11px;
+  }
+
+  .message--staff & {
+    background: #eaf5f1;
+    border-color: #e1efea;
+    border-radius: 9px 0 9px 9px;
+  }
+
+  .message--bot &,
+  .message--system & {
+    border: 0;
+    background: none;
+    color: #8a9ea8;
+    font-size: 10px;
+    padding: 0 12px;
+  }
+}

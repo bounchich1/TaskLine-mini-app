@@ -1,0 +1,33 @@
+@use 'abstracts' as *;
+
+.attachment {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dfe9e5;
+  background: #f8fbfa;
+  border-radius: 6px;
+  padding: 9px;
+  margin-top: 7px;
+  white-space: normal;
+}
+
+.attachment__info {
+  min-width: 0;
+  flex: 1;
+}
+
+.attachment__name {
+  display: block;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.attachment__status {
+  font-size: 9px;
+  color: #94a89e;
+}
+
+.attachment__download {
+  @include text-button;
+}

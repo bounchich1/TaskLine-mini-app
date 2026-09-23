@@ -1,0 +1,87 @@
+@use 'abstracts' as *;
+
+.composer {
+  margin-top: 17px;
+  background: #fff;
+  border: 1px solid #dce8e4;
+  border-radius: 8px;
+  padding: 15px;
+
+  @include respond-to(phone) {
+    padding: 11px;
+  }
+}
+
+.composer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.composer__title {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.composer__sender {
+  font-size: 9px;
+  color: #8b9e9d;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.composer__online-dot {
+  @include online-dot;
+}
+
+.composer__notice {
+  font-size: 10px;
+  background: #f4f7f8;
+  color: #7c919d;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+// Font size and background are forced in base/_max-ui-overrides.scss.
+.composer__input {
+  min-height: 95px;
+  resize: vertical;
+}
+
+.composer__footer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+
+  @include respond-to(phone) {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+.composer__attach {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  color: #80959f;
+  font-size: 10px;
+  padding: 0;
+
+  @include respond-to(phone) {
+    font-size: 9px;
+  }
+}
+
+.composer__count {
+  margin-left: auto;
+  color: #a4b1b7;
+  font-size: 9px;
+
+  @include respond-to(phone) {
+    font-size: 8px;
+  }
+}

@@ -1,0 +1,76 @@
+@use 'abstracts' as *;
+
+.queue-toolbar {
+  padding: 19px 23px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  @include respond-to(tablet) {
+    padding: 15px;
+    gap: 8px;
+  }
+
+  @include respond-to(phone) {
+    flex-wrap: wrap;
+    padding: 13px;
+    gap: 8px;
+  }
+}
+
+.queue-toolbar__search {
+  flex: 1;
+  max-width: 380px;
+
+  @include respond-to(phone) {
+    max-width: none;
+    flex: 1 1 calc(100% - 50px);
+  }
+}
+
+.queue-toolbar__filter {
+  height: 38px;
+  background: #fff;
+  border: 1px solid #dfe6e9;
+  border-radius: 7px;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #687e8c;
+  font-size: 11px;
+
+  // Icon only.
+  @include respond-to(phone) {
+    font-size: 0;
+    padding: 0 9px;
+    width: 35px;
+    height: 35px;
+  }
+
+  &--selected {
+    background: #eaf4f1;
+    color: #257d71;
+  }
+}
+
+.queue-toolbar__filter-icon {
+  @include respond-to(phone) {
+    flex-shrink: 0;
+  }
+}
+
+.queue-toolbar__sort {
+  margin-left: auto;
+}
+
+.queue-toolbar__sort-select {
+  font-size: 11px;
+
+  @include respond-to(phone) {
+    font-size: 10px;
+    min-height: 31px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}

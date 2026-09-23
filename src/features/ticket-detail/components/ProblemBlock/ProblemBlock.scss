@@ -1,0 +1,28 @@
+@use 'abstracts' as *;
+
+.problem {
+  @include card(7px);
+
+  padding: 18px;
+}
+
+.problem__label {
+  @include section-label;
+}
+
+.problem__text {
+  font-size: 13px;
+  color: #375261;
+  margin: 11px 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.problem__meta {
+  font-size: 9px;
+  color: #95a6ad;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}

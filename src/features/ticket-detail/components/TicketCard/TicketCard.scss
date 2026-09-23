@@ -1,0 +1,59 @@
+@use 'abstracts' as *;
+
+.ticket-card {
+  background: #fafcfc;
+  padding: 25px;
+  border-top: 1px solid #deebe7;
+
+  @include respond-to(laptop) {
+    padding: 20px;
+  }
+
+  @include respond-to(tablet) {
+    min-width: 600px;
+  }
+
+  @include respond-to(phone) {
+    min-width: 0;
+    padding: 17px 13px;
+  }
+
+  &--loading {
+    font-size: 12px;
+    color: #8399a4;
+    padding: 30px;
+    text-align: center;
+
+    @include respond-to(laptop) {
+      padding: 20px;
+    }
+
+    @include respond-to(phone) {
+      padding: 17px 13px;
+    }
+  }
+}
+
+.ticket-card__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 25px;
+
+  @include respond-above(wide) {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+
+  @include respond-to(laptop) {
+    grid-template-columns: minmax(0, 1fr) 225px;
+    gap: 17px;
+  }
+
+  @include respond-to(tablet) {
+    grid-template-columns: 1fr;
+  }
+
+  @include respond-to(phone) {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -7,6 +7,8 @@ import { bridge } from '@/shared/platform/max-bridge';
 import type { Attachment } from '@/shared/types/api';
 import { ErrorNotice, Icon } from '@/shared/ui';
 
+import './AttachmentItem.scss';
+
 type DownloadGrant = { url: string; filename: string; expires_at: string };
 
 const fileSize = (bytes: string) => `${Math.max(1, Math.round(Number(bytes) / 1024))} КБ`;
@@ -55,15 +57,15 @@ export function AttachmentItem({ file }: { file: Attachment }) {
   return (
     <div className="attachment">
       <Icon name="clip" size={17} />
-      <div>
-        <strong>{file.filename}</strong>
-        <small>
+      <div className="attachment__info">
+        <strong className="attachment__name">{file.filename}</strong>
+        <small className="attachment__status">
           {file.status === 'clean' ? fileSize(file.bytes) : attachmentStatusLabel(file.status)}
         </small>
         <ErrorNotice error={error} />
       </div>
       {file.status === 'clean' ? (
-        <button className="text-button" disabled={busy} onClick={download}>
+        <button className="attachment__download" disabled={busy} onClick={download}>
           {downloadLabel(busy, needsGrant)}
           <Icon name="download" size={14} />
         </button>

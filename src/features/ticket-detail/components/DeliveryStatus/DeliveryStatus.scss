@@ -1,0 +1,22 @@
+@use 'abstracts' as *;
+
+.delivery-status {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: flex-end;
+  color: #91a8a0;
+  font-size: 8px;
+  margin-top: 5px;
+
+  &--unknown,
+  &--failed {
+    color: #b16851;
+  }
+}
+
+.delivery-status__action {
+  @include text-button($font-size: 9px);
+
+  margin-left: 5px;
+}

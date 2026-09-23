@@ -4,6 +4,8 @@ import type { TicketDialog } from '@/features/ticket-detail/model/dialogs';
 import type { Ticket } from '@/shared/types/api';
 import { Icon } from '@/shared/ui';
 
+import './TicketActions.scss';
+
 type TicketActionsProps = {
   ticket: Ticket;
   active: boolean;

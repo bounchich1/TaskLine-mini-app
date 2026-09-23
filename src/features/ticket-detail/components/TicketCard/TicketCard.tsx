@@ -27,6 +27,8 @@ import { TicketDialogs } from '../TicketDialogs/TicketDialogs';
 import { TicketHeader } from '../TicketHeader/TicketHeader';
 import { TicketLoadFailed } from '../TicketLoadFailed/TicketLoadFailed';
 
+import './TicketCard.scss';
+
 type TicketCardProps = {
   id: string;
   session: Session;
@@ -79,7 +81,7 @@ export function TicketCard({
   }, [dirty, onClose]);
   useEffect(() => bindBack(requestClose), [requestClose]);
   if (detail.isPending) {
-    return <div className="ticket-detail loading">Загружаем переписку…</div>;
+    return <div className="ticket-card ticket-card--loading">Загружаем переписку…</div>;
   }
   if (!ticket) {
     return <TicketLoadFailed error={detail.error} onRetry={() => void detail.refetch()} />;
@@ -90,11 +92,11 @@ export function TicketCard({
   const canSend = ticket.status === 'in_progress' && canAct;
   const messages = sortMessages(history.data?.pages);
   return (
-    <section className="ticket-detail" aria-label={`Обращение №${ticket.number}`}>
+    <section className="ticket-card" aria-label={`Обращение №${ticket.number}`}>
       <TicketHeader ticket={ticket} onClose={requestClose} />
       <ErrorNotice error={command.error} />
-      <div className="detail-grid">
-        <div className="conversation-column">
+      <div className="ticket-card__grid">
+        <div>
           <ProblemBlock ticket={ticket} timezone={timezone} />
           <Conversation
             ticket={ticket}

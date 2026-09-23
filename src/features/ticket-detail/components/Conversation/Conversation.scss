@@ -1,0 +1,32 @@
+@use 'abstracts' as *;
+
+.conversation__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 23px;
+  padding-bottom: 10px;
+}
+
+.conversation__title {
+  margin: 0;
+  font-size: 13px;
+}
+
+.conversation__count {
+  font-size: 9px;
+  color: #93a3ad;
+}
+
+.conversation__list {
+  @include scroll-y(520px);
+
+  padding: 10px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  @include respond-to(phone) {
+    max-height: 440px;
+  }
+}

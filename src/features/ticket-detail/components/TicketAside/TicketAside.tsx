@@ -7,6 +7,8 @@ import { ClosureHistory } from '../ClosureHistory/ClosureHistory';
 import { TicketActions } from '../TicketActions/TicketActions';
 import { TicketProperties } from '../TicketProperties/TicketProperties';
 
+import './TicketAside.scss';
+
 type TicketAsideProps = {
   ticket: Ticket;
   dictionaries: Dictionary[];
@@ -27,7 +29,7 @@ export function TicketAside(props: TicketAsideProps) {
   const { ticket, active, canAct, pending, operate } = props;
   const canInsert = props.canSend && !pending;
   return (
-    <aside className="ticket-properties">
+    <aside className="ticket-aside">
       <TicketProperties ticket={ticket}>
         <ClassificationFields
           ticket={ticket}

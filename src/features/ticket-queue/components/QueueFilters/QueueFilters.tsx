@@ -4,6 +4,8 @@ import { DIMENSION_LABELS, DIMENSIONS, STATUS_LABELS } from '@/shared/config/lab
 import type { Dictionary, Employee } from '@/shared/types/api';
 import { DictionarySelect } from '@/shared/ui';
 
+import './QueueFilters.scss';
+
 type QueueFiltersProps = {
   queue: TicketFilters;
   dictionaries: Dictionary[] | undefined;
@@ -17,9 +19,9 @@ export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersPro
     change(name, event.target.value);
   };
   return (
-    <div className="filters">
+    <div className="queue-filters">
       {DIMENSIONS.map((dimension) => (
-        <label key={dimension}>
+        <label className="queue-filters__field" key={dimension}>
           {DIMENSION_LABELS[dimension]}
           <DictionarySelect
             items={dictionaries}
@@ -32,7 +34,7 @@ export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersPro
           />
         </label>
       ))}
-      <label>
+      <label className="queue-filters__field">
         Статус
         <select value={filters.status} onChange={onChange('status')}>
           <option value="">Все</option>
@@ -43,7 +45,7 @@ export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersPro
           ))}
         </select>
       </label>
-      <label>
+      <label className="queue-filters__field">
         Исполнитель
         <select value={filters.assignee} onChange={onChange('assignee')}>
           <option value="">Все сотрудники</option>
@@ -54,15 +56,25 @@ export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersPro
           ))}
         </select>
       </label>
-      <label>
+      <label className="queue-filters__field">
         С даты
-        <input type="date" value={filters.from} onChange={onChange('from')} />
+        <input
+          className="queue-filters__date"
+          type="date"
+          value={filters.from}
+          onChange={onChange('from')}
+        />
       </label>
-      <label>
+      <label className="queue-filters__field">
         По дату
-        <input type="date" value={filters.to} onChange={onChange('to')} />
+        <input
+          className="queue-filters__date"
+          type="date"
+          value={filters.to}
+          onChange={onChange('to')}
+        />
       </label>
-      <button className="text-button" onClick={queue.reset}>
+      <button className="queue-filters__reset" onClick={queue.reset}>
         Сбросить
       </button>
     </div>

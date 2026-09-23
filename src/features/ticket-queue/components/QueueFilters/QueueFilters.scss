@@ -1,0 +1,35 @@
+@use 'abstracts' as *;
+
+.queue-filters {
+  padding: 0 23px 18px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 12px;
+  align-items: end;
+
+  @include respond-to(tablet) {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0 15px 15px;
+  }
+
+  @include respond-to(phone) {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 13px 13px;
+  }
+}
+
+.queue-filters__field {
+  font-size: 10px;
+  color: #85949d;
+  display: grid;
+  gap: 7px;
+}
+
+.queue-filters__date {
+  @include input-control;
+}
+
+.queue-filters__reset {
+  @include text-button;
+}

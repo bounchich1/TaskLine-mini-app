@@ -9,6 +9,8 @@ import { ErrorNotice, Icon } from '@/shared/ui';
 
 import { DraftFiles } from '../DraftFiles/DraftFiles';
 
+import './Composer.scss';
+
 type ComposerProps = {
   ticket: Ticket;
   draft: Draft;
@@ -49,16 +51,17 @@ export function Composer({
   const scanning = draft.uploads.some((file) => file.status !== 'clean');
   return (
     <form className="composer" onSubmit={submit}>
-      <div className="composer-label">
-        <strong>Ответ клиенту</strong>
-        <span>
-          <span className="online-dot" />
+      <div className="composer__header">
+        <strong className="composer__title">Ответ клиенту</strong>
+        <span className="composer__sender">
+          <span className="composer__online-dot" />
           От имени бота
         </span>
       </div>
-      {canSend ? null : <p className="composer-disabled">{sendBlockedReason(ticket)}</p>}
+      {canSend ? null : <p className="composer__notice">{sendBlockedReason(ticket)}</p>}
       <Textarea
         aria-label="Текст ответа клиенту"
+        innerClassNames={{ textarea: 'composer__input' }}
         placeholder={canSend ? 'Напишите ответ клиенту…' : 'Отправка недоступна'}
         value={draft.text}
         onChange={(event) => {
@@ -71,7 +74,7 @@ export function Composer({
       />
       {draft.uploads.length > 0 ? <DraftFiles uploads={draft.uploads} setDraft={setDraft} /> : null}
       <ErrorNotice error={uploadError} />
-      <div className="composer-footer">
+      <div className="composer__footer">
         <input
           type="file"
           hidden
@@ -86,14 +89,14 @@ export function Composer({
         />
         <button
           type="button"
-          className="attach-button"
+          className="composer__attach"
           disabled={!canSend || uploading || pending}
           onClick={() => fileRef.current?.click()}
         >
           <Icon name="clip" size={18} />
           {uploading ? 'Проверяем файл…' : 'Прикрепить файл'}
         </button>
-        <span className="char-count">
+        <span className="composer__count">
           {draft.text.length} / {MAX_REPLY_LENGTH}
         </span>
         <Button

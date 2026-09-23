@@ -4,6 +4,8 @@ import type { ReactNode } from 'react';
 import type { Suggestion, Ticket } from '@/shared/types/api';
 import { Icon } from '@/shared/ui';
 
+import './AiSuggestionPanel.scss';
+
 type AiSuggestionPanelProps = {
   ticket: Ticket;
   /** Inserting into the draft is allowed. */
@@ -22,17 +24,25 @@ export function AiSuggestionPanel({ ticket, canInsert, onInsert }: AiSuggestionP
   const solution = suggestion?.suggested_solution;
   let content: ReactNode;
   if (ticket.ai_status === 'pending') {
-    content = <p>Изучает первое сообщение. Можно отвечать, не дожидаясь подсказки.</p>;
+    content = (
+      <p className="ai-panel__text">
+        Изучает первое сообщение. Можно отвечать, не дожидаясь подсказки.
+      </p>
+    );
   } else if (ticket.suggestion_stale) {
-    content = <p>Подсказка устарела после изменения обращения. Проверьте актуальную переписку.</p>;
+    content = (
+      <p className="ai-panel__text">
+        Подсказка устарела после изменения обращения. Проверьте актуальную переписку.
+      </p>
+    );
   } else if (suggestion && solution) {
     content = (
       <>
-        <p className="suggestion">{solution}</p>
+        <p className="ai-panel__text">{solution}</p>
         {suggestion.missing_information.length > 0 ? (
-          <div className="missing-info">
+          <div className="ai-panel__missing">
             <strong>Что уточнить</strong>
-            <ul>
+            <ul className="ai-panel__missing-list">
               {suggestion.missing_information.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -50,7 +60,7 @@ export function AiSuggestionPanel({ ticket, canInsert, onInsert }: AiSuggestionP
         >
           Вставить в черновик
         </Button>
-        <small>
+        <small className="ai-panel__note">
           Проверьте перед отправкой
           {sourcesNote(suggestion)}
         </small>
@@ -59,23 +69,23 @@ export function AiSuggestionPanel({ ticket, canInsert, onInsert }: AiSuggestionP
   } else {
     content = (
       <>
-        <p>
+        <p className="ai-panel__text">
           {ticket.ai_status === 'failed'
             ? 'Автоматическая классификация недоступна. Проверьте параметры вручную.'
             : 'Недостаточно данных для надёжной подсказки.'}
         </p>
-        <span className="manual-label">Нужна проверка сотрудником</span>
+        <span className="ai-panel__manual">Нужна проверка сотрудником</span>
       </>
     );
   }
   return (
     <div className="ai-panel">
-      <div className="ai-title">
-        <span>
+      <div className="ai-panel__title">
+        <span className="ai-panel__name">
           <Icon name="spark" size={18} />
           Помощник
         </span>
-        <span className="private-label">Только команде</span>
+        <span className="ai-panel__private">Только команде</span>
       </div>
       {content}
     </div>

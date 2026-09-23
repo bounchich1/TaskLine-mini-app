@@ -14,6 +14,8 @@ import { QueueToolbar } from '../QueueToolbar/QueueToolbar';
 import { SummaryCards } from '../SummaryCards/SummaryCards';
 import { TicketTable } from '../TicketTable/TicketTable';
 
+import './TicketsPage.scss';
+
 type TicketsPageProps = {
   session: Session;
   drafts: Map<string, Draft>;
@@ -50,9 +52,9 @@ export function TicketsPage(props: TicketsPageProps) {
   let content: ReactNode;
   if (list.isPending) {
     content = (
-      <div className="skeleton-rows" aria-label="Загрузка обращений">
+      <div className="tickets-page__skeleton" aria-label="Загрузка обращений">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} />
+          <div className="tickets-page__skeleton-row" key={i} />
         ))}
       </div>
     );
@@ -94,7 +96,7 @@ export function TicketsPage(props: TicketsPageProps) {
         }
       />
       <SummaryCards counts={counts} />
-      <section className="queue" aria-label="Очередь обращений">
+      <section className="tickets-page__queue" aria-label="Очередь обращений">
         <QueueTabs
           tab={queue.filters.tab}
           counts={counts}
@@ -115,8 +117,8 @@ export function TicketsPage(props: TicketsPageProps) {
         {expanded && !rows.some((row) => row.id === expanded) ? card : null}
         <QueueFooter ticketList={ticketList} timezone={timezone} />
       </section>
-      <p className="privacy-footer">
-        <Icon name="user" size={14} />
+      <p className="tickets-page__privacy">
+        <Icon className="tickets-page__privacy-icon" name="user" size={14} />
         Ответы клиентам отправляются от имени бота. Данные сотрудников остаются внутри команды.
       </p>
     </>

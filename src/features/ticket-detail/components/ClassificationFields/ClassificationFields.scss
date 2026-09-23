@@ -1,0 +1,16 @@
+@use 'abstracts' as *;
+
+.classification__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 9px;
+  color: #8ba0a9;
+  margin: 12px 0;
+}
+
+.classification__select {
+  font-size: 10px;
+  min-height: 32px;
+  padding: 7px 10px;
+}

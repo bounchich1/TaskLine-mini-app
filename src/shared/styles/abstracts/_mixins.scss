@@ -40,14 +40,14 @@
 }
 
 /// A borderless inline action that looks like a link.
-@mixin text-button {
+@mixin text-button($font-size: 11px) {
   display: inline-flex;
   gap: 4px;
   align-items: center;
   background: none;
   color: #3b8c7c;
   padding: 0;
-  font-size: 11px;
+  font-size: $font-size;
 }
 
 /// A square button that holds a single icon.
@@ -61,13 +61,13 @@
 }
 
 /// The small upper-case caption above a title.
-@mixin eyebrow {
+@mixin eyebrow($font-size: 9px, $margin-bottom: 12px) {
   display: block;
   color: #87999f;
-  font-size: 9px;
+  font-size: $font-size;
   font-weight: 700;
   letter-spacing: 1.6px;
-  margin-bottom: 12px;
+  margin-bottom: $margin-bottom;
 
   @include respond-to(phone) {
     font-size: 8px;

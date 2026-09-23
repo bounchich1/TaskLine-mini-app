@@ -1,0 +1,46 @@
+@use 'abstracts' as *;
+
+.tickets-page__queue {
+  @include card(9px);
+
+  overflow: hidden;
+}
+
+.tickets-page__skeleton {
+  padding: 15px 25px;
+}
+
+.tickets-page__skeleton-row {
+  height: 42px;
+  background: linear-gradient(90deg, #f4f7f7, #edf2f2, #f4f7f7);
+  margin: 12px 0;
+  border-radius: 5px;
+  animation: pulse 1.5s infinite;
+}
+
+.tickets-page__privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 22px 0;
+  color: #9ba9af;
+  font-size: 9px;
+
+  @include respond-to(tablet) {
+    font-size: 8px;
+    text-align: center;
+  }
+
+  @include respond-to(phone) {
+    align-items: flex-start;
+    font-size: 8px;
+    padding: 0 5px;
+  }
+}
+
+.tickets-page__privacy-icon {
+  @include respond-to(phone) {
+    flex-shrink: 0;
+  }
+}

@@ -1,0 +1,154 @@
+@use 'abstracts' as *;
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.05fr;
+  gap: 16px;
+  margin-bottom: 28px;
+
+  @include respond-to(tablet) {
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include respond-to(phone) {
+    gap: 9px;
+    margin-bottom: 20px;
+  }
+}
+
+.summary-cards__card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid $color-line;
+  padding: 19px;
+  border-radius: 9px;
+  position: relative;
+  min-height: 101px;
+
+  @include respond-to(laptop) {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  @include respond-to(tablet) {
+    min-height: 89px;
+  }
+
+  @include respond-to(phone) {
+    padding: 13px 11px;
+    gap: 8px;
+    min-height: 80px;
+  }
+
+  &--note {
+    background: #edf5f2;
+    border-color: #e5eeea;
+    color: #308678;
+    gap: 13px;
+
+    @include respond-to(laptop) {
+      gap: 10px;
+    }
+
+    @include respond-to(tablet) {
+      display: none;
+    }
+  }
+}
+
+.summary-cards__icon {
+  height: 39px;
+  width: 39px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+
+  @include respond-to(phone) {
+    height: 31px;
+    width: 31px;
+    border-radius: 8px;
+  }
+
+  &--teal {
+    color: #278b7d;
+    background: #e9f5f1;
+  }
+
+  &--blue {
+    color: #667ea7;
+    background: #edf1f9;
+  }
+}
+
+.summary-cards__glyph {
+  @include respond-to(phone) {
+    width: 16px;
+  }
+}
+
+.summary-cards__label {
+  display: block;
+  color: #83929b;
+  font-size: 11px;
+  margin-bottom: 5px;
+
+  @include respond-to(laptop) {
+    font-size: 10px;
+  }
+
+  @include respond-to(phone) {
+    font-size: 8px;
+    margin-bottom: 6px;
+  }
+}
+
+.summary-cards__value {
+  font-size: 29px;
+  line-height: 1.1;
+  font-weight: 650;
+  letter-spacing: -1px;
+
+  @include respond-to(laptop) {
+    font-size: 26px;
+  }
+
+  @include respond-to(phone) {
+    font-size: 23px;
+  }
+}
+
+.summary-cards__caption {
+  font-size: 9px;
+  color: #a0aab0;
+  align-self: flex-end;
+  margin-left: auto;
+  margin-bottom: 4px;
+
+  @include respond-to(laptop) {
+    display: none;
+  }
+}
+
+.summary-cards__note-text {
+  font-size: 11px;
+  color: #63877e;
+  line-height: 1.85;
+  margin: 0;
+}
+
+.summary-cards__note-emphasis {
+  font-size: 11px;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: #35796b;
+  font-weight: 500;
+
+  // Same as the card values between the laptop and tablet breakpoints, as before.
+  @include respond-to(laptop) {
+    font-size: 26px;
+  }
+}

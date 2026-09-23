@@ -1,0 +1,48 @@
+@use 'abstracts' as *;
+
+.closure-history {
+  @include card(7px);
+
+  padding: 17px;
+
+  // Full width under the two-column aside.
+  @include respond-to(tablet) {
+    grid-column: 1 / -1;
+  }
+
+  @include respond-to(phone) {
+    width: 100%;
+  }
+}
+
+.closure-history__label {
+  @include section-label;
+}
+
+.closure-history__item {
+  border-top: 1px solid $color-line;
+  padding-top: 13px;
+  margin-top: 13px;
+}
+
+.closure-history__rating {
+  font-size: 17px;
+  font-weight: 500;
+  color: #3b7263;
+}
+
+.closure-history__meta {
+  display: block;
+  color: #8ca097;
+  font-size: 9px;
+  margin-top: 5px;
+}
+
+.closure-history__learning {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  color: #698d7c;
+  margin: 10px 0 0;
+}

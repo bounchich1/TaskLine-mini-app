@@ -1,0 +1,23 @@
+@use 'abstracts' as *;
+
+.queue-footer {
+  padding: 17px 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #a0acb2;
+  font-size: 10px;
+
+  @include respond-to(phone) {
+    padding: 14px 13px;
+    font-size: 8px;
+    gap: 10px;
+  }
+}
+
+.queue-footer__timezone {
+  @include respond-to(phone) {
+    max-width: 150px;
+    text-align: right;
+  }
+}

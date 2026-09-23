@@ -7,6 +7,8 @@ import {
 import type { Dictionary, Ticket } from '@/shared/types/api';
 import { DictionarySelect } from '@/shared/ui';
 
+import './ClassificationFields.scss';
+
 type ClassificationFieldsProps = {
   ticket: Ticket;
   dictionaries: Dictionary[];
@@ -22,9 +24,10 @@ export function ClassificationFields({
   onChange,
 }: ClassificationFieldsProps) {
   return DIMENSIONS.map((field) => (
-    <label className="property" key={field}>
+    <label className="classification__field" key={field}>
       {DIMENSION_LABELS[field]}
       <DictionarySelect
+        className="classification__select"
         aria-label={`Изменить ${DIMENSION_OBJECT_LABELS[field]}`}
         disabled={disabled}
         items={dictionaries}

@@ -4,6 +4,8 @@ import { deliveryLabel } from '@/shared/config/labels';
 import type { Message } from '@/shared/types/api';
 import { Icon } from '@/shared/ui';
 
+import './DeliveryStatus.scss';
+
 type DeliveryStatusProps = {
   message: Message;
   canAct: boolean;
@@ -27,12 +29,12 @@ export function DeliveryStatus({
       .catch(onError);
   };
   return (
-    <div className={`delivery delivery-${state}`}>
+    <div className={`delivery-status delivery-status--${state}`}>
       <Icon name={state === 'delivered' ? 'check' : 'clock'} size={12} />
       {deliveryLabel(state)}
       {canAct && CANCELABLE_DELIVERIES.includes(state) ? (
         <button
-          className="text-button"
+          className="delivery-status__action"
           onClick={() => {
             act('cancel');
           }}
@@ -42,7 +44,7 @@ export function DeliveryStatus({
       ) : null}
       {canAct && canSend && state === 'failed' ? (
         <button
-          className="text-button"
+          className="delivery-status__action"
           onClick={() => {
             act('retry');
           }}

@@ -1,4 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
+import { clsx } from 'clsx';
 import type { Dispatch, SetStateAction } from 'react';
 
 import { formatDate } from '@/shared/lib/format-date';
@@ -38,18 +39,23 @@ export function buildTicketColumns({ expanded, onExpand, tab, timezone }: Column
       header: 'Обращение',
       cell: ({ row: { original: ticket } }) => (
         <button
-          className="ticket-link"
+          className="ticket-table__link"
           onClick={() => {
             onExpand((id) => (id === ticket.id ? null : ticket.id));
           }}
           aria-expanded={expanded === ticket.id}
         >
-          <span className={`row-arrow ${expanded === ticket.id ? 'rotated' : ''}`}>
+          <span
+            className={clsx(
+              'ticket-table__arrow',
+              expanded === ticket.id && 'ticket-table__arrow--open',
+            )}
+          >
             <Icon name="arrow" size={15} />
           </span>
           <span>
             №{ticket.number}
-            <small>
+            <small className="ticket-table__link-meta">
               {classifying(ticket) ? 'Определяется…' : ticket.tag_label}
               {ticket.review_required ? ' · Проверить' : null}
             </small>
@@ -61,7 +67,7 @@ export function buildTicketColumns({ expanded, onExpand, tab, timezone }: Column
       id: 'urgency',
       header: 'Срочность',
       cell: ({ row: { original: ticket } }) => (
-        <span className={`urgency urgency-${ticket.urgency}`}>
+        <span className={`ticket-table__urgency ticket-table__urgency--${ticket.urgency}`}>
           {classifying(ticket) ? 'Определяется' : ticket.urgency_label}
         </span>
       ),
@@ -70,7 +76,7 @@ export function buildTicketColumns({ expanded, onExpand, tab, timezone }: Column
       id: 'complexity',
       header: 'Сложность',
       cell: ({ row: { original: ticket } }) => (
-        <span className="muted">
+        <span className="ticket-table__muted">
           {classifying(ticket) ? 'Определяется' : ticket.complexity_label}
         </span>
       ),
@@ -80,7 +86,7 @@ export function buildTicketColumns({ expanded, onExpand, tab, timezone }: Column
       id: 'created_at',
       header: 'Создано',
       cell: ({ row: { original: ticket } }) => (
-        <time className="date-cell" dateTime={ticket.created_at}>
+        <time className="ticket-table__date" dateTime={ticket.created_at}>
           {formatDate(ticket.created_at, timezone)}
         </time>
       ),
@@ -90,12 +96,12 @@ export function buildTicketColumns({ expanded, onExpand, tab, timezone }: Column
       header: 'Исполнитель',
       cell: ({ row: { original: ticket } }) =>
         ticket.assignee_name ? (
-          <span className="assignee">
+          <span className="ticket-table__assignee">
             <Avatar size="small">{ticket.assignee_name[0]}</Avatar>
             {ticket.assignee_name}
           </span>
         ) : (
-          <span className="muted">Не назначен</span>
+          <span className="ticket-table__muted">Не назначен</span>
         ),
     },
   ];
