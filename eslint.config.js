@@ -99,6 +99,8 @@ export default tseslint.config(
       'react/jsx-no-leaked-render': 'error',
       'react/jsx-no-useless-fragment': 'error',
       'react-refresh/only-export-components': 'error',
+      // The build has no React Compiler, so hooks it cannot memoize (TanStack Table) are fine.
+      'react-hooks/incompatible-library': 'off',
     },
   },
   {

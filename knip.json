@@ -1,4 +1,11 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "project": ["src/**/*.{ts,tsx}", "tests/**/*.ts"]
+  "project": ["src/**/*.{ts,tsx,scss}", "tests/**/*.ts"],
+  "ignoreDependencies": [
+    "@fontsource-variable/inter",
+    "clsx",
+    "stylelint",
+    "stylelint-config-standard-scss",
+    "stylelint-declaration-strict-value"
+  ]
 }

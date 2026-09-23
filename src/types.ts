@@ -22,7 +22,7 @@ export type Dictionary = {
   active: boolean;
   version: number;
 };
-export type Suggestion = {
+type Suggestion = {
   tags: { tag: string; urgency: string; complexity: string };
   suggested_solution: string | null;
   needs_review: boolean;
@@ -40,7 +40,7 @@ export type Attachment = {
   kind: string;
   extraction_status: string;
 };
-export type Closure = {
+type Closure = {
   id: string;
   cycle_no: number;
   closed_at: string;
