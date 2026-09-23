@@ -122,8 +122,6 @@ export default tseslint.config(
         { type: 'app', pattern: 'src/app', partialMatch: false },
         { type: 'feature', pattern: 'src/features/*', capture: ['name'], partialMatch: false },
         { type: 'shared', pattern: 'src/shared', partialMatch: false },
-        // Temporary: files not yet moved into the layout above. Nothing new may depend on them.
-        { type: 'legacy', pattern: 'src', partialMatch: false },
       ],
     },
     rules: {
@@ -149,16 +147,8 @@ export default tseslint.config(
             {
               from: { element: { type: 'app' } },
               allow: {
-                to: [
-                  { element: { type: 'shared' } },
-                  publicApi('feature'),
-                  { element: { type: 'legacy' } },
-                ],
+                to: [{ element: { type: 'shared' } }, publicApi('feature')],
               },
-            },
-            {
-              from: { element: { type: 'legacy' } },
-              allow: { to: { element: { type: ['legacy', 'shared', 'feature', 'app'] } } },
             },
           ],
         },
