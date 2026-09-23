@@ -1,0 +1,45 @@
+@use 'abstracts' as *;
+
+.launch-screen {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 480px;
+  margin: auto;
+  text-align: center;
+  padding: 28px;
+}
+
+.launch-screen__mark {
+  @include brand-mark;
+
+  width: 65px;
+  height: 65px;
+  margin-bottom: 30px;
+  border-radius: 17px;
+}
+
+.launch-screen__eyebrow {
+  @include eyebrow;
+}
+
+.launch-screen__title {
+  font-size: 29px;
+
+  @include respond-to(phone) {
+    font-size: 27px;
+  }
+}
+
+.launch-screen__text {
+  font-size: 14px;
+  color: #8399a4;
+}
+
+.launch-screen__foot {
+  font-size: 10px;
+  color: #a3b2b7;
+  margin-top: 30px;
+}

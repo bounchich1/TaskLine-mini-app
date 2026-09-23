@@ -13,6 +13,8 @@ import { Sidebar, type Section } from './Sidebar/Sidebar';
 import { Topbar } from './Topbar/Topbar';
 import { useLiveUpdates } from './use-live-updates';
 
+import './Workspace.scss';
+
 type WorkspaceProps = {
   session: Session;
   drafts: Map<string, Draft>;
@@ -38,7 +40,7 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
     setExpanded(id);
   };
   return (
-    <div className="app-shell">
+    <div className="workspace">
       <Sidebar
         session={session}
         section={section}
@@ -46,11 +48,11 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
         openCount={ticketList.counts?.open}
         unread={unread}
       />
-      <main className="main">
+      <main className="workspace__main">
         <Topbar organization={session.organization.name} connection={live.connection} />
-        <div className="main-content">
+        <div className="workspace__content">
           {IS_DEMO ? (
-            <div className="demo-note">
+            <div className="workspace__demo-note">
               Локальный стенд · вымышленные обращения · сообщения в MAX не отправляются
             </div>
           ) : null}

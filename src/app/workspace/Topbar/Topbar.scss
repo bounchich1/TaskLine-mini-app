@@ -1,0 +1,51 @@
+@use 'abstracts' as *;
+
+.topbar {
+  height: 69px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid $color-line;
+  padding: 0 37px;
+  background: #fff;
+  color: #7b8b96;
+  font-size: 11px;
+
+  @include respond-to(laptop) {
+    padding: 0 22px;
+  }
+
+  @include respond-to(tablet) {
+    height: 57px;
+    padding: 0 18px;
+  }
+
+  @include respond-to(phone) {
+    height: 51px;
+    padding: 0 15px;
+    font-size: 9px;
+  }
+}
+
+.topbar__connection {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+
+  @include respond-to(phone) {
+    font-size: 8px;
+    max-width: 140px;
+  }
+}
+
+.topbar__dot {
+  width: 5px;
+  height: 5px;
+  background: #4ca58b;
+  border-radius: 50%;
+
+  &--reconnecting {
+    background: #c59640;
+  }
+}

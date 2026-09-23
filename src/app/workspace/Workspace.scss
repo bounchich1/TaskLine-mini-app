@@ -1,0 +1,53 @@
+@use 'abstracts' as *;
+
+.workspace {
+  display: flex;
+  min-height: 100dvh;
+
+  // Room for the bottom tab bar.
+  @include respond-to(phone) {
+    padding-bottom: 68px;
+  }
+}
+
+.workspace__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.workspace__content {
+  padding: 35px 37px 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  @include respond-above(wide) {
+    padding: 45px 48px;
+  }
+
+  @include respond-to(laptop) {
+    padding: 27px 22px;
+  }
+
+  @include respond-to(tablet) {
+    padding: 24px 18px;
+  }
+
+  @include respond-to(phone) {
+    padding: 23px 14px 12px;
+  }
+}
+
+.workspace__demo-note {
+  font-size: 10px;
+  background: #fff8e8;
+  color: #b4965e;
+  border: 1px solid #f0e6cf;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+
+  @include respond-to(phone) {
+    font-size: 8px;
+    line-height: 1.5;
+  }
+}
