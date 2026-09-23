@@ -1,0 +1,20 @@
+@use 'abstracts' as *;
+
+.form-field {
+  display: grid;
+  gap: 8px;
+  font-size: 11px;
+  color: #83959e;
+  margin-bottom: 17px;
+
+  // The control is passed in as a child.
+  input,
+  textarea {
+    @include input-control;
+  }
+
+  textarea {
+    min-height: 95px;
+    resize: vertical;
+  }
+}

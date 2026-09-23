@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "project": ["src/**/*.{ts,tsx,scss}", "tests/**/*.ts"],
+  "project": ["src/**/*.{ts,tsx}", "tests/**/*.ts"],
   "ignoreDependencies": [
     "@fontsource-variable/inter",
     "clsx",

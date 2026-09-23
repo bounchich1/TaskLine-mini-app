@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import './PageHeading.scss';
+
 type PageHeadingProps = {
   eyebrow: string;
   title: string;
@@ -13,12 +15,12 @@ export function PageHeading({ eyebrow, title, description, action }: PageHeading
   return (
     <div className="page-heading">
       <div>
-        <span className="eyebrow">{eyebrow}</span>
-        <h1>
+        <span className="page-heading__eyebrow">{eyebrow}</span>
+        <h1 className="page-heading__title">
           {title}
-          <span className="title-dot">.</span>
+          <span className="page-heading__dot">.</span>
         </h1>
-        {description ? <p>{description}</p> : null}
+        {description ? <p className="page-heading__description">{description}</p> : null}
       </div>
       {action}
     </div>

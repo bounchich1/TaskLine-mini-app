@@ -1,0 +1,16 @@
+@keyframes pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  // Overrides every component's motion, so it must win over their own declarations.
+  * {
+    /* stylelint-disable declaration-no-important */
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+    /* stylelint-enable declaration-no-important */
+  }
+}

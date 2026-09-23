@@ -1,0 +1,23 @@
+@use 'sass:map';
+
+// Layout breakpoints. `wide` is a lower bound, the rest are upper bounds.
+$breakpoints: (
+  wide: 1600px,
+  laptop: 1150px,
+  tablet: 850px,
+  phone: 560px,
+);
+
+/// Styles for viewports at most as wide as the breakpoint.
+@mixin respond-to($name) {
+  @media (max-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}
+
+/// Styles for viewports at least as wide as the breakpoint.
+@mixin respond-above($name) {
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}

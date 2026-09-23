@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
 import type { Resolution } from '@/features/admin/model/types';
-import { ErrorNotice, Modal } from '@/shared/ui';
+import { ErrorNotice, FormField, Modal } from '@/shared/ui';
 
 const MIN_EVIDENCE_LENGTH = 10;
 
@@ -49,8 +49,7 @@ export function ResolutionDialog({
         Сервер не знает, доставлено ли сообщение. Повтор может создать дубликат у клиента. Укажите
         результаты проверки и основание решения.
       </p>
-      <label className="form-field">
-        Подтверждение проверки
+      <FormField label="Подтверждение проверки">
         <textarea
           value={evidence}
           onChange={(event) => {
@@ -60,7 +59,7 @@ export function ResolutionDialog({
           maxLength={2000}
           required
         />
-      </label>
+      </FormField>
       <ErrorNotice error={error} />
     </Modal>
   );

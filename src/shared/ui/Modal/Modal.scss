@@ -1,0 +1,70 @@
+@use 'abstracts' as *;
+
+.modal {
+  border: 0;
+  border-radius: 13px;
+  box-shadow: 0 20px 80px #122b3b30;
+  padding: 0;
+  width: 500px;
+  max-width: calc(100vw - 28px);
+  color: $color-ink;
+
+  &::backdrop {
+    background: #102a3d66;
+    backdrop-filter: blur(3px);
+  }
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 23px 24px 17px;
+  border-bottom: 1px solid $color-line;
+
+  @include respond-to(phone) {
+    padding: 20px 18px;
+  }
+}
+
+.modal__title {
+  font-size: 19px;
+  margin: 0;
+
+  @include respond-to(phone) {
+    font-size: 17px;
+  }
+}
+
+.modal__close {
+  @include icon-button;
+}
+
+.modal__body {
+  padding: 22px 24px;
+  max-height: 65dvh;
+  overflow-y: auto;
+
+  @include respond-to(phone) {
+    padding: 19px 18px;
+  }
+
+  // Explanations passed in as children.
+  p {
+    font-size: 13px;
+    color: #7b8d95;
+  }
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  background: #f8fafb;
+  border-top: 1px solid $color-line;
+
+  @include respond-to(phone) {
+    padding: 14px 18px;
+  }
+}

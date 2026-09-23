@@ -1,5 +1,6 @@
 import type { TicketDialog } from '@/features/ticket-detail/model/dialogs';
 import type { Employee, Ticket } from '@/shared/types/api';
+import { FormField } from '@/shared/ui';
 
 import { ReasonField } from '../ReasonField/ReasonField';
 
@@ -36,8 +37,7 @@ export function TicketDialogBody(props: TicketDialogBodyProps) {
   if (dialog === 'transfer') {
     return (
       <>
-        <label className="form-field">
-          Новый исполнитель
+        <FormField label="Новый исполнитель">
           <select
             value={target}
             onChange={(event) => {
@@ -53,7 +53,7 @@ export function TicketDialogBody(props: TicketDialogBodyProps) {
                 </option>
               ))}
           </select>
-        </label>
+        </FormField>
         <ReasonField label="Комментарий к передаче" value={reason} onChange={onReason} required />
       </>
     );

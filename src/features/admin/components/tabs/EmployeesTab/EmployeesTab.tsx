@@ -35,7 +35,9 @@ export function EmployeesTab({ employees, onEdit }: EmployeesTabProps) {
                 MAX ID: {employee.max_user_id} · {employeeRoleLabel(employee.role)}
               </small>
             </div>
-            <span className={`badge ${employee.blocked ? 'status-closed' : 'status-in_progress'}`}>
+            <span
+              className={`badge ${employee.blocked ? 'badge--status-closed' : 'badge--status-in-progress'}`}
+            >
               {employee.blocked ? 'Заблокирован' : 'Активен'}
             </span>
             <Button

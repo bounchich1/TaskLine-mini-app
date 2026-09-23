@@ -1,0 +1,30 @@
+@use 'abstracts' as *;
+
+.empty-state {
+  text-align: center;
+  padding: 60px 24px;
+  color: #84979f;
+  white-space: normal;
+}
+
+.empty-state__icon {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  color: #92b8ac;
+  background: #eff6f2;
+  border-radius: 50%;
+}
+
+.empty-state__title {
+  font-size: 17px;
+  color: #526f7c;
+  margin: 16px 0 8px;
+}
+
+.empty-state__text {
+  font-size: 12px;
+  margin: 0;
+}

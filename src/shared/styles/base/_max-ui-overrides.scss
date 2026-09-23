@@ -1,0 +1,40 @@
+@use 'abstracts' as *;
+
+// The only place for `!important` and selectors into MAX UI's markup: its components style their
+// inner elements with generated class names, so our components can only reach them from outside.
+
+[data-maxui-color-scheme] {
+  --maxui-color-bg-brand: #247e70;
+}
+
+button[class*='Button--primary'],
+button[class*='Button_primary'] {
+  background: #257e70 !important;
+}
+
+button[class*='Button'] {
+  font-size: 11px !important;
+  border-radius: 6px !important;
+}
+
+.queue-toolbar__search input {
+  font-size: 12px !important;
+
+  @include respond-to(phone) {
+    font-size: 11px !important;
+  }
+}
+
+.composer__input {
+  font-size: 12px !important;
+  background: #fff !important;
+}
+
+// After the generic button rule: same specificity, so the later one wins.
+.page-heading button {
+  @include respond-to(phone) {
+    min-height: 31px;
+    font-size: 9px !important;
+    padding: 6px 9px !important;
+  }
+}

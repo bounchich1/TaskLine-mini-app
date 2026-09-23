@@ -1,3 +1,5 @@
+import './ErrorNotice.scss';
+
 /** Shows an error's message; renders nothing when `error` is empty. */
 export function ErrorNotice({ error }: { error: unknown }) {
   if (!error) {

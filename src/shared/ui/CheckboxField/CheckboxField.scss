@@ -1,0 +1,13 @@
+@use 'abstracts' as *;
+
+.checkbox-field {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: #6e8590;
+}
+
+.checkbox-field__input {
+  accent-color: #2a8e7d;
+}

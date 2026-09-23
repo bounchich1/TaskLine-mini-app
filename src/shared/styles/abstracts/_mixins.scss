@@ -1,0 +1,114 @@
+@use 'variables' as *;
+@use 'breakpoints' as *;
+
+/// Hides content visually but keeps it for screen readers.
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/// A white panel with a hairline border.
+@mixin card($radius: 8px) {
+  background: $color-surface;
+  border: 1px solid $color-line;
+  border-radius: $radius;
+}
+
+@mixin focus-ring {
+  outline: 3px solid #69beba;
+  outline-offset: 3px;
+}
+
+@mixin scroll-y($max-height) {
+  max-height: $max-height;
+  overflow-y: auto;
+}
+
+/// A small rounded label (counts, statuses).
+@mixin pill($padding: 2px 6px, $radius: 4px) {
+  padding: $padding;
+  border-radius: $radius;
+}
+
+/// A borderless inline action that looks like a link.
+@mixin text-button {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  background: none;
+  color: #3b8c7c;
+  padding: 0;
+  font-size: 11px;
+}
+
+/// A square button that holds a single icon.
+@mixin icon-button {
+  padding: 5px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: #91a1a8;
+  border-radius: 5px;
+}
+
+/// The small upper-case caption above a title.
+@mixin eyebrow {
+  display: block;
+  color: #87999f;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  margin-bottom: 12px;
+
+  @include respond-to(phone) {
+    font-size: 8px;
+  }
+}
+
+/// The upper-case caption of a panel section.
+@mixin section-label {
+  font-size: 8px;
+  letter-spacing: 1.4px;
+  color: #8da0a9;
+  font-weight: 650;
+}
+
+@mixin online-dot {
+  display: inline-block;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #59b39f;
+}
+
+/// The app's logo tile.
+@mixin brand-mark {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  background: #25988c;
+  border-radius: 11px;
+  color: #fff;
+}
+
+/// Text inputs outside MAX UI (date filters, form fields).
+@mixin input-control {
+  border: 1px solid #dde5e9;
+  border-radius: 6px;
+  padding: 9px 10px;
+  color: #314954;
+  background: #fff;
+  min-height: 37px;
+  max-width: 100%;
+  font-size: 13px;
+}

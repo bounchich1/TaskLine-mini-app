@@ -1,0 +1,37 @@
+@use 'abstracts' as *;
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+
+  @include respond-to(phone) {
+    margin-bottom: 20px;
+    align-items: flex-end;
+  }
+}
+
+.page-heading__eyebrow {
+  @include eyebrow;
+}
+
+.page-heading__title {
+  @include respond-to(phone) {
+    font-size: 29px;
+  }
+}
+
+.page-heading__dot {
+  color: #269a8e;
+}
+
+.page-heading__description {
+  color: #7b8c95;
+  font-size: 12px;
+  margin-bottom: 0;
+
+  @include respond-to(phone) {
+    font-size: 10px;
+  }
+}

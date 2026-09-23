@@ -8,6 +8,12 @@ export default defineConfig({
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
+  css: {
+    preprocessorOptions: {
+      // Component stylesheets `@use 'abstracts'` without a relative path.
+      scss: { loadPaths: [fileURLToPath(new URL('./src/shared/styles', import.meta.url))] },
+    },
+  },
   server: {
     port: 5173,
     strictPort: true,

@@ -2,6 +2,7 @@ import { Button } from '@maxhub/max-ui';
 
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
 import type { OrganizationSettings } from '@/features/admin/model/types';
+import { FormField } from '@/shared/ui';
 
 type SettingsTabProps = {
   settings: OrganizationSettings;
@@ -27,14 +28,12 @@ export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
           });
         }}
       >
-        <label className="form-field">
-          Название
+        <FormField label="Название">
           <input name="name" defaultValue={settings.name} maxLength={120} required />
-        </label>
-        <label className="form-field">
-          Часовой пояс
+        </FormField>
+        <FormField label="Часовой пояс">
           <input name="timezone" defaultValue={settings.timezone} required />
-        </label>
+        </FormField>
         <p className="admin-help">
           Политика согласия, ключи сервисов и ограничения ИИ настраиваются при развёртывании
           сервера.

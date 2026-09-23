@@ -3,6 +3,8 @@ import { useEffect, useRef, type ReactNode } from 'react';
 
 import { Icon } from '../Icon/Icon';
 
+import './Modal.scss';
+
 type ModalProps = {
   title: string;
   children: ReactNode;
@@ -28,7 +30,7 @@ export function Modal({ title, children, onClose, footer, busy = false }: ModalP
   return (
     <dialog
       ref={ref}
-      className="dialog"
+      className="modal"
       onCancel={(event) => {
         event.preventDefault();
         if (!busy) {
@@ -37,14 +39,21 @@ export function Modal({ title, children, onClose, footer, busy = false }: ModalP
       }}
       aria-labelledby="dialog-title"
     >
-      <div className="dialog-head">
-        <h2 id="dialog-title">{title}</h2>
-        <button className="icon-button" aria-label="Закрыть окно" disabled={busy} onClick={onClose}>
+      <div className="modal__header">
+        <h2 className="modal__title" id="dialog-title">
+          {title}
+        </h2>
+        <button
+          className="modal__close"
+          aria-label="Закрыть окно"
+          disabled={busy}
+          onClick={onClose}
+        >
           <Icon name="close" />
         </button>
       </div>
-      <div className="dialog-body">{children}</div>
-      <div className="dialog-footer">
+      <div className="modal__body">{children}</div>
+      <div className="modal__footer">
         <Button variant="secondary" disabled={busy} onClick={onClose}>
           Отмена
         </Button>

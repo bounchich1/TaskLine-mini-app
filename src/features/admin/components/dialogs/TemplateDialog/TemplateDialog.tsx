@@ -1,5 +1,6 @@
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
 import type { Template } from '@/features/admin/model/types';
+import { FormField } from '@/shared/ui';
 
 import { FormDialog } from '../FormDialog/FormDialog';
 
@@ -29,10 +30,9 @@ export function TemplateDialog({ template, busy, error, save, onClose }: Templat
       onClose={onClose}
       onSubmit={submit}
     >
-      <label className="form-field">
-        {template.code}
+      <FormField label={template.code}>
         <textarea name="body" rows={7} maxLength={3000} defaultValue={template.body} required />
-      </label>
+      </FormField>
     </FormDialog>
   );
 }

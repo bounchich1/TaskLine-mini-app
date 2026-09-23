@@ -1,0 +1,14 @@
+@use 'abstracts' as *;
+
+.error-notice {
+  background: #fff0ed;
+  border: 1px solid #f1d4cd;
+  border-radius: 6px;
+  color: #a35346;
+  padding: 11px 13px;
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 10px 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

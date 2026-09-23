@@ -1,4 +1,5 @@
 import { MAX_NOTE_LENGTH } from '@/features/ticket-detail/model/limits';
+import { FormField } from '@/shared/ui';
 
 type ReasonFieldProps = {
   label: string;
@@ -10,8 +11,7 @@ type ReasonFieldProps = {
 /** The free-text note of a ticket dialog. */
 export function ReasonField({ label, value, onChange, required = false }: ReasonFieldProps) {
   return (
-    <label className="form-field">
-      {label}
+    <FormField label={label}>
       <textarea
         required={required}
         maxLength={MAX_NOTE_LENGTH}
@@ -20,6 +20,6 @@ export function ReasonField({ label, value, onChange, required = false }: Reason
           onChange(event.target.value);
         }}
       />
-    </label>
+    </FormField>
   );
 }

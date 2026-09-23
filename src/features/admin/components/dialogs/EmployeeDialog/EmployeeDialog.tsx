@@ -1,6 +1,7 @@
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
 import { ROLE_OPTIONS } from '@/shared/config/labels';
 import type { Employee } from '@/shared/types/api';
+import { FormField, CheckboxField } from '@/shared/ui';
 
 import { FormDialog } from '../FormDialog/FormDialog';
 
@@ -36,8 +37,7 @@ export function EmployeeDialog({ employee, busy, error, save, onClose }: Employe
       onClose={onClose}
       onSubmit={submit}
     >
-      <label className="form-field">
-        MAX ID
+      <FormField label="MAX ID">
         <input
           name="max_user_id"
           pattern="[0-9]+"
@@ -45,13 +45,11 @@ export function EmployeeDialog({ employee, busy, error, save, onClose }: Employe
           defaultValue={employee?.max_user_id}
           readOnly={!!employee}
         />
-      </label>
-      <label className="form-field">
-        Имя
+      </FormField>
+      <FormField label="Имя">
         <input name="name" required maxLength={120} defaultValue={employee?.name} />
-      </label>
-      <label className="form-field">
-        Роль
+      </FormField>
+      <FormField label="Роль">
         <select name="role" defaultValue={employee?.role ?? 'support'}>
           {ROLE_OPTIONS.map(([role, label]) => (
             <option key={role} value={role}>
@@ -59,11 +57,10 @@ export function EmployeeDialog({ employee, busy, error, save, onClose }: Employe
             </option>
           ))}
         </select>
-      </label>
-      <label className="checkbox">
-        <input type="checkbox" name="blocked" defaultChecked={employee?.blocked} />
+      </FormField>
+      <CheckboxField name="blocked" defaultChecked={employee?.blocked}>
         Заблокировать доступ
-      </label>
+      </CheckboxField>
     </FormDialog>
   );
 }

@@ -55,10 +55,13 @@ const ICON_PATHS = {
 
 export type IconName = keyof typeof ICON_PATHS;
 
+type IconProps = { name: IconName; size?: number; className?: string };
+
 /** A 24×24 line icon drawn in `currentColor`; decorative (hidden from assistive technology). */
-export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
+export function Icon({ name, size = 20, className }: IconProps) {
   return (
     <svg
+      className={className}
       width={size}
       height={size}
       viewBox="0 0 24 24"

@@ -1,6 +1,7 @@
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
 import { DIMENSION_LABELS, DIMENSIONS } from '@/shared/config/labels';
 import type { Dictionary } from '@/shared/types/api';
+import { FormField, CheckboxField } from '@/shared/ui';
 
 import { FormDialog } from '../FormDialog/FormDialog';
 
@@ -37,8 +38,7 @@ export function DictionaryDialog({ value, busy, error, save, onClose }: Dictiona
       onClose={onClose}
       onSubmit={submit}
     >
-      <label className="form-field">
-        Справочник
+      <FormField label="Справочник">
         <select name="dimension" defaultValue={value?.dimension ?? 'tag'} disabled={!!value}>
           {DIMENSIONS.map((dimension) => (
             <option key={dimension} value={dimension}>
@@ -46,9 +46,8 @@ export function DictionaryDialog({ value, busy, error, save, onClose }: Dictiona
             </option>
           ))}
         </select>
-      </label>
-      <label className="form-field">
-        Код
+      </FormField>
+      <FormField label="Код">
         <input
           name="code"
           pattern="[a-z][a-z0-9_]*"
@@ -57,13 +56,11 @@ export function DictionaryDialog({ value, busy, error, save, onClose }: Dictiona
           readOnly={!!value}
           required
         />
-      </label>
-      <label className="form-field">
-        Название
+      </FormField>
+      <FormField label="Название">
         <input name="label" defaultValue={value?.label} maxLength={120} required />
-      </label>
-      <label className="form-field">
-        Приоритет
+      </FormField>
+      <FormField label="Приоритет">
         <input
           name="rank"
           type="number"
@@ -72,11 +69,10 @@ export function DictionaryDialog({ value, busy, error, save, onClose }: Dictiona
           defaultValue={value?.rank ?? 0}
           required
         />
-      </label>
-      <label className="checkbox">
-        <input type="checkbox" name="active" defaultChecked={value?.active ?? true} />
+      </FormField>
+      <CheckboxField name="active" defaultChecked={value?.active ?? true}>
         Использовать в новых обращениях
-      </label>
+      </CheckboxField>
     </FormDialog>
   );
 }
