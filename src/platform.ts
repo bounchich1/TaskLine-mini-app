@@ -20,15 +20,20 @@ declare global {
 export const bridge = () => window.WebApp;
 export async function waitForLaunch(): Promise<string | null> {
   for (let i = 0; i < 30; i++) {
-    if (window.WebApp?.initData) return window.WebApp.initData;
+    if (window.WebApp?.initData) {
+      return window.WebApp.initData;
+    }
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
   return null;
 }
 export function protectDraft(dirty: boolean) {
   try {
-    if (dirty) bridge()?.enableClosingConfirmation?.();
-    else bridge()?.disableClosingConfirmation?.();
+    if (dirty) {
+      bridge()?.enableClosingConfirmation?.();
+    } else {
+      bridge()?.disableClosingConfirmation?.();
+    }
   } catch {
     /* Host capability is best effort. */
   }
@@ -53,7 +58,8 @@ export async function setViewport() {
       new Promise<undefined>((resolve) => setTimeout(resolve, 1000)),
     ]);
     const height = Number.parseFloat(result?.height ?? '');
-    if (Number.isFinite(height) && height >= 300 && height < 5000)
+    if (Number.isFinite(height) && height >= 300 && height < 5000) {
       document.documentElement.style.setProperty('--host-height', `${height}px`);
+    }
   } catch {}
 }

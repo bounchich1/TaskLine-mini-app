@@ -1,5 +1,5 @@
-import { useEffect, useRef, type ReactNode } from 'react';
 import { Button } from '@maxhub/max-ui';
+import { useEffect, useRef, type ReactNode } from 'react';
 export function Icon({ name, size = 20 }: { name: string; size?: number }) {
   const paths: Record<string, ReactNode> = {
     inbox: (
@@ -122,7 +122,9 @@ export function Badge({ status }: { status: string }) {
   );
 }
 export function date(value: string | null | undefined, timeZone: string, short = false) {
-  if (!value) return '—';
+  if (!value) {
+    return '—';
+  }
   return new Intl.DateTimeFormat('ru-RU', {
     timeZone,
     day: '2-digit',
@@ -177,7 +179,9 @@ export function Modal({
       className="dialog"
       onCancel={(event) => {
         event.preventDefault();
-        if (!busy) onClose();
+        if (!busy) {
+          onClose();
+        }
       }}
       aria-labelledby="dialog-title"
     >

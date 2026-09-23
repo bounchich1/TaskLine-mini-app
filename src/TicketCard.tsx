@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Button, Textarea } from '@maxhub/max-ui';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+
 import { api, ApiError, downloadBrowser } from './api';
 import { bindBack, bridge, protectDraft } from './platform';
-import { Badge, date, deliveryNames, ErrorNotice, Icon, learningNames, Modal } from './ui';
 import type { Attachment, Dictionary, Employee, Message, Session, Ticket } from './types';
+import { Badge, date, deliveryNames, ErrorNotice, Icon, learningNames, Modal } from './ui';
 
 type Upload = { id: string; filename: string; status: string };
 export type Draft = { text: string; uploads: Upload[] };
@@ -72,8 +73,11 @@ export function TicketCard({
   useEffect(
     () =>
       bindBack(() => {
-        if (dirty) setDialog('discard');
-        else onClose();
+        if (dirty) {
+          setDialog('discard');
+        } else {
+          onClose();
+        }
       }),
     [dirty, onClose],
   );
@@ -100,8 +104,9 @@ export function TicketCard({
           version: request.version,
         });
       } catch (error) {
-        if (error instanceof ApiError && error.status !== 0 && error.status !== 503)
+        if (error instanceof ApiError && error.status !== 0 && error.status !== 503) {
           pendingRequest.current = null;
+        }
         throw error;
       }
     },
@@ -109,7 +114,9 @@ export function TicketCard({
       pendingRequest.current = null;
       setDialog(null);
       setReason('');
-      if (variables.action === 'messages') setDraft({ text: '', uploads: [] });
+      if (variables.action === 'messages') {
+        setDraft({ text: '', uploads: [] });
+      }
       await refresh();
     },
     onError: () => {
@@ -122,16 +129,18 @@ export function TicketCard({
     setUploadError(null);
     let id: string | undefined;
     try {
-      if (draft.uploads.length >= 10)
+      if (draft.uploads.length >= 10) {
         throw new Error('К сообщению можно прикрепить не больше 10 файлов.');
+      }
       const kind = file.type.startsWith('image/')
         ? 'image'
         : file.type.startsWith('video/')
           ? 'video'
           : 'file';
       const limit = (kind === 'video' ? 100 : kind === 'image' ? 20 : 25) * 1024 * 1024;
-      if (file.size > limit)
+      if (file.size > limit) {
         throw new Error(`Файл слишком большой. Максимум ${limit / 1024 / 1024} МБ.`);
+      }
       const prepared = await api<{ id: string }>('/v1/uploads', {
         method: 'POST',
         body: { ticket_id: ticket!.id, filename: file.name, kind },
@@ -145,24 +154,36 @@ export function TicketCard({
       for (let i = 0; i < 60 && mounted.current; i++) {
         value = await api<Upload>(`/v1/uploads/${id}/complete`, { method: 'POST', body: {} });
         setDraft((d) => ({ ...d, uploads: d.uploads.map((u) => (u.id === id ? value : u)) }));
-        if (value.status === 'clean') return;
-        if (['infected', 'rejected', 'failed', 'canceled'].includes(value.status))
+        if (value.status === 'clean') {
+          return;
+        }
+        if (['infected', 'rejected', 'failed', 'canceled'].includes(value.status)) {
           throw new Error('Файл не прошёл проверку. Удалите его из черновика и выберите другой.');
+        }
         await new Promise((resolve) => setTimeout(resolve, 1500));
       }
-      if (mounted.current)
+      if (mounted.current) {
         throw new Error(
           'Проверка файла ещё не завершена. Сохраните черновик и проверьте статус позже.',
         );
+      }
     } catch (error) {
-      if (mounted.current) setUploadError(error);
+      if (mounted.current) {
+        setUploadError(error);
+      }
     } finally {
-      if (mounted.current) setUploading(false);
-      if (fileRef.current) fileRef.current.value = '';
+      if (mounted.current) {
+        setUploading(false);
+      }
+      if (fileRef.current) {
+        fileRef.current.value = '';
+      }
     }
   }
-  if (detail.isPending) return <div className="ticket-detail loading">Загружаем переписку…</div>;
-  if (!ticket)
+  if (detail.isPending) {
+    return <div className="ticket-detail loading">Загружаем переписку…</div>;
+  }
+  if (!ticket) {
     return (
       <div className="ticket-detail">
         <ErrorNotice error={detail.error} />
@@ -171,6 +192,7 @@ export function TicketCard({
         </Button>
       </div>
     );
+  }
   const active = ['open', 'in_progress'].includes(ticket.status);
   const canAct = ticket.assignee_id === session.employee.id || session.capabilities.act_on_others;
   const canSend = ticket.status === 'in_progress' && canAct;
@@ -181,8 +203,11 @@ export function TicketCard({
       ['queued', 'sending', 'retry_wait', 'unknown'].includes(m.delivery_state),
   );
   const closeCard = () => {
-    if (dirty) setDialog('discard');
-    else onClose();
+    if (dirty) {
+      setDialog('discard');
+    } else {
+      onClose();
+    }
   };
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -359,7 +384,9 @@ export function TicketCard({
                 ref={fileRef}
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) void upload(file);
+                  if (file) {
+                    void upload(file);
+                  }
                 }}
                 accept="image/*,video/*,.pdf,.txt,.doc,.docx,.xls,.xlsx"
               />
@@ -606,10 +633,15 @@ export function TicketCard({
                   (dialog === 'reopen' && !reason.trim())
                 }
                 onClick={() => {
-                  if (dialog === 'close') operate('close', { note: reason });
-                  if (dialog === 'transfer')
+                  if (dialog === 'close') {
+                    operate('close', { note: reason });
+                  }
+                  if (dialog === 'transfer') {
                     operate('transfer', { employee_id: target, comment: reason });
-                  if (dialog === 'reopen') operate('reopen', { reason });
+                  }
+                  if (dialog === 'reopen') {
+                    operate('reopen', { reason });
+                  }
                 }}
               >
                 {dialog === 'close'

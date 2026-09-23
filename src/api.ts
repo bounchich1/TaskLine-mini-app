@@ -32,9 +32,13 @@ export async function api<T>(
   if (method !== 'GET') {
     headers['Idempotency-Key'] = options.key ?? crypto.randomUUID();
   }
-  if (options.version !== undefined) headers['If-Match'] = String(options.version);
+  if (options.version !== undefined) {
+    headers['If-Match'] = String(options.version);
+  }
   const multipart = options.body instanceof FormData;
-  if (options.body !== undefined && !multipart) headers['Content-Type'] = 'application/json';
+  if (options.body !== undefined && !multipart) {
+    headers['Content-Type'] = 'application/json';
+  }
   let response: Response;
   try {
     response = await fetch(`${base}${path}`, {
@@ -49,14 +53,18 @@ export async function api<T>(
       signal: options.signal,
     });
   } catch (error) {
-    if ((error as Error).name === 'AbortError') throw error;
+    if ((error as Error).name === 'AbortError') {
+      throw error;
+    }
     throw new ApiError('network', 'Нет связи с сервером. Повторите действие.', 0);
   }
   const data = await response
     .json()
     .catch(() => ({ code: 'invalid_response', message: 'Сервер вернул некорректный ответ.' }));
   if (!response.ok) {
-    if (response.status === 401) window.dispatchEvent(new Event('session-expired'));
+    if (response.status === 401) {
+      window.dispatchEvent(new Event('session-expired'));
+    }
     throw new ApiError(
       data.code ?? 'error',
       data.message ?? 'Не удалось выполнить действие.',
@@ -83,7 +91,9 @@ export async function events(
         window.dispatchEvent(new Event('session-expired'));
         return;
       }
-      if (!response.ok || !response.body) throw new Error('stream');
+      if (!response.ok || !response.body) {
+        throw new Error('stream');
+      }
       onState('live');
       onChange();
       delay = 1000;
@@ -92,24 +102,34 @@ export async function events(
       let pending = '';
       for (;;) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done) {
+          break;
+        }
         pending += decoder.decode(value, { stream: true });
-        if (pending.length > 1024 * 1024) throw new Error('stream_limit');
+        if (pending.length > 1024 * 1024) {
+          throw new Error('stream_limit');
+        }
         let index;
         while ((index = pending.indexOf('\n\n')) >= 0) {
           const packet = pending.slice(0, index);
           pending = pending.slice(index + 2);
           const id = /^id: (\d+)$/m.exec(packet);
-          if (id) cursor = id[1];
+          if (id) {
+            cursor = id[1];
+          }
           if (packet.includes('event: session_expired')) {
             window.dispatchEvent(new Event('session-expired'));
             return;
           }
-          if (/event: (change|resync)/.test(packet)) onChange();
+          if (/event: (change|resync)/.test(packet)) {
+            onChange();
+          }
         }
       }
     } catch {
-      if (signal.aborted) return;
+      if (signal.aborted) {
+        return;
+      }
     }
     onState('reconnecting');
     await new Promise<void>((resolve) => {
@@ -131,8 +151,9 @@ export async function downloadBrowser(id: string, filename: string) {
     headers: { Authorization: `Bearer ${session?.token ?? ''}` },
     credentials: 'include',
   });
-  if (!response.ok)
+  if (!response.ok) {
     throw new ApiError('download_failed', 'Не удалось скачать файл.', response.status);
+  }
   const url = URL.createObjectURL(await response.blob());
   const anchor = document.createElement('a');
   anchor.href = url;

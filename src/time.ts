@@ -26,7 +26,9 @@ export function dayBoundary(day: string, timeZone: string, nextDay = false): str
       Number(p.second),
     );
     const delta = target.getTime() - represented;
-    if (delta === 0) break;
+    if (delta === 0) {
+      break;
+    }
     guess += delta;
   }
   return new Date(guess).toISOString();

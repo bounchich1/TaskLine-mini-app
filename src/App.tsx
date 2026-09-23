@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useMemo, useRef, useState, Fragment } from 'react';
 import { Button, Input } from '@maxhub/max-ui';
 import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query';
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
+import { useCallback, useEffect, useMemo, useRef, useState, Fragment } from 'react';
+
+import { AdminPanel } from './AdminPanel';
 import { api, events, setSession } from './api';
 import { waitForLaunch, setViewport } from './platform';
-import { Badge, date, Empty, ErrorNotice, Icon, statuses } from './ui';
+import { TicketCard, type Draft } from './TicketCard';
+import { dayBoundary } from './time';
 import type {
   Dictionary,
   Employee,
@@ -14,9 +17,7 @@ import type {
   Ticket,
   TicketPage,
 } from './types';
-import { TicketCard, type Draft } from './TicketCard';
-import { AdminPanel } from './AdminPanel';
-import { dayBoundary } from './time';
+import { Badge, date, Empty, ErrorNotice, Icon, statuses } from './ui';
 
 const defaults: Filters = {
   tab: 'open',
@@ -33,20 +34,23 @@ const defaults: Filters = {
 const demo = import.meta.env.DEV && import.meta.env.VITE_DEV_AUTH === 'true';
 let pendingLogin: Promise<Session> | null = null;
 async function login() {
-  if (!pendingLogin)
+  if (!pendingLogin) {
     pendingLogin = (async () => {
-      if (demo)
+      if (demo) {
         return api<Session>('/v1/auth/dev', {
           method: 'POST',
           body: { user_id: import.meta.env.VITE_DEV_USER_ID ?? '1' },
         });
+      }
       const raw = await waitForLaunch();
-      if (!raw)
+      if (!raw) {
         throw new Error(
           'Откройте мини-приложение через бота в MAX. Доступ предоставляется сотрудникам поддержки.',
         );
+      }
       return api<Session>('/v1/auth/max', { method: 'POST', body: { init_data: raw } });
     })();
+  }
   try {
     return await pendingLogin;
   } catch (error) {
@@ -66,7 +70,9 @@ export function App() {
     setError(null);
     try {
       const user = await login();
-      if (previousUser.current && previousUser.current !== user.employee.id) drafts.current.clear();
+      if (previousUser.current && previousUser.current !== user.employee.id) {
+        drafts.current.clear();
+      }
       previousUser.current = user.employee.id;
       setSession(user);
       setUser(user);
@@ -96,7 +102,7 @@ export function App() {
     window.addEventListener('session-expired', expired);
     return () => window.removeEventListener('session-expired', expired);
   }, [cache]);
-  if (!session)
+  if (!session) {
     return (
       <div className="launch">
         <div className="brand-mark">
@@ -123,6 +129,7 @@ export function App() {
         <span className="launch-foot">Только для сотрудников организации</span>
       </div>
     );
+  }
   return <Workspace session={session} drafts={drafts.current} />;
 }
 function Workspace({ session, drafts }: { session: Session; drafts: Map<string, Draft> }) {
@@ -154,10 +161,14 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
   const queryString = useMemo(() => {
     const p = new URLSearchParams();
     for (const [k, v] of Object.entries(filters)) {
-      if (!v) continue;
-      if (k === 'from' || k === 'to')
+      if (!v) {
+        continue;
+      }
+      if (k === 'from' || k === 'to') {
         p.set(k, dayBoundary(v, session.organization.timezone, k === 'to'));
-      else p.set(k, v);
+      } else {
+        p.set(k, v);
+      }
     }
     return p.toString();
   }, [filters, session.organization.timezone]);

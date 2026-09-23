@@ -1,9 +1,10 @@
-import { useState, type FormEvent } from 'react';
 import { Button } from '@maxhub/max-ui';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState, type FormEvent } from 'react';
+
 import { api } from './api';
-import { Empty, ErrorNotice, Icon, Modal, date } from './ui';
 import type { Dictionary, Employee, Session } from './types';
+import { Empty, ErrorNotice, Icon, Modal, date } from './ui';
 type Template = { code: string; body: string; version: number };
 type Diagnostic = {
   id: string;
