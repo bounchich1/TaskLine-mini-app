@@ -2,10 +2,29 @@ import { Button, Textarea } from '@maxhub/max-ui';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
-import { api, ApiError, downloadBrowser } from './api';
-import { bindBack, bridge, protectDraft } from './platform';
-import type { Attachment, Dictionary, Employee, Message, Session, Ticket } from './types';
-import { Badge, date, deliveryNames, ErrorNotice, Icon, learningNames, Modal } from './ui';
+import { downloadBrowser } from '@/shared/api/download';
+import { api, ApiError } from '@/shared/api/http';
+import { queryKeys } from '@/shared/api/query-keys';
+import {
+  attachmentStatusLabel,
+  authorLabel,
+  deliveryLabel,
+  DIMENSION_LABELS,
+  DIMENSION_OBJECT_LABELS,
+  DIMENSIONS,
+  learningLabel,
+} from '@/shared/config/labels';
+import { formatDate as date } from '@/shared/lib/format-date';
+import { bindBack, bridge, protectDraft } from '@/shared/platform/max-bridge';
+import type {
+  Attachment,
+  Dictionary,
+  Employee,
+  Message,
+  Session,
+  Ticket,
+} from '@/shared/types/api';
+import { Avatar, Badge, DictionarySelect, ErrorNotice, Icon, Modal } from '@/shared/ui';
 
 type Upload = { id: string; filename: string; status: string };
 export type Draft = { text: string; uploads: Upload[] };
@@ -26,11 +45,11 @@ export function TicketCard({
 }) {
   const cache = useQueryClient();
   const detail = useQuery({
-    queryKey: ['ticket', id],
+    queryKey: queryKeys.ticketDetail(id),
     queryFn: () => api<Ticket>(`/v1/tickets/${id}`),
   });
   const history = useInfiniteQuery({
-    queryKey: ['messages', id],
+    queryKey: queryKeys.ticketMessages(id),
     queryFn: ({ pageParam }) =>
       api<{ items: Message[]; has_more: boolean; next_before: number }>(
         `/v1/tickets/${id}/messages${pageParam ? `?before=${pageParam}` : ''}`,
@@ -83,9 +102,9 @@ export function TicketCard({
   );
   const refresh = async () => {
     await Promise.all([
-      cache.invalidateQueries({ queryKey: ['ticket', id] }),
-      cache.invalidateQueries({ queryKey: ['messages', id] }),
-      cache.invalidateQueries({ queryKey: ['tickets'] }),
+      cache.invalidateQueries({ queryKey: queryKeys.ticketDetail(id) }),
+      cache.invalidateQueries({ queryKey: queryKeys.ticketMessages(id) }),
+      cache.invalidateQueries({ queryKey: queryKeys.tickets }),
     ]);
   };
   const command = useMutation({
@@ -260,15 +279,7 @@ export function TicketCard({
             {messages.map((message) => (
               <div key={message.id} className={`message message-${message.author_type}`}>
                 <div className="message-meta">
-                  <strong>
-                    {message.author_type === 'client'
-                      ? 'Клиент'
-                      : message.author_type === 'staff'
-                        ? (message.author_name ?? 'Сотрудник')
-                        : message.author_type === 'bot'
-                          ? 'Бот поддержки'
-                          : 'Системная запись'}
-                  </strong>
+                  <strong>{authorLabel(message.author_type, message.author_name)}</strong>
                   <time dateTime={message.created_at}>
                     {date(message.created_at, session.organization.timezone)}
                   </time>
@@ -288,7 +299,7 @@ export function TicketCard({
                       name={message.delivery_state === 'delivered' ? 'check' : 'clock'}
                       size={12}
                     />
-                    {deliveryNames[message.delivery_state] ?? message.delivery_state}
+                    {deliveryLabel(message.delivery_state)}
                     {canAct &&
                       ['queued', 'retry_wait', 'failed'].includes(message.delivery_state) && (
                         <button
@@ -421,37 +432,31 @@ export function TicketCard({
           <div className="property-box">
             <span className="section-label">ДЕТАЛИ И ДЕЙСТВИЯ</span>
             <div className="assigned-to">
-              <span className="avatar-small">
+              <Avatar size="small">
                 <Icon name="user" size={16} />
-              </span>
+              </Avatar>
               <div>
                 <small>Исполнитель</small>
                 <strong>{ticket.assignee_name ?? 'Не назначен'}</strong>
               </div>
             </div>
-            {(['tag', 'urgency', 'complexity'] as const).map((field) => (
+            {DIMENSIONS.map((field) => (
               <label className="property" key={field}>
-                {field === 'tag' ? 'Тег' : field === 'urgency' ? 'Срочность' : 'Сложность'}
-                <select
-                  aria-label={`Изменить ${field === 'tag' ? 'тег' : field === 'urgency' ? 'срочность' : 'сложность'}`}
+                {DIMENSION_LABELS[field]}
+                <DictionarySelect
+                  aria-label={`Изменить ${DIMENSION_OBJECT_LABELS[field]}`}
                   disabled={!active || command.isPending}
+                  items={dictionaries}
+                  dimension={field}
                   value={ticket[field]}
-                  onChange={(event) =>
+                  onChange={(value) => {
                     operate('classification', {
-                      [field]: event.target.value,
+                      [field]: value,
                       revisions: { [field]: ticket[`${field}_revision`] },
-                    })
-                  }
-                >
-                  {dictionaries
-                    .filter((d) => d.dimension === field && (d.active || d.code === ticket[field]))
-                    .map((d) => (
-                      <option key={d.code} value={d.code}>
-                        {d.label}
-                        {!d.active ? ' (архив)' : ''}
-                      </option>
-                    ))}
-                </select>
+                    });
+                  }}
+                  activeOnly
+                />
               </label>
             ))}
             <div className="ticket-actions">
@@ -585,7 +590,7 @@ export function TicketCard({
                   </div>
                   <p>
                     <Icon name="spark" size={13} />
-                    {learningNames[cycle.learning_status] ?? cycle.learning_status}
+                    {learningLabel(cycle.learning_status)}
                   </p>
                   {cycle.coverage && (
                     <small>
@@ -757,13 +762,7 @@ function AttachmentItem({ file }: { file: Attachment }) {
         <small>
           {file.status === 'clean'
             ? `${Math.max(1, Math.round(Number(file.bytes) / 1024))} КБ`
-            : ({
-                pending: 'Загружается',
-                quarantined: 'На проверке',
-                infected: 'Файл заблокирован',
-                rejected: 'Неподдерживаемый формат',
-                unavailable: 'Файл недоступен',
-              }[file.status] ?? 'Не готов')}
+            : attachmentStatusLabel(file.status)}
         </small>
         <ErrorNotice error={error} />
       </div>

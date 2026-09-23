@@ -3,21 +3,48 @@ import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-quer
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo, useRef, useState, Fragment } from 'react';
 
+import { events } from '@/shared/api/events-stream';
+import { api, setSession } from '@/shared/api/http';
+import { queryKeys } from '@/shared/api/query-keys';
+import { dictionariesQuery, employeesQuery } from '@/shared/api/reference-data';
+import { onSessionExpired } from '@/shared/api/session-events';
+import { DEV_USER_ID, IS_DEMO } from '@/shared/config/env';
+import {
+  DIMENSION_LABELS,
+  DIMENSIONS,
+  notificationLabel,
+  profileRoleLabel,
+  STATUS_LABELS,
+} from '@/shared/config/labels';
+import { dayBoundary } from '@/shared/lib/day-boundary';
+import { formatDate as date } from '@/shared/lib/format-date';
+import { waitForLaunch, setViewport } from '@/shared/platform/max-bridge';
+import type { Notification, Session, Ticket, TicketPage } from '@/shared/types/api';
+import {
+  Avatar,
+  Badge,
+  DictionarySelect,
+  Empty,
+  ErrorNotice,
+  Icon,
+  PageHeading,
+} from '@/shared/ui';
+
 import { AdminPanel } from './AdminPanel';
-import { api, events, setSession } from './api';
-import { waitForLaunch, setViewport } from './platform';
 import { TicketCard, type Draft } from './TicketCard';
-import { dayBoundary } from './time';
-import type {
-  Dictionary,
-  Employee,
-  Filters,
-  Notification,
-  Session,
-  Ticket,
-  TicketPage,
-} from './types';
-import { Badge, date, Empty, ErrorNotice, Icon, statuses } from './ui';
+
+type Filters = {
+  tab: 'open' | 'closed';
+  q: string;
+  tag: string;
+  urgency: string;
+  complexity: string;
+  status: string;
+  assignee: string;
+  from: string;
+  to: string;
+  sort: string;
+};
 
 const defaults: Filters = {
   tab: 'open',
@@ -31,7 +58,7 @@ const defaults: Filters = {
   to: '',
   sort: 'urgency',
 };
-const demo = import.meta.env.DEV && import.meta.env.VITE_DEV_AUTH === 'true';
+const demo = IS_DEMO;
 let pendingLogin: Promise<Session> | null = null;
 async function login() {
   if (!pendingLogin) {
@@ -39,7 +66,7 @@ async function login() {
       if (demo) {
         return api<Session>('/v1/auth/dev', {
           method: 'POST',
-          body: { user_id: import.meta.env.VITE_DEV_USER_ID ?? '1' },
+          body: { user_id: DEV_USER_ID },
         });
       }
       const raw = await waitForLaunch();
@@ -99,8 +126,7 @@ export function App() {
       );
       cache.clear();
     };
-    window.addEventListener('session-expired', expired);
-    return () => window.removeEventListener('session-expired', expired);
+    return onSessionExpired(expired);
   }, [cache]);
   if (!session) {
     return (
@@ -141,22 +167,20 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
   const [filterOpen, setFilterOpen] = useState(false);
   const [connection, setConnection] = useState<'live' | 'reconnecting'>('reconnecting');
   const [queueChanged, setQueueChanged] = useState(false);
-  const dictionaries = useQuery({
-    queryKey: ['dictionaries'],
-    queryFn: () => api<{ items: Dictionary[] }>('/v1/dictionaries'),
-  });
-  const employees = useQuery({
-    queryKey: ['employees'],
-    queryFn: () => api<{ items: Employee[] }>('/v1/employees'),
-  });
+  const dictionaries = useQuery(dictionariesQuery);
+  const employees = useQuery(employeesQuery);
   const notifications = useQuery({
-    queryKey: ['notifications'],
+    queryKey: queryKeys.notifications,
     queryFn: () => api<{ items: Notification[] }>('/v1/notifications'),
     refetchInterval: 15000,
   });
   useEffect(() => {
-    const timer = setTimeout(() => setFilters((f) => ({ ...f, q: search })), 300);
-    return () => clearTimeout(timer);
+    const timer = setTimeout(() => {
+      setFilters((f) => ({ ...f, q: search }));
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [search]);
   const queryString = useMemo(() => {
     const p = new URLSearchParams();
@@ -173,7 +197,7 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
     return p.toString();
   }, [filters, session.organization.timezone]);
   const list = useInfiniteQuery({
-    queryKey: ['tickets', queryString],
+    queryKey: queryKeys.ticketList(queryString),
     queryFn: ({ pageParam }) =>
       api<TicketPage>(
         `/v1/tickets?${queryString}${pageParam ? `&cursor=${encodeURIComponent(pageParam)}` : ''}`,
@@ -183,24 +207,27 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
     refetchInterval: connection === 'reconnecting' ? 15000 : false,
   });
   const refresh = useCallback(() => {
-    void cache.invalidateQueries({ queryKey: ['tickets'] });
-    void cache.invalidateQueries({ queryKey: ['ticket'] });
-    void cache.invalidateQueries({ queryKey: ['messages'] });
-    void cache.invalidateQueries({ queryKey: ['notifications'] });
-    void cache.invalidateQueries({ queryKey: ['dictionaries'] });
-    void cache.invalidateQueries({ queryKey: ['employees'] });
+    void cache.invalidateQueries({ queryKey: queryKeys.tickets });
+    void cache.invalidateQueries({ queryKey: queryKeys.ticket });
+    void cache.invalidateQueries({ queryKey: queryKeys.messages });
+    void cache.invalidateQueries({ queryKey: queryKeys.notifications });
+    void cache.invalidateQueries({ queryKey: queryKeys.dictionaries });
+    void cache.invalidateQueries({ queryKey: queryKeys.employees });
     setQueueChanged(true);
   }, [cache]);
   useEffect(() => {
     const controller = new AbortController();
     void events('0', refresh, setConnection, controller.signal);
-    return () => controller.abort();
+    return () => {
+      controller.abort();
+    };
   }, [refresh]);
   const rows = useMemo(() => list.data?.pages.flatMap((p) => p.items) ?? [], [list.data]);
   const counts = list.data?.pages[0]?.counts;
   const unread = notifications.data?.items.filter((n) => !n.read_at).length ?? 0;
-  const change = (name: keyof Filters, value: string) =>
+  const change = (name: keyof Filters, value: string) => {
     setFilters((f) => ({ ...f, [name]: value }));
+  };
   const openTicket = (id: string) => {
     setSection('tickets');
     setExpanded(id);
@@ -213,7 +240,9 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
         cell: ({ row }) => (
           <button
             className="ticket-link"
-            onClick={() => setExpanded((id) => (id === row.original.id ? null : row.original.id))}
+            onClick={() => {
+              setExpanded((id) => (id === row.original.id ? null : row.original.id));
+            }}
             aria-expanded={expanded === row.original.id}
           >
             <span className={`row-arrow ${expanded === row.original.id ? 'rotated' : ''}`}>
@@ -223,7 +252,7 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
               №{row.original.number}
               <small>
                 {row.original.ai_status === 'pending' ? 'Определяется…' : row.original.tag_label}
-                {row.original.review_required && ' · Проверить'}
+                {row.original.review_required ? ' · Проверить' : null}
               </small>
             </span>
           </button>
@@ -263,7 +292,7 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
         cell: ({ row }) =>
           row.original.assignee_name ? (
             <span className="assignee">
-              <span className="avatar-small">{row.original.assignee_name[0]}</span>
+              <Avatar size="small">{row.original.assignee_name[0]}</Avatar>
               {row.original.assignee_name}
             </span>
           ) : (
@@ -313,7 +342,9 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
         <nav aria-label="Основная навигация">
           <button
             className={section === 'tickets' ? 'nav-item active' : 'nav-item'}
-            onClick={() => setSection('tickets')}
+            onClick={() => {
+              setSection('tickets');
+            }}
           >
             <Icon name="inbox" />
             <span>Обращения</span>
@@ -321,21 +352,25 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
           </button>
           <button
             className={section === 'notifications' ? 'nav-item active' : 'nav-item'}
-            onClick={() => setSection('notifications')}
+            onClick={() => {
+              setSection('notifications');
+            }}
           >
             <Icon name="bell" />
             <span>Уведомления</span>
             {unread > 0 && <span className="nav-count">{unread}</span>}
           </button>
-          {(session.capabilities.admin || session.capabilities.operations) && (
+          {session.capabilities.admin || session.capabilities.operations ? (
             <button
               className={section === 'admin' ? 'nav-item active' : 'nav-item'}
-              onClick={() => setSection('admin')}
+              onClick={() => {
+                setSection('admin');
+              }}
             >
               <Icon name="settings" />
               <span>Управление</span>
             </button>
-          )}
+          ) : null}
         </nav>
         <div className="sidebar-bottom">
           <div className="channel-card">
@@ -346,16 +381,10 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
             <span className="channel-symbol">М</span>
           </div>
           <div className="profile">
-            <span className="avatar">{session.employee.name[0]}</span>
+            <Avatar>{session.employee.name[0]}</Avatar>
             <div>
               {session.employee.name}
-              <small>
-                {session.employee.role === 'support'
-                  ? 'Специалист поддержки'
-                  : session.employee.role === 'admin'
-                    ? 'Администратор'
-                    : 'Руководитель'}
-              </small>
+              <small>{profileRoleLabel(session.employee.role)}</small>
             </div>
           </div>
         </div>
@@ -369,33 +398,31 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
           </span>
         </header>
         <div className="main-content">
-          {demo && (
+          {demo ? (
             <div className="demo-note">
               Локальный стенд · вымышленные обращения · сообщения в MAX не отправляются
             </div>
-          )}
+          ) : null}
           {section === 'tickets' ? (
             <>
-              <div className="page-heading">
-                <div>
-                  <span className="eyebrow">ПОДДЕРЖКА КЛИЕНТОВ</span>
-                  <h1>
-                    Обращения<span className="title-dot">.</span>
-                  </h1>
-                  <p>Каждый вопрос — начало решения.</p>
-                </div>
-                <Button
-                  variant="secondary"
-                  size="small"
-                  iconBefore={<Icon name="refresh" size={16} />}
-                  onClick={() => {
-                    refresh();
-                    setQueueChanged(false);
-                  }}
-                >
-                  Обновить
-                </Button>
-              </div>
+              <PageHeading
+                eyebrow="ПОДДЕРЖКА КЛИЕНТОВ"
+                title="Обращения"
+                description="Каждый вопрос — начало решения."
+                action={
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    iconBefore={<Icon name="refresh" size={16} />}
+                    onClick={() => {
+                      refresh();
+                      setQueueChanged(false);
+                    }}
+                  >
+                    Обновить
+                  </Button>
+                }
+              />
               <div className="summary-grid">
                 <div className="summary-card">
                   <span className="summary-icon teal">
@@ -435,7 +462,9 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                         key={tab}
                         aria-selected={filters.tab === tab}
                         className={filters.tab === tab ? 'queue-tab selected' : 'queue-tab'}
-                        onClick={() => setFilters((f) => ({ ...f, tab, status: '' }))}
+                        onClick={() => {
+                          setFilters((f) => ({ ...f, tab, status: '' }));
+                        }}
                       >
                         {tab === 'open' ? 'Открытые' : 'Закрытые'}
                         <span>{counts?.[tab] ?? 0}</span>
@@ -444,7 +473,12 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                   </div>
                   <span className="queue-subtitle">
                     {queueChanged ? (
-                      <button className="text-button" onClick={() => setQueueChanged(false)}>
+                      <button
+                        className="text-button"
+                        onClick={() => {
+                          setQueueChanged(false);
+                        }}
+                      >
                         Данные обновлены <Icon name="check" size={14} />
                       </button>
                     ) : (
@@ -458,13 +492,17 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                       aria-label="Поиск по номеру или тексту"
                       placeholder="Номер или текст обращения"
                       value={search}
-                      onChange={(e) => setSearch(e.target.value)}
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                      }}
                       iconBefore={<Icon name="search" size={19} />}
                     />
                   </div>
                   <button
                     className={`filter-button ${filterOpen ? 'selected' : ''}`}
-                    onClick={() => setFilterOpen(!filterOpen)}
+                    onClick={() => {
+                      setFilterOpen(!filterOpen);
+                    }}
                     aria-expanded={filterOpen}
                   >
                     <Icon name="filter" size={18} />
@@ -472,7 +510,12 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                   </button>
                   <label className="sort-label">
                     <span className="sr-only">Сортировка</span>
-                    <select value={filters.sort} onChange={(e) => change('sort', e.target.value)}>
+                    <select
+                      value={filters.sort}
+                      onChange={(e) => {
+                        change('sort', e.target.value);
+                      }}
+                    >
                       <option value="urgency">По срочности</option>
                       <option value="newest">Сначала новые</option>
                       <option value="oldest">Сначала старые</option>
@@ -481,32 +524,32 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                     </select>
                   </label>
                 </div>
-                {filterOpen && (
+                {filterOpen ? (
                   <div className="filters">
-                    {(['tag', 'urgency', 'complexity'] as const).map((d) => (
-                      <label key={d}>
-                        {d === 'tag' ? 'Тег' : d === 'urgency' ? 'Срочность' : 'Сложность'}
-                        <select value={filters[d]} onChange={(e) => change(d, e.target.value)}>
-                          <option value="">Все</option>
-                          {dictionaries.data?.items
-                            .filter((v) => v.dimension === d)
-                            .map((v) => (
-                              <option key={v.code} value={v.code}>
-                                {v.label}
-                                {!v.active ? ' (архив)' : ''}
-                              </option>
-                            ))}
-                        </select>
+                    {DIMENSIONS.map((dimension) => (
+                      <label key={dimension}>
+                        {DIMENSION_LABELS[dimension]}
+                        <DictionarySelect
+                          items={dictionaries.data?.items}
+                          dimension={dimension}
+                          value={filters[dimension]}
+                          onChange={(value) => {
+                            change(dimension, value);
+                          }}
+                          emptyLabel="Все"
+                        />
                       </label>
                     ))}
                     <label>
                       Статус
                       <select
                         value={filters.status}
-                        onChange={(e) => change('status', e.target.value)}
+                        onChange={(e) => {
+                          change('status', e.target.value);
+                        }}
                       >
                         <option value="">Все</option>
-                        {Object.entries(statuses).map(([code, label]) => (
+                        {Object.entries(STATUS_LABELS).map(([code, label]) => (
                           <option key={code} value={code}>
                             {label}
                           </option>
@@ -517,7 +560,9 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                       Исполнитель
                       <select
                         value={filters.assignee}
-                        onChange={(e) => change('assignee', e.target.value)}
+                        onChange={(e) => {
+                          change('assignee', e.target.value);
+                        }}
                       >
                         <option value="">Все сотрудники</option>
                         {employees.data?.items.map((e) => (
@@ -532,7 +577,9 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                       <input
                         type="date"
                         value={filters.from}
-                        onChange={(e) => change('from', e.target.value)}
+                        onChange={(e) => {
+                          change('from', e.target.value);
+                        }}
                       />
                     </label>
                     <label>
@@ -540,7 +587,9 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                       <input
                         type="date"
                         value={filters.to}
-                        onChange={(e) => change('to', e.target.value)}
+                        onChange={(e) => {
+                          change('to', e.target.value);
+                        }}
                       />
                     </label>
                     <button
@@ -553,7 +602,7 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                       Сбросить
                     </button>
                   </div>
-                )}
+                ) : null}
                 <ErrorNotice error={list.error} />
                 {list.isPending ? (
                   <div className="skeleton-rows" aria-label="Загрузка обращений">
@@ -604,7 +653,9 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                                     employees={employees.data?.items ?? []}
                                     dictionaries={dictionaries.data?.items ?? []}
                                     drafts={drafts}
-                                    onClose={() => setExpanded(null)}
+                                    onClose={() => {
+                                      setExpanded(null);
+                                    }}
                                   />
                                 </td>
                               </tr>
@@ -615,16 +666,18 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                     </table>
                   </div>
                 )}
-                {expanded && !rows.some((r) => r.id === expanded) && (
+                {expanded && !rows.some((r) => r.id === expanded) ? (
                   <TicketCard
                     id={expanded}
                     session={session}
                     employees={employees.data?.items ?? []}
                     dictionaries={dictionaries.data?.items ?? []}
                     drafts={drafts}
-                    onClose={() => setExpanded(null)}
+                    onClose={() => {
+                      setExpanded(null);
+                    }}
                   />
-                )}
+                ) : null}
                 <div className="queue-footer">
                   <span>Показано {rows.length} обращений</span>
                   {list.hasNextPage ? (
@@ -649,14 +702,7 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
             </>
           ) : section === 'notifications' ? (
             <>
-              <div className="page-heading">
-                <div>
-                  <span className="eyebrow">СОБЫТИЯ КОМАНДЫ</span>
-                  <h1>
-                    Уведомления<span className="title-dot">.</span>
-                  </h1>
-                </div>
-              </div>
+              <PageHeading eyebrow="СОБЫТИЯ КОМАНДЫ" title="Уведомления" />
               <ErrorNotice error={notifications.error} />
               <section className="notification-list">
                 {notifications.data?.items.length ? (
@@ -676,14 +722,7 @@ function Workspace({ session, drafts }: { session: Session; drafts: Map<string, 
                         <Icon name={n.type === 'rating.received' ? 'check' : 'inbox'} />
                       </span>
                       <span>
-                        <strong>
-                          {{
-                            'ticket.created': 'Новое обращение',
-                            'message.from_client': 'Новое сообщение клиента',
-                            'ticket.transferred': 'Вам передано обращение',
-                            'rating.received': 'Клиент оставил оценку',
-                          }[n.type] ?? 'Изменение обращения'}
-                        </strong>
+                        <strong>{notificationLabel(n.type)}</strong>
                         <small>{date(n.created_at, session.organization.timezone)}</small>
                       </span>
                       <Icon name="arrow" size={16} />

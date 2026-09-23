@@ -2,9 +2,20 @@ import { Button } from '@maxhub/max-ui';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type FormEvent } from 'react';
 
-import { api } from './api';
-import type { Dictionary, Employee, Session } from './types';
-import { Empty, ErrorNotice, Icon, Modal, date } from './ui';
+import { api } from '@/shared/api/http';
+import { queryKeys } from '@/shared/api/query-keys';
+import { dictionariesQuery } from '@/shared/api/reference-data';
+import {
+  DIMENSION_GROUP_LABELS,
+  DIMENSION_LABELS,
+  DIMENSIONS,
+  employeeRoleLabel,
+  permitLabel,
+  ROLE_OPTIONS,
+} from '@/shared/config/labels';
+import { formatDate as date } from '@/shared/lib/format-date';
+import type { Dictionary, Employee, Session } from '@/shared/types/api';
+import { Avatar, Empty, ErrorNotice, Icon, Modal, PageHeading } from '@/shared/ui';
 type Template = { code: string; body: string; version: number };
 type Diagnostic = {
   id: string;
@@ -37,27 +48,23 @@ export function AdminPanel({
   } | null>(null);
   const [evidence, setEvidence] = useState('');
   const employees = useQuery({
-    queryKey: ['admin-employees'],
+    queryKey: queryKeys.adminEmployees,
     queryFn: () => api<{ items: Employee[] }>('/v1/admin/employees'),
     enabled: isAdmin && tab === 'employees',
   });
-  const dictionaries = useQuery({
-    queryKey: ['dictionaries'],
-    queryFn: () => api<{ items: Dictionary[] }>('/v1/dictionaries'),
-    enabled: tab === 'dictionaries',
-  });
+  const dictionaries = useQuery({ ...dictionariesQuery, enabled: tab === 'dictionaries' });
   const templates = useQuery({
-    queryKey: ['admin-templates'],
+    queryKey: queryKeys.adminTemplates,
     queryFn: () => api<{ items: Template[] }>('/v1/admin/templates'),
     enabled: isAdmin && tab === 'templates',
   });
   const settings = useQuery({
-    queryKey: ['admin-settings'],
+    queryKey: queryKeys.adminSettings,
     queryFn: () => api<{ name: string; timezone: string; version: number }>('/v1/admin/settings'),
     enabled: isAdmin && tab === 'settings',
   });
   const diagnostics = useQuery({
-    queryKey: ['diagnostics'],
+    queryKey: queryKeys.diagnostics,
     queryFn: () =>
       api<{
         jobs: Diagnostic[];
@@ -69,7 +76,7 @@ export function AdminPanel({
     refetchInterval: 15000,
   });
   const audit = useQuery({
-    queryKey: ['audit'],
+    queryKey: queryKeys.audit,
     queryFn: () =>
       api<{ items: { id: string; action: string; object_id: string; created_at: string }[] }>(
         '/v1/admin/audit',
@@ -104,15 +111,11 @@ export function AdminPanel({
     : [['diagnostics', 'Состояние системы']];
   return (
     <>
-      <div className="page-heading">
-        <div>
-          <span className="eyebrow">КОМАНДА И НАСТРОЙКИ</span>
-          <h1>
-            Управление<span className="title-dot">.</span>
-          </h1>
-          <p>Доступ, правила обработки и состояние отправок.</p>
-        </div>
-      </div>
+      <PageHeading
+        eyebrow="КОМАНДА И НАСТРОЙКИ"
+        title="Управление"
+        description="Доступ, правила обработки и состояние отправок."
+      />
       <div className="admin-tabs" role="tablist" aria-label="Управление">
         {tabs.map(([value, label]) => (
           <button
@@ -151,16 +154,11 @@ export function AdminPanel({
           <div className="admin-list">
             {employees.data?.items.map((employee) => (
               <div className="admin-row" key={employee.id}>
-                <span className="avatar-small">{employee.name[0]}</span>
+                <Avatar size="small">{employee.name[0]}</Avatar>
                 <div>
                   <strong>{employee.name}</strong>
                   <small>
-                    MAX ID: {employee.max_user_id} ·{' '}
-                    {employee.role === 'admin'
-                      ? 'Администратор'
-                      : employee.role === 'supervisor'
-                        ? 'Руководитель'
-                        : 'Поддержка'}
+                    MAX ID: {employee.max_user_id} · {employeeRoleLabel(employee.role)}
                   </small>
                 </div>
                 <span
@@ -187,9 +185,9 @@ export function AdminPanel({
           <p className="admin-help">
             Коды остаются неизменными. Архивные значения сохраняются в истории обращений.
           </p>
-          {(['tag', 'urgency', 'complexity'] as const).map((d) => (
+          {DIMENSIONS.map((d) => (
             <div className="dictionary-group" key={d}>
-              <h3>{d === 'tag' ? 'Теги' : d === 'urgency' ? 'Срочность' : 'Сложность'}</h3>
+              <h3>{DIMENSION_GROUP_LABELS[d]}</h3>
               {dictionaries.data?.items
                 .filter((v) => v.dimension === d)
                 .map((value) => (
@@ -276,13 +274,7 @@ export function AdminPanel({
               {diagnostics.data?.permits.map((p) => (
                 <div className={`permit permit-${p.state}`} key={p.slot}>
                   <strong>{p.slot}</strong>
-                  <small>
-                    {p.state === 'free'
-                      ? 'Свободен'
-                      : p.state === 'running'
-                        ? 'Выполняется'
-                        : 'Требует проверки'}
-                  </small>
+                  <small>{permitLabel(p.state)}</small>
                 </div>
               ))}
             </div>
@@ -426,9 +418,11 @@ export function AdminPanel({
             <label className="form-field">
               Роль
               <select name="role" defaultValue={editing?.role ?? 'support'}>
-                <option value="support">Сотрудник поддержки</option>
-                <option value="supervisor">Руководитель</option>
-                <option value="admin">Администратор</option>
+                {ROLE_OPTIONS.map(([role, label]) => (
+                  <option key={role} value={role}>
+                    {label}
+                  </option>
+                ))}
               </select>
             </label>
             <label className="checkbox">
@@ -476,9 +470,11 @@ export function AdminPanel({
                 defaultValue={dictionary?.dimension ?? 'tag'}
                 disabled={!!dictionary}
               >
-                <option value="tag">Тег</option>
-                <option value="urgency">Срочность</option>
-                <option value="complexity">Сложность</option>
+                {DIMENSIONS.map((dimension) => (
+                  <option key={dimension} value={dimension}>
+                    {DIMENSION_LABELS[dimension]}
+                  </option>
+                ))}
               </select>
             </label>
             <label className="form-field">

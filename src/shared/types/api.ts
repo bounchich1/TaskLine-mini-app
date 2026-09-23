@@ -109,15 +109,3 @@ export type Notification = {
   read_at: string | null;
   created_at: string;
 };
-export type Filters = {
-  tab: 'open' | 'closed';
-  q: string;
-  tag: string;
-  urgency: string;
-  complexity: string;
-  status: string;
-  assignee: string;
-  from: string;
-  to: string;
-  sort: string;
-};

@@ -25,19 +25,13 @@
       "count": 1
     },
     "no-nested-ternary": {
-      "count": 4
+      "count": 1
     },
     "react/jsx-no-leaked-render": {
       "count": 5
     }
   },
   "src/App.tsx": {
-    "@typescript-eslint/no-confusing-void-expression": {
-      "count": 21
-    },
-    "@typescript-eslint/no-unsafe-assignment": {
-      "count": 1
-    },
     "@typescript-eslint/prefer-nullish-coalescing": {
       "count": 1
     },
@@ -45,7 +39,7 @@
       "count": 1
     },
     "id-length": {
-      "count": 22
+      "count": 18
     },
     "jsx-a11y/anchor-is-valid": {
       "count": 1
@@ -57,7 +51,7 @@
       "count": 1
     },
     "no-nested-ternary": {
-      "count": 5
+      "count": 3
     },
     "react-hooks/refs": {
       "count": 1
@@ -65,16 +59,13 @@
     "react-hooks/set-state-in-effect": {
       "count": 1
     },
-    "react/jsx-no-leaked-render": {
-      "count": 5
-    },
     "react/no-multi-comp": {
       "count": 1
     }
   },
   "src/TicketCard.tsx": {
     "@typescript-eslint/no-confusing-void-expression": {
-      "count": 11
+      "count": 10
     },
     "@typescript-eslint/no-deprecated": {
       "count": 1
@@ -89,10 +80,10 @@
       "count": 1
     },
     "complexity": {
-      "count": 3
+      "count": 2
     },
     "id-length": {
-      "count": 26
+      "count": 24
     },
     "max-lines": {
       "count": 1
@@ -101,7 +92,7 @@
       "count": 1
     },
     "no-nested-ternary": {
-      "count": 17
+      "count": 13
     },
     "react/jsx-no-leaked-render": {
       "count": 9
@@ -110,62 +101,9 @@
       "count": 1
     }
   },
-  "src/api.ts": {
-    "@typescript-eslint/no-confusing-void-expression": {
-      "count": 1
-    },
-    "@typescript-eslint/no-unnecessary-condition": {
-      "count": 1
-    },
-    "@typescript-eslint/no-unsafe-argument": {
-      "count": 2
-    },
-    "@typescript-eslint/no-unsafe-assignment": {
-      "count": 2
-    },
-    "@typescript-eslint/no-unsafe-member-access": {
-      "count": 2
-    },
-    "complexity": {
-      "count": 2
-    },
-    "max-depth": {
-      "count": 6
-    },
-    "max-lines-per-function": {
-      "count": 1
-    },
-    "no-nested-ternary": {
-      "count": 1
-    }
-  },
   "src/main.tsx": {
     "@typescript-eslint/no-non-null-assertion": {
       "count": 1
-    }
-  },
-  "src/platform.ts": {
-    "@typescript-eslint/no-invalid-void-type": {
-      "count": 1
-    },
-    "no-empty": {
-      "count": 3
-    }
-  },
-  "src/time.ts": {
-    "id-length": {
-      "count": 2
-    }
-  },
-  "src/ui.tsx": {
-    "react-refresh/only-export-components": {
-      "count": 4
-    },
-    "react/jsx-no-useless-fragment": {
-      "count": 4
-    },
-    "react/no-multi-comp": {
-      "count": 4
     }
   },
   "tests/e2e/notifications-admin.spec.ts": {
