@@ -1,0 +1,11 @@
+@use 'abstracts' as *;
+
+.notifications-page__list {
+  @include card;
+
+  padding: 0 24px;
+
+  @include respond-to(phone) {
+    padding: 0 15px;
+  }
+}

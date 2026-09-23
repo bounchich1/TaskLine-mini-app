@@ -1,0 +1,38 @@
+@use 'abstracts' as *;
+
+.permit-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+
+  @include respond-to(phone) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.permit-grid__slot {
+  padding: 12px;
+  background: #eef5f1;
+  border-radius: 5px;
+  color: #799c8c;
+
+  &--uncertain {
+    background: #fff0e8;
+    color: #b0815c;
+  }
+
+  &--running {
+    background: #edf2fa;
+    color: #6f8db4;
+  }
+}
+
+.permit-grid__number {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.permit-grid__state {
+  font-size: 9px;
+}

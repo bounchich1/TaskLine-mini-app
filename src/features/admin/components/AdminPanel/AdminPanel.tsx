@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import { useState } from 'react';
 
 import { useAdminQueries } from '@/features/admin/hooks/use-admin-queries';
@@ -13,6 +14,8 @@ import { ErrorNotice, PageHeading } from '@/shared/ui';
 
 import { AdminDialogs } from '../AdminDialogs/AdminDialogs';
 import { AdminTabContent } from '../AdminTabContent/AdminTabContent';
+
+import './AdminPanel.scss';
 
 type AdminPanelProps = {
   session: Session;
@@ -44,7 +47,7 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
           <button
             role="tab"
             aria-selected={tab === value}
-            className={tab === value ? 'selected' : ''}
+            className={clsx('admin-tabs__tab', tab === value && 'admin-tabs__tab--selected')}
             key={value}
             onClick={() => {
               setTab(value);

@@ -6,6 +6,8 @@ import { Empty, ErrorNotice, PageHeading } from '@/shared/ui';
 
 import { NotificationItem } from '../NotificationItem/NotificationItem';
 
+import './NotificationsPage.scss';
+
 type NotificationsPageProps = {
   notifications: NotificationsQuery;
   timezone: string;
@@ -24,7 +26,7 @@ export function NotificationsPage({
     <>
       <PageHeading eyebrow="СОБЫТИЯ КОМАНДЫ" title="Уведомления" />
       <ErrorNotice error={notifications.error} />
-      <section className="notification-list">
+      <section className="notifications-page__list">
         {items?.length ? (
           items.map((notification) => (
             <NotificationItem

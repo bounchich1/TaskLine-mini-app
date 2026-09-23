@@ -1,0 +1,32 @@
+@use 'abstracts' as *;
+
+.admin-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 0 0 23px;
+
+  @include respond-to(phone) {
+    gap: 7px;
+  }
+}
+
+.admin-tabs__tab {
+  background: #fff;
+  border: 1px solid $color-line;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #7d919b;
+
+  @include respond-to(phone) {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+
+  &--selected {
+    background: #e9f4ef;
+    color: #357e69;
+    border-color: #cde5d9;
+  }
+}

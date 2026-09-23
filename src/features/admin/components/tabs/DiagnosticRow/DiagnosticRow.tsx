@@ -1,5 +1,6 @@
 import { Button } from '@maxhub/max-ui';
 
+import { AdminRow } from '@/features/admin/components/AdminRow/AdminRow';
 import type { Diagnostic, DiagnosticKind, Resolution } from '@/features/admin/model/types';
 import { Icon } from '@/shared/ui';
 
@@ -29,16 +30,16 @@ export function DiagnosticRow({
   const retryableJob =
     kind === 'jobs' && item.state === 'failed' && RETRYABLE_JOBS.includes(item.kind ?? '');
   return (
-    <div className="admin-row diagnostic">
-      <div>
-        <strong>
+    <AdminRow wrap>
+      <div className="admin-row__main">
+        <strong className="admin-row__title">
           {item.kind ?? 'Запись памяти'} · {item.state}
         </strong>
-        <small>{item.reason ?? 'Обрабатывается по расписанию'}</small>
+        <small className="admin-row__meta">{item.reason ?? 'Обрабатывается по расписанию'}</small>
       </div>
       {ticketId ? (
         <button
-          className="text-button"
+          className="admin-row__link"
           onClick={() => {
             onTicket(ticketId);
           }}
@@ -81,6 +82,6 @@ export function DiagnosticRow({
           Повторить
         </Button>
       ) : null}
-    </div>
+    </AdminRow>
   );
 }

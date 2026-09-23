@@ -1,6 +1,9 @@
+import { AdminCard } from '@/features/admin/components/AdminCard/AdminCard';
 import type { AuditEntry } from '@/features/admin/model/types';
 import { formatDate } from '@/shared/lib/format-date';
 import { Empty } from '@/shared/ui';
+
+import './AuditTab.scss';
 
 /** Changes made by employees and administrators. */
 export function AuditTab({
@@ -11,21 +14,20 @@ export function AuditTab({
   timezone: string;
 }) {
   return (
-    <section className="admin-card">
-      <h2>Журнал изменений</h2>
+    <AdminCard title="Журнал изменений">
       {items?.length ? (
         <div className="audit-list">
           {items.map((item) => (
-            <div key={item.id}>
-              <time>{formatDate(item.created_at, timezone)}</time>
-              <strong>{item.action}</strong>
-              <code>{item.object_id}</code>
+            <div className="audit-list__item" key={item.id}>
+              <time className="audit-list__time">{formatDate(item.created_at, timezone)}</time>
+              <strong className="audit-list__action">{item.action}</strong>
+              <code className="audit-list__object">{item.object_id}</code>
             </div>
           ))}
         </div>
       ) : (
         <Empty title="Журнал пуст">Изменения сотрудников и настроек появятся здесь.</Empty>
       )}
-    </section>
+    </AdminCard>
   );
 }

@@ -1,8 +1,11 @@
 import { Button } from '@maxhub/max-ui';
 
+import { AdminCard } from '@/features/admin/components/AdminCard/AdminCard';
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
 import type { OrganizationSettings } from '@/features/admin/model/types';
 import { FormField } from '@/shared/ui';
+
+import './SettingsTab.scss';
 
 type SettingsTabProps = {
   settings: OrganizationSettings;
@@ -13,8 +16,7 @@ type SettingsTabProps = {
 /** Organization name and timezone. */
 export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
   return (
-    <section className="admin-card">
-      <h2>Организация</h2>
+    <AdminCard title="Организация">
       <form
         className="settings-form"
         key={settings.version}
@@ -34,7 +36,7 @@ export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
         <FormField label="Часовой пояс">
           <input name="timezone" defaultValue={settings.timezone} required />
         </FormField>
-        <p className="admin-help">
+        <p className="admin-card__help">
           Политика согласия, ключи сервисов и ограничения ИИ настраиваются при развёртывании
           сервера.
         </p>
@@ -42,6 +44,6 @@ export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
           Сохранить
         </Button>
       </form>
-    </section>
+    </AdminCard>
   );
 }

@@ -1,0 +1,38 @@
+@use 'abstracts' as *;
+
+.admin-card {
+  @include card;
+
+  padding: 24px;
+  margin-bottom: 18px;
+
+  @include respond-to(phone) {
+    padding: 17px;
+  }
+}
+
+.admin-card__title {
+  font-size: 17px;
+}
+
+.admin-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.admin-card__heading {
+  font-size: 17px;
+  margin: 0;
+
+  @include respond-to(phone) {
+    font-size: 15px;
+  }
+}
+
+.admin-card__help {
+  color: #8a9ba4;
+  font-size: 11px;
+}

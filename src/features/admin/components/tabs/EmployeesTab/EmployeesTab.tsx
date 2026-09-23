@@ -1,5 +1,7 @@
 import { Button } from '@maxhub/max-ui';
 
+import { AdminCard } from '@/features/admin/components/AdminCard/AdminCard';
+import { AdminRow } from '@/features/admin/components/AdminRow/AdminRow';
 import { employeeRoleLabel } from '@/shared/config/labels';
 import type { Employee } from '@/shared/types/api';
 import { Avatar } from '@/shared/ui';
@@ -13,9 +15,9 @@ type EmployeesTabProps = {
 /** Staff with access to the mini-app. */
 export function EmployeesTab({ employees, onEdit }: EmployeesTabProps) {
   return (
-    <section className="admin-card">
-      <div className="admin-card-head">
-        <h2>Сотрудники</h2>
+    <AdminCard
+      title="Сотрудники"
+      action={
         <Button
           size="small"
           onClick={() => {
@@ -24,19 +26,20 @@ export function EmployeesTab({ employees, onEdit }: EmployeesTabProps) {
         >
           Добавить сотрудника
         </Button>
-      </div>
-      <div className="admin-list">
+      }
+    >
+      <div>
         {employees?.map((employee) => (
-          <div className="admin-row" key={employee.id}>
+          <AdminRow key={employee.id}>
             <Avatar size="small">{employee.name[0]}</Avatar>
-            <div>
-              <strong>{employee.name}</strong>
-              <small>
+            <div className="admin-row__main">
+              <strong className="admin-row__title">{employee.name}</strong>
+              <small className="admin-row__meta">
                 MAX ID: {employee.max_user_id} · {employeeRoleLabel(employee.role)}
               </small>
             </div>
             <span
-              className={`badge ${employee.blocked ? 'badge--status-closed' : 'badge--status-in-progress'}`}
+              className={`badge admin-row__badge ${employee.blocked ? 'badge--status-closed' : 'badge--status-in-progress'}`}
             >
               {employee.blocked ? 'Заблокирован' : 'Активен'}
             </span>
@@ -49,9 +52,9 @@ export function EmployeesTab({ employees, onEdit }: EmployeesTabProps) {
             >
               Изменить
             </Button>
-          </div>
+          </AdminRow>
         ))}
       </div>
-    </section>
+    </AdminCard>
   );
 }
