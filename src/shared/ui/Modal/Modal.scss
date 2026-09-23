@@ -3,14 +3,14 @@
 .modal {
   border: 0;
   border-radius: 13px;
-  box-shadow: 0 20px 80px #122b3b30;
+  box-shadow: $shadow-modal;
   padding: 0;
   width: 500px;
   max-width: calc(100vw - 28px);
   color: $color-ink;
 
   &::backdrop {
-    background: #102a3d66;
+    background: $color-backdrop;
     backdrop-filter: blur(3px);
   }
 }
@@ -28,11 +28,12 @@
 }
 
 .modal__title {
-  font-size: 19px;
+  @include text(heading);
+
   margin: 0;
 
   @include respond-to(phone) {
-    font-size: 17px;
+    @include text(title);
   }
 }
 
@@ -51,8 +52,9 @@
 
   // Explanations passed in as children.
   p {
-    font-size: 13px;
-    color: #7b8d95;
+    @include text(lead);
+
+    color: $slate-500;
   }
 }
 
@@ -61,7 +63,7 @@
   justify-content: flex-end;
   gap: 10px;
   padding: 16px 24px;
-  background: #f8fafb;
+  background: $slate-50;
   border-top: 1px solid $color-line;
 
   @include respond-to(phone) {

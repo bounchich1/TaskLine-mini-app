@@ -29,16 +29,17 @@
 }
 
 .queue-toolbar__filter {
+  @include text(small);
+
   height: 38px;
-  background: #fff;
-  border: 1px solid #dfe6e9;
+  background: $white;
+  border: 1px solid $slate-200;
   border-radius: 7px;
   padding: 0 13px;
   display: flex;
   align-items: center;
   gap: 7px;
-  color: #687e8c;
-  font-size: 11px;
+  color: $slate-600;
 
   // Icon only.
   @include respond-to(phone) {
@@ -49,8 +50,8 @@
   }
 
   &--selected {
-    background: #eaf4f1;
-    color: #257d71;
+    background: $teal-100;
+    color: $teal-700;
   }
 }
 
@@ -65,10 +66,11 @@
 }
 
 .queue-toolbar__sort-select {
-  font-size: 11px;
+  @include text(small);
 
   @include respond-to(phone) {
-    font-size: 10px;
+    @include text(caption);
+
     min-height: 31px;
     padding-top: 6px;
     padding-bottom: 6px;

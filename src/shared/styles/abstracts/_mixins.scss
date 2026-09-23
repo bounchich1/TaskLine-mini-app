@@ -1,5 +1,6 @@
 @use 'variables' as *;
 @use 'breakpoints' as *;
+@use 'typography' as *;
 
 /// Hides content visually but keeps it for screen readers.
 @mixin visually-hidden {
@@ -7,7 +8,7 @@
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
 }
 
 @mixin flex-center {
@@ -24,7 +25,7 @@
 }
 
 @mixin focus-ring {
-  outline: 3px solid #69beba;
+  outline: 3px solid $color-focus;
   outline-offset: 3px;
 }
 
@@ -40,14 +41,15 @@
 }
 
 /// A borderless inline action that looks like a link.
-@mixin text-button($font-size: 11px) {
+@mixin text-button($step: small) {
   display: inline-flex;
   gap: 4px;
   align-items: center;
   background: none;
-  color: #3b8c7c;
+  color: $teal-700;
   padding: 0;
-  font-size: $font-size;
+
+  @include text($step);
 }
 
 /// A square button that holds a single icon.
@@ -56,30 +58,32 @@
   display: grid;
   place-items: center;
   background: transparent;
-  color: #91a1a8;
+  color: $slate-400;
   border-radius: 5px;
 }
 
 /// The small upper-case caption above a title.
-@mixin eyebrow($font-size: 9px, $margin-bottom: 12px) {
+@mixin eyebrow($step: tiny, $margin-bottom: 12px) {
   display: block;
-  color: #87999f;
-  font-size: $font-size;
-  font-weight: 700;
+  color: $slate-500;
+  font-weight: $font-weight-bold;
   letter-spacing: 1.6px;
   margin-bottom: $margin-bottom;
 
+  @include text($step);
+
   @include respond-to(phone) {
-    font-size: 8px;
+    @include text(micro);
   }
 }
 
 /// The upper-case caption of a panel section.
 @mixin section-label {
-  font-size: 8px;
   letter-spacing: 1.4px;
-  color: #8da0a9;
-  font-weight: 650;
+  color: $slate-400;
+  font-weight: $font-weight-semibold;
+
+  @include text(micro);
 }
 
 @mixin online-dot {
@@ -87,7 +91,7 @@
   height: 6px;
   width: 6px;
   border-radius: 50%;
-  background: #59b39f;
+  background: $teal-400;
 }
 
 /// The app's logo tile.
@@ -96,19 +100,20 @@
   height: 39px;
   display: grid;
   place-items: center;
-  background: #25988c;
+  background: $teal-500;
   border-radius: 11px;
-  color: #fff;
+  color: $white;
 }
 
 /// Text inputs outside MAX UI (date filters, form fields).
 @mixin input-control {
-  border: 1px solid #dde5e9;
+  border: 1px solid $slate-200;
   border-radius: 6px;
   padding: 9px 10px;
-  color: #314954;
-  background: #fff;
+  color: $slate-800;
+  background: $white;
   min-height: 37px;
   max-width: 100%;
-  font-size: 13px;
+
+  @include text(lead);
 }

@@ -1,8 +1,8 @@
 @use 'abstracts' as *;
 
 .ai-panel {
-  border: 1px solid #dbe9e3;
-  background: #f0f7f3;
+  border: 1px solid $teal-200;
+  background: $teal-100;
   border-radius: 7px;
   padding: 17px;
 
@@ -20,43 +20,49 @@
 }
 
 .ai-panel__name {
+  @include text(body);
+
   display: flex;
   align-items: center;
   gap: 6px;
-  font-weight: 600;
-  font-size: 12px;
-  color: #44806d;
+  font-weight: $font-weight-semibold;
+  color: $teal-700;
 }
 
 .ai-panel__private {
-  font-size: 8px;
-  color: #85a392;
+  @include text(micro);
+
+  color: $sage-400;
 }
 
 .ai-panel__text {
-  font-size: 11px;
-  color: #668376;
+  @include text(small);
+
+  color: $sage-600;
   margin: 0 0 14px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
 .ai-panel__note {
+  @include text(micro);
+
   display: block;
-  font-size: 8px;
-  color: #8fa99b;
+  color: $sage-400;
   text-align: center;
   margin-top: 9px;
 }
 
 .ai-panel__manual {
-  font-size: 9px;
-  color: #688b7d;
+  @include text(tiny);
+
+  color: $sage-600;
 }
 
 .ai-panel__missing {
-  font-size: 10px;
-  color: #668376;
+  @include text(caption);
+
+  color: $sage-600;
   margin-bottom: 12px;
 }
 

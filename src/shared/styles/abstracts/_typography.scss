@@ -1,7 +1,45 @@
+@use 'sass:map';
+
+// Inter is self-hosted (base/_typography.scss); the rest is the system fallback.
+$font-family-inter: Inter;
 $font-family-base:
-  Inter,
+  $font-family-inter,
   -apple-system,
   BlinkMacSystemFont,
   'Segoe UI',
   Arial,
   sans-serif;
+
+// Weights of the variable font.
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+/// The weight axis of the variable Inter files.
+$font-weight-variable: 100 900;
+
+// The text scale (8 steps) and the display sizes for page titles and figures.
+$type-scale: (
+  micro: 8px,
+  tiny: 9px,
+  caption: 10px,
+  small: 11px,
+  body: 12px,
+  lead: 14px,
+  title: 17px,
+  heading: 21px,
+  display-sm: 26px,
+  display-md: 29px,
+  display-lg: 34px,
+);
+
+/// Sets the font size of a step of the type scale.
+@mixin text($step) {
+  font-size: map.get($type-scale, $step);
+}
+
+/// The font size of a step, for declarations that need `!important` (MAX UI overrides).
+@function type-size($step) {
+  @return map.get($type-scale, $step);
+}

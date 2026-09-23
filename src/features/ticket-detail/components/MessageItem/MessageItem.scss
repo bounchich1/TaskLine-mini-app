@@ -29,16 +29,13 @@
 }
 
 .message__meta {
+  @include text(micro);
+
   display: flex;
   gap: 7px;
   align-items: center;
-  font-size: 8px;
-  color: #94a3ad;
+  color: $slate-400;
   margin-bottom: 6px;
-
-  @include respond-to(phone) {
-    font-size: 7px;
-  }
 
   .message--staff & {
     justify-content: flex-end;
@@ -51,37 +48,40 @@
 }
 
 .message__author {
-  color: #6a8390;
-  font-size: 10px;
-  font-weight: 550;
+  @include text(caption);
+
+  color: $slate-600;
+  font-weight: $font-weight-medium;
 }
 
 .message__body {
-  font-size: 12px;
+  @include text(body);
+
   line-height: 1.7;
-  background: #fff;
-  border: 1px solid #e5edef;
+  background: $white;
+  border: 1px solid $slate-100;
   padding: 11px 14px;
   border-radius: 0 9px 9px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 
   @include respond-to(phone) {
-    font-size: 11px;
+    @include text(small);
   }
 
   .message--staff & {
-    background: #eaf5f1;
-    border-color: #e1efea;
+    background: $teal-100;
+    border-color: $teal-200;
     border-radius: 9px 0 9px 9px;
   }
 
   .message--bot &,
   .message--system & {
+    @include text(caption);
+
     border: 0;
     background: none;
-    color: #8a9ea8;
-    font-size: 10px;
+    color: $slate-500;
     padding: 0 12px;
   }
 }

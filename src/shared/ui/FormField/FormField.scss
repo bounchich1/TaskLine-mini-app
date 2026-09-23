@@ -1,10 +1,11 @@
 @use 'abstracts' as *;
 
 .form-field {
+  @include text(small);
+
   display: grid;
   gap: 8px;
-  font-size: 11px;
-  color: #83959e;
+  color: $slate-500;
   margin-bottom: 17px;
 
   // The control is passed in as a child.

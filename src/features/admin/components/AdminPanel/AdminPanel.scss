@@ -12,21 +12,23 @@
 }
 
 .admin-tabs__tab {
-  background: #fff;
+  @include text(small);
+
+  background: $white;
   border: 1px solid $color-line;
   border-radius: 6px;
   padding: 10px 14px;
-  font-size: 11px;
-  color: #7d919b;
+  color: $slate-500;
 
   @include respond-to(phone) {
-    font-size: 10px;
+    @include text(caption);
+
     padding: 8px 10px;
   }
 
   &--selected {
-    background: #e9f4ef;
-    color: #357e69;
-    border-color: #cde5d9;
+    background: $teal-100;
+    color: $teal-700;
+    border-color: $teal-200;
   }
 }

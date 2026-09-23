@@ -9,10 +9,10 @@ const queryClient = new QueryClient({
   },
 });
 
-/** MAX UI theme and the query cache. */
+/** MAX UI theme and the query cache. `app-root` sets the app font (base/_max-ui-overrides.scss). */
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <MaxUI>
+    <MaxUI className="app-root">
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </MaxUI>
   );

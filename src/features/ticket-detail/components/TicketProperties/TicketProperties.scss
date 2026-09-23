@@ -22,13 +22,15 @@
 }
 
 .ticket-details__assignee-caption {
-  font-size: 9px;
-  color: #9aa9b0;
+  @include text(tiny);
+
+  color: $slate-400;
   display: block;
   margin-bottom: 4px;
 }
 
 .ticket-details__assignee-name {
-  font-size: 11px;
-  font-weight: 550;
+  @include text(small);
+
+  font-weight: $font-weight-medium;
 }

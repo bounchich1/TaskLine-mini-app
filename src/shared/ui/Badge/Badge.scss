@@ -1,34 +1,35 @@
 @use 'abstracts' as *;
 
 .badge {
+  @include text(tiny);
+
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 9px;
   padding: 5px 8px;
   line-height: 1.2;
   border-radius: 4px;
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   white-space: nowrap;
 
   &--status-open {
-    color: #aa8140;
-    background: #fcf4e7;
+    color: $amber-700;
+    background: $amber-100;
   }
 
   &--status-in-progress {
-    color: #497cb0;
-    background: #edf4fb;
+    color: $blue-600;
+    background: $blue-100;
   }
 
   &--status-awaiting-rating {
-    color: #8d69a6;
-    background: #f3eef9;
+    color: $violet-600;
+    background: $violet-100;
   }
 
   &--status-closed {
-    color: #67837b;
-    background: #edf3f0;
+    color: $sage-600;
+    background: $teal-100;
   }
 }
 

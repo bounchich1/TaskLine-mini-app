@@ -2,8 +2,8 @@
 
 .composer {
   margin-top: 17px;
-  background: #fff;
-  border: 1px solid #dce8e4;
+  background: $white;
+  border: 1px solid $teal-200;
   border-radius: 8px;
   padding: 15px;
 
@@ -20,13 +20,15 @@
 }
 
 .composer__title {
-  font-size: 11px;
-  font-weight: 600;
+  @include text(small);
+
+  font-weight: $font-weight-semibold;
 }
 
 .composer__sender {
-  font-size: 9px;
-  color: #8b9e9d;
+  @include text(tiny);
+
+  color: $sage-500;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -37,9 +39,10 @@
 }
 
 .composer__notice {
-  font-size: 10px;
-  background: #f4f7f8;
-  color: #7c919d;
+  @include text(caption);
+
+  background: $slate-50;
+  color: $slate-500;
   padding: 8px;
   border-radius: 4px;
 }
@@ -63,25 +66,27 @@
 }
 
 .composer__attach {
+  @include text(caption);
+
   display: flex;
   align-items: center;
   gap: 6px;
   background: none;
-  color: #80959f;
-  font-size: 10px;
+  color: $slate-500;
   padding: 0;
 
   @include respond-to(phone) {
-    font-size: 9px;
+    @include text(tiny);
   }
 }
 
 .composer__count {
+  @include text(tiny);
+
   margin-left: auto;
-  color: #a4b1b7;
-  font-size: 9px;
+  color: $slate-300;
 
   @include respond-to(phone) {
-    font-size: 8px;
+    @include text(micro);
   }
 }

@@ -6,12 +6,13 @@
 
 // Native selects share one look (MAX UI has no select).
 select {
-  border: 1px solid #dfe6e9;
+  @include text(body);
+
+  border: 1px solid $slate-200;
   border-radius: 6px;
   padding: 9px 25px 9px 10px;
-  background: #fff;
-  color: #586e7a;
+  background: $white;
+  color: $slate-700;
   max-width: 100%;
-  font-size: 12px;
   min-height: 37px;
 }

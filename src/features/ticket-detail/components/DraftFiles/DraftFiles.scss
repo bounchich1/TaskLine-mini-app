@@ -8,22 +8,24 @@
 }
 
 .draft-files__item {
+  @include text(caption);
+
   display: flex;
   align-items: center;
   gap: 5px;
-  background: #f1f5f3;
+  background: $teal-100;
   padding: 6px 8px;
-  font-size: 10px;
   border-radius: 4px;
 }
 
 .draft-files__status {
-  font-size: 8px;
-  color: #8da099;
+  @include text(micro);
+
+  color: $sage-400;
 }
 
 .draft-files__remove {
   background: none;
   display: flex;
-  color: #7d9488;
+  color: $sage-500;
 }

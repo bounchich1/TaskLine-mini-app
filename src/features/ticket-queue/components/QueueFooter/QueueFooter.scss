@@ -1,16 +1,18 @@
 @use 'abstracts' as *;
 
 .queue-footer {
+  @include text(caption);
+
   padding: 17px 23px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #a0acb2;
-  font-size: 10px;
+  color: $slate-300;
 
   @include respond-to(phone) {
+    @include text(micro);
+
     padding: 14px 13px;
-    font-size: 8px;
     gap: 10px;
   }
 }

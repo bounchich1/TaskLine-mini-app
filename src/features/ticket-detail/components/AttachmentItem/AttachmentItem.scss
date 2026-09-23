@@ -4,8 +4,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #dfe9e5;
-  background: #f8fbfa;
+  border: 1px solid $teal-200;
+  background: $teal-50;
   border-radius: 6px;
   padding: 9px;
   margin-top: 7px;
@@ -18,14 +18,16 @@
 }
 
 .attachment__name {
+  @include text(caption);
+
   display: block;
-  font-size: 10px;
   overflow-wrap: anywhere;
 }
 
 .attachment__status {
-  font-size: 9px;
-  color: #94a89e;
+  @include text(tiny);
+
+  color: $sage-400;
 }
 
 .attachment__download {

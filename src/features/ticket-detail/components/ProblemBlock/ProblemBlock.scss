@@ -11,16 +11,18 @@
 }
 
 .problem__text {
-  font-size: 13px;
-  color: #375261;
+  @include text(lead);
+
+  color: $slate-800;
   margin: 11px 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
 .problem__meta {
-  font-size: 9px;
-  color: #95a6ad;
+  @include text(tiny);
+
+  color: $slate-400;
   display: flex;
   align-items: center;
   gap: 5px;

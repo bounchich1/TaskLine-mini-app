@@ -3,38 +3,36 @@
 // The only place for `!important` and selectors into MAX UI's markup: its components style their
 // inner elements with generated class names, so our components can only reach them from outside.
 
-[data-maxui-color-scheme] {
-  --maxui-color-bg-brand: #247e70;
-}
-
-button[class*='Button--primary'],
-button[class*='Button_primary'] {
-  background: #257e70 !important;
+// The MaxUI provider's root element (`<MaxUI className="app-root">`). MAX UI sets the font of the
+// whole tree from --family-base on that element (Roboto on Android, the system font on iOS), so
+// this is where the app font takes effect — for our components and MAX UI's alike.
+.app-root {
+  --family-base: #{$font-family-base};
 }
 
 button[class*='Button'] {
-  font-size: 11px !important;
+  font-size: type-size(small) !important;
   border-radius: 6px !important;
 }
 
 .queue-toolbar__search input {
-  font-size: 12px !important;
+  font-size: type-size(body) !important;
 
   @include respond-to(phone) {
-    font-size: 11px !important;
+    font-size: type-size(small) !important;
   }
 }
 
 .composer__input {
-  font-size: 12px !important;
-  background: #fff !important;
+  font-size: type-size(body) !important;
+  background: $white !important;
 }
 
 // After the generic button rule: same specificity, so the later one wins.
 .page-heading button {
   @include respond-to(phone) {
     min-height: 31px;
-    font-size: 9px !important;
+    font-size: type-size(tiny) !important;
     padding: 6px 9px !important;
   }
 }

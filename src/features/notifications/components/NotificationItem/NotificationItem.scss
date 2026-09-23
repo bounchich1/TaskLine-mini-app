@@ -6,7 +6,7 @@
   text-align: left;
   align-items: center;
   gap: 15px;
-  background: #fff;
+  background: $white;
   padding: 23px 0;
   border-bottom: 1px solid $color-line;
 
@@ -28,29 +28,31 @@
 }
 
 .notification-item__title {
-  font-size: 12px;
-  color: #496673;
-  font-weight: 550;
+  @include text(body);
+
+  color: $slate-700;
+  font-weight: $font-weight-medium;
 
   @include respond-to(phone) {
-    font-size: 11px;
+    @include text(small);
   }
 }
 
 .notification-item__time {
+  @include text(caption);
+
   display: block;
-  font-size: 10px;
-  color: #94a6ae;
+  color: $slate-400;
   margin-top: 6px;
 
   @include respond-to(phone) {
-    font-size: 9px;
+    @include text(tiny);
   }
 }
 
 .notification-item__icon {
-  background: #eaf5ef;
-  color: #5d9e86;
+  background: $teal-100;
+  color: $teal-400;
   display: grid;
   place-items: center;
   height: 39px;
@@ -64,5 +66,5 @@
 }
 
 .notification-item__arrow {
-  color: #8da4af;
+  color: $slate-400;
 }

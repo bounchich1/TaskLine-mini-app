@@ -28,41 +28,44 @@
 }
 
 .queue-tabs__tab {
+  @include text(body);
+
   background: none;
-  color: #88959c;
+  color: $slate-500;
   display: flex;
   align-items: center;
   gap: 9px;
   padding: 0 1px;
   border-bottom: 2px solid transparent;
-  font-size: 12px;
-  font-weight: 550;
+  font-weight: $font-weight-medium;
 
   @include respond-to(phone) {
-    font-size: 11px;
+    @include text(small);
   }
 
   &--selected {
-    color: #267d73;
-    border-color: #267d73;
+    color: $teal-700;
+    border-color: $teal-700;
   }
 }
 
 .queue-tabs__count {
+  @include text(caption);
+
   padding: 2px 6px;
   border-radius: 4px;
-  background: #f1f4f5;
-  font-size: 10px;
+  background: $slate-50;
 
   .queue-tabs__tab--selected & {
-    background: #eaf5f0;
-    color: #34847b;
+    background: $teal-100;
+    color: $teal-700;
   }
 }
 
 .queue-tabs__subtitle {
-  font-size: 10px;
-  color: #9aa7ae;
+  @include text(caption);
+
+  color: $slate-400;
   align-self: center;
 
   @include respond-to(laptop) {

@@ -9,13 +9,15 @@
 }
 
 .conversation__title {
+  @include text(lead);
+
   margin: 0;
-  font-size: 13px;
 }
 
 .conversation__count {
-  font-size: 9px;
-  color: #93a3ad;
+  @include text(tiny);
+
+  color: $slate-400;
 }
 
 .conversation__list {

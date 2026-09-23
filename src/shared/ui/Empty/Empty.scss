@@ -3,7 +3,7 @@
 .empty-state {
   text-align: center;
   padding: 60px 24px;
-  color: #84979f;
+  color: $slate-500;
   white-space: normal;
 }
 
@@ -13,18 +13,20 @@
   display: grid;
   place-items: center;
   margin: auto;
-  color: #92b8ac;
-  background: #eff6f2;
+  color: $sage-400;
+  background: $teal-100;
   border-radius: 50%;
 }
 
 .empty-state__title {
-  font-size: 17px;
-  color: #526f7c;
+  @include text(title);
+
+  color: $slate-700;
   margin: 16px 0 8px;
 }
 
 .empty-state__text {
-  font-size: 12px;
+  @include text(body);
+
   margin: 0;
 }

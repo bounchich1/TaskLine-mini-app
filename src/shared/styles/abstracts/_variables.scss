@@ -1,7 +1,76 @@
 // Design tokens. No CSS output: every component stylesheet starts with `@use 'abstracts' as *;`.
+// Components use these instead of raw values (stylelint enforces it).
 
-$color-ink: #203542;
-$color-muted: #7a8a93;
-$color-line: #e7ecef;
-$color-canvas: #f5f7f8;
-$color-surface: #fff;
+// Palette ------------------------------------------------------------------------------------
+
+// Slate: text and lines on light surfaces, darkest first.
+$slate-900: #203542;
+$slate-800: #314954;
+$slate-700: #496673;
+$slate-600: #667f8c;
+$slate-500: #7d919b;
+$slate-400: #93a3ad;
+$slate-300: #a3b1b7;
+$slate-200: #dfe6e9;
+$slate-100: #e7ecef;
+$slate-50: #f5f7f8;
+$white: #fff;
+
+// Navy: the sidebar.
+$navy-900: #132d3c;
+$navy-800: #244654;
+$navy-700: #315161;
+$navy-600: #476571;
+$navy-500: #6f8c9b;
+$navy-300: #a9bec8;
+$navy-100: #e1e9ec;
+
+// Teal: the brand.
+$teal-700: #257e70;
+$teal-500: #269a8e;
+$teal-400: #4ca58b;
+$teal-300: #69beba;
+$teal-200: #dbe9e3;
+$teal-100: #eaf5f0;
+$teal-50: #f8fbfa;
+
+// Sage: quiet green text (the assistant, learning, attachments).
+$sage-600: #668376;
+$sage-500: #7d9488;
+$sage-400: #8fa99b;
+
+// Status and urgency hues.
+$amber-700: #aa8140;
+$amber-600: #bf8852;
+$amber-400: #d4a271;
+$amber-200: #f0e6cf;
+$amber-100: #fcf4e7;
+$red-700: #a35346;
+$red-600: #c55b59;
+$red-200: #f1d4cd;
+$red-100: #fff0ed;
+$blue-600: #497cb0;
+$blue-500: #6f8db4;
+$blue-400: #8ca4b7;
+$blue-100: #edf2fa;
+$violet-600: #8d69a6;
+$violet-100: #f3eef9;
+
+// Roles ----------------------------------------------------------------------------------------
+
+$color-ink: $slate-900;
+$color-muted: $slate-500;
+$color-line: $slate-100;
+$color-canvas: $slate-50;
+$color-surface: $white;
+$color-brand: $teal-700;
+$color-focus: $teal-300;
+
+// Effects --------------------------------------------------------------------------------------
+
+$shadow-modal: 0 20px 80px rgb(18 43 59 / 19%);
+$color-backdrop: rgb(16 42 61 / 40%);
+
+// Layers ---------------------------------------------------------------------------------------
+
+$z-index-tab-bar: 20;

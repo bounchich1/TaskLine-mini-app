@@ -18,20 +18,21 @@
 
 .page-heading__title {
   @include respond-to(phone) {
-    font-size: 29px;
+    @include text(display-md);
   }
 }
 
 .page-heading__dot {
-  color: #269a8e;
+  color: $teal-500;
 }
 
 .page-heading__description {
-  color: #7b8c95;
-  font-size: 12px;
+  @include text(body);
+
+  color: $slate-500;
   margin-bottom: 0;
 
   @include respond-to(phone) {
-    font-size: 10px;
+    @include text(caption);
   }
 }

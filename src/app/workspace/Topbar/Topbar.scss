@@ -1,15 +1,16 @@
 @use 'abstracts' as *;
 
 .topbar {
+  @include text(small);
+
   height: 69px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid $color-line;
   padding: 0 37px;
-  background: #fff;
-  color: #7b8b96;
-  font-size: 11px;
+  background: $white;
+  color: $slate-500;
 
   @include respond-to(laptop) {
     padding: 0 22px;
@@ -21,20 +22,23 @@
   }
 
   @include respond-to(phone) {
+    @include text(tiny);
+
     height: 51px;
     padding: 0 15px;
-    font-size: 9px;
   }
 }
 
 .topbar__connection {
+  @include text(caption);
+
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 10px;
 
   @include respond-to(phone) {
-    font-size: 8px;
+    @include text(micro);
+
     max-width: 140px;
   }
 }
@@ -42,10 +46,10 @@
 .topbar__dot {
   width: 5px;
   height: 5px;
-  background: #4ca58b;
+  background: $teal-400;
   border-radius: 50%;
 
   &--reconnecting {
-    background: #c59640;
+    background: $amber-600;
   }
 }

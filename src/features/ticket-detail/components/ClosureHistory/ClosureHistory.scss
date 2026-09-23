@@ -26,23 +26,26 @@
 }
 
 .closure-history__rating {
-  font-size: 17px;
-  font-weight: 500;
-  color: #3b7263;
+  @include text(title);
+
+  font-weight: $font-weight-medium;
+  color: $teal-700;
 }
 
 .closure-history__meta {
+  @include text(tiny);
+
   display: block;
-  color: #8ca097;
-  font-size: 9px;
+  color: $sage-400;
   margin-top: 5px;
 }
 
 .closure-history__learning {
+  @include text(tiny);
+
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 9px;
-  color: #698d7c;
+  color: $sage-600;
   margin: 10px 0 0;
 }

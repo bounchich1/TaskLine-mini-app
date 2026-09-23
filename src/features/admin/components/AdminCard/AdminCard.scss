@@ -12,7 +12,7 @@
 }
 
 .admin-card__title {
-  font-size: 17px;
+  @include text(title);
 }
 
 .admin-card__header {
@@ -24,15 +24,17 @@
 }
 
 .admin-card__heading {
-  font-size: 17px;
+  @include text(title);
+
   margin: 0;
 
   @include respond-to(phone) {
-    font-size: 15px;
+    @include text(lead);
   }
 }
 
 .admin-card__help {
-  color: #8a9ba4;
-  font-size: 11px;
+  @include text(small);
+
+  color: $slate-500;
 }

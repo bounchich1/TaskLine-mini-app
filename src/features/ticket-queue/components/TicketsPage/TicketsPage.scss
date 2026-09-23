@@ -12,29 +12,32 @@
 
 .tickets-page__skeleton-row {
   height: 42px;
-  background: linear-gradient(90deg, #f4f7f7, #edf2f2, #f4f7f7);
+  background: linear-gradient(90deg, $slate-50, $slate-100, $slate-50);
   margin: 12px 0;
   border-radius: 5px;
   animation: pulse 1.5s infinite;
 }
 
 .tickets-page__privacy {
+  @include text(tiny);
+
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   margin: 22px 0;
-  color: #9ba9af;
-  font-size: 9px;
+  color: $slate-400;
 
   @include respond-to(tablet) {
-    font-size: 8px;
+    @include text(micro);
+
     text-align: center;
   }
 
   @include respond-to(phone) {
+    @include text(micro);
+
     align-items: flex-start;
-    font-size: 8px;
     padding: 0 5px;
   }
 }

@@ -38,16 +38,18 @@
 }
 
 .workspace__demo-note {
-  font-size: 10px;
-  background: #fff8e8;
-  color: #b4965e;
-  border: 1px solid #f0e6cf;
+  @include text(caption);
+
+  background: $amber-100;
+  color: $amber-700;
+  border: 1px solid $amber-200;
   padding: 8px 12px;
   border-radius: 5px;
   margin-bottom: 20px;
 
   @include respond-to(phone) {
-    font-size: 8px;
+    @include text(micro);
+
     line-height: 1.5;
   }
 }

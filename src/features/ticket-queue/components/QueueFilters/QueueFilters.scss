@@ -20,8 +20,9 @@
 }
 
 .queue-filters__field {
-  font-size: 10px;
-  color: #85949d;
+  @include text(caption);
+
+  color: $slate-500;
   display: grid;
   gap: 7px;
 }

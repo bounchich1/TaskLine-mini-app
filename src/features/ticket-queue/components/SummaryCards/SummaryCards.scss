@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  background: #fff;
+  background: $white;
   border: 1px solid $color-line;
   padding: 19px;
   border-radius: 9px;
@@ -44,9 +44,9 @@
   }
 
   &--note {
-    background: #edf5f2;
-    border-color: #e5eeea;
-    color: #308678;
+    background: $teal-100;
+    border-color: $teal-200;
+    color: $teal-700;
     gap: 13px;
 
     @include respond-to(laptop) {
@@ -74,13 +74,13 @@
   }
 
   &--teal {
-    color: #278b7d;
-    background: #e9f5f1;
+    color: $teal-700;
+    background: $teal-100;
   }
 
   &--blue {
-    color: #667ea7;
-    background: #edf1f9;
+    color: $blue-500;
+    background: $blue-100;
   }
 }
 
@@ -91,39 +91,43 @@
 }
 
 .summary-cards__label {
+  @include text(small);
+
   display: block;
-  color: #83929b;
-  font-size: 11px;
+  color: $slate-500;
   margin-bottom: 5px;
 
   @include respond-to(laptop) {
-    font-size: 10px;
+    @include text(caption);
   }
 
   @include respond-to(phone) {
-    font-size: 8px;
+    @include text(micro);
+
     margin-bottom: 6px;
   }
 }
 
 .summary-cards__value {
-  font-size: 29px;
+  @include text(display-md);
+
   line-height: 1.1;
-  font-weight: 650;
+  font-weight: $font-weight-semibold;
   letter-spacing: -1px;
 
   @include respond-to(laptop) {
-    font-size: 26px;
+    @include text(display-sm);
   }
 
   @include respond-to(phone) {
-    font-size: 23px;
+    @include text(heading);
   }
 }
 
 .summary-cards__caption {
-  font-size: 9px;
-  color: #a0aab0;
+  @include text(tiny);
+
+  color: $slate-300;
   align-self: flex-end;
   margin-left: auto;
   margin-bottom: 4px;
@@ -134,21 +138,23 @@
 }
 
 .summary-cards__note-text {
-  font-size: 11px;
-  color: #63877e;
+  @include text(small);
+
+  color: $sage-600;
   line-height: 1.85;
   margin: 0;
 }
 
 .summary-cards__note-emphasis {
-  font-size: 11px;
+  @include text(small);
+
   line-height: 1.1;
   letter-spacing: 0;
-  color: #35796b;
-  font-weight: 500;
+  color: $teal-700;
+  font-weight: $font-weight-medium;
 
   // Same as the card values between the laptop and tablet breakpoints, as before.
   @include respond-to(laptop) {
-    font-size: 26px;
+    @include text(display-sm);
   }
 }

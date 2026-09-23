@@ -1,12 +1,13 @@
 @use 'abstracts' as *;
 
 .audit-list__item {
+  @include text(caption);
+
   display: flex;
   gap: 20px;
   align-items: center;
   padding: 14px 0;
   border-bottom: 1px solid $color-line;
-  font-size: 10px;
 
   @include respond-to(tablet) {
     flex-wrap: wrap;
@@ -15,17 +16,18 @@
 }
 
 .audit-list__time {
-  color: #99a8b0;
+  color: $slate-400;
 }
 
 .audit-list__action {
-  font-weight: 500;
+  font-weight: $font-weight-medium;
 }
 
 .audit-list__object {
+  @include text(tiny);
+
   margin-left: auto;
-  color: #95a5ad;
-  font-size: 9px;
+  color: $slate-400;
   overflow-wrap: anywhere;
 
   @include respond-to(tablet) {

@@ -26,20 +26,22 @@
 }
 
 .launch-screen__title {
-  font-size: 29px;
+  @include text(display-md);
 
   @include respond-to(phone) {
-    font-size: 27px;
+    @include text(display-sm);
   }
 }
 
 .launch-screen__text {
-  font-size: 14px;
-  color: #8399a4;
+  @include text(lead);
+
+  color: $slate-500;
 }
 
 .launch-screen__foot {
-  font-size: 10px;
-  color: #a3b2b7;
+  @include text(caption);
+
+  color: $slate-300;
   margin-top: 30px;
 }

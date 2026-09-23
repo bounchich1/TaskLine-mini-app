@@ -8,20 +8,17 @@
 }
 
 .ticket-header__eyebrow {
-  @include eyebrow($font-size: 8px, $margin-bottom: 8px);
+  @include eyebrow(micro, 8px);
 }
 
 .ticket-header__title {
+  @include text(heading);
+
   display: flex;
   gap: 12px;
   align-items: center;
   margin: 0;
-  font-size: 21px;
   letter-spacing: 0.2px;
-
-  @include respond-to(phone) {
-    font-size: 19px;
-  }
 }
 
 .ticket-header__close {

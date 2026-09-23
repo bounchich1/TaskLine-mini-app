@@ -12,27 +12,28 @@
 
 .permit-grid__slot {
   padding: 12px;
-  background: #eef5f1;
+  background: $teal-100;
   border-radius: 5px;
-  color: #799c8c;
+  color: $sage-500;
 
   &--uncertain {
-    background: #fff0e8;
-    color: #b0815c;
+    background: $amber-100;
+    color: $amber-700;
   }
 
   &--running {
-    background: #edf2fa;
-    color: #6f8db4;
+    background: $blue-100;
+    color: $blue-500;
   }
 }
 
 .permit-grid__number {
+  @include text(title);
+
   display: block;
-  font-size: 16px;
   margin-bottom: 5px;
 }
 
 .permit-grid__state {
-  font-size: 9px;
+  @include text(tiny);
 }
