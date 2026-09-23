@@ -45,9 +45,9 @@ test('sends a reply with the ticket version and an idempotency key', async ({ pa
   await card.getByRole('button', { name: 'Отправить' }).click();
   await expect.poll(() => api.callsTo('POST', '/v1/tickets/t2/messages').length).toBe(1);
   const [call] = api.callsTo('POST', '/v1/tickets/t2/messages');
-  expect(call?.headers['if-match']).toBe('4');
-  expect(call?.headers['idempotency-key']).toMatch(/^[0-9a-f-]{36}$/);
-  expect(call?.body).toEqual({ text: 'Возврат оформлен.', attachment_ids: [] });
+  expect(call.headers['if-match']).toBe('4');
+  expect(call.headers['idempotency-key']).toMatch(/^[0-9a-f-]{36}$/);
+  expect(call.body).toEqual({ text: 'Возврат оформлен.', attachment_ids: [] });
   await expect(card.getByLabel('Текст ответа клиенту')).toHaveValue('');
 });
 
@@ -61,7 +61,7 @@ test('reuses the idempotency key when retrying after an unavailable server', asy
   await card.getByRole('button', { name: 'Отправить' }).click();
   await expect.poll(() => api.callsTo('POST', '/v1/tickets/t2/messages').length).toBe(2);
   const [first, second] = api.callsTo('POST', '/v1/tickets/t2/messages');
-  expect(second?.headers['idempotency-key']).toBe(first?.headers['idempotency-key']);
+  expect(second.headers['idempotency-key']).toBe(first.headers['idempotency-key']);
 });
 
 test('takes an open ticket into work', async ({ page }) => {

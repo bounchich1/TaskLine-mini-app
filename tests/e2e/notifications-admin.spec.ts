@@ -46,13 +46,13 @@ test('adds an employee', async ({ page }) => {
   await dialog.getByRole('button', { name: 'Сохранить' }).click();
   await expect.poll(() => api.callsTo('POST', '/v1/admin/employees').length).toBe(1);
   const [call] = api.callsTo('POST', '/v1/admin/employees');
-  expect(call?.body).toEqual({
+  expect(call.body).toEqual({
     max_user_id: '2001',
     name: 'Галина',
     role: 'supervisor',
     blocked: false,
   });
-  expect(call?.headers['if-match']).toBe('0');
+  expect(call.headers['if-match']).toBe('0');
 });
 
 test('saves organization settings with their version', async ({ page }) => {
@@ -62,8 +62,8 @@ test('saves organization settings with their version', async ({ page }) => {
   await page.getByRole('button', { name: 'Сохранить' }).click();
   await expect.poll(() => api.callsTo('PUT', '/v1/admin/settings').length).toBe(1);
   const [call] = api.callsTo('PUT', '/v1/admin/settings');
-  expect(call?.headers['if-match']).toBe('5');
-  expect(call?.body).toEqual({ name: 'ООО «Линия 2»', timezone: 'Asia/Krasnoyarsk' });
+  expect(call.headers['if-match']).toBe('5');
+  expect(call.body).toEqual({ name: 'ООО «Линия 2»', timezone: 'Asia/Krasnoyarsk' });
 });
 
 test('requires evidence before resolving an uncertain delivery', async ({ page }) => {

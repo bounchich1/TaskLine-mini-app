@@ -66,7 +66,7 @@ function mutationResult(call: RecordedCall): unknown {
   }
   const command = /^\/v1\/tickets\/([^/]+)\/(\w+)$/.exec(call.path);
   if (command) {
-    return byId(command[1] ?? '');
+    return byId(command[1]);
   }
   return { ok: true };
 }
@@ -119,9 +119,8 @@ export class MockApi {
     const index = this.overrides.findIndex(
       (item) => item.method === call.method && item.path.test(call.path),
     );
-    const [override] = index >= 0 ? this.overrides.splice(index, 1) : [];
-    if (override) {
-      const { status } = override;
+    if (index >= 0) {
+      const [{ status }] = this.overrides.splice(index, 1);
       await route.fulfill({ status, json: { code: 'test_failure', message: `HTTP ${status}` } });
       return;
     }
