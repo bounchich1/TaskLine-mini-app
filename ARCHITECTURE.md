@@ -18,7 +18,7 @@ src/
   shared/           Used everywhere; imports only shared/.
     api/            http (api, ApiError, session headers), event stream, downloads, query keys
     config/         typed env, labels for API codes
-    lib/            date helpers
+    lib/            date helpers, color scheme, media queries, popover positioning
     platform/       the MAX WebApp bridge
     types/          API types
     ui/             generic components (Modal, Select, FormField, …)
@@ -58,9 +58,10 @@ notifications and that ticket's card; `admin.changed` the dictionaries and emplo
 - Colors, font sizes (`@include text(step)`, which also sets the line height), font families,
   weights and z-indexes come from `shared/styles/abstracts`; stylelint rejects raw values, hex
   colors and `!important`.
-- Colors are CSS custom properties, so light and dark switch at run time with the device's
-  color scheme (`app/providers.tsx`). Surfaces, text, dividers and the accent are MAX UI's own
-  theme variables; the app's extra tokens (urgency, status, bubbles, notices) are defined per
+- Colors are CSS custom properties, so light and dark switch at run time (`app/providers.tsx`).
+  The scheme follows the device unless the employee picks one in the profile menu; the choice
+  is kept per browser (`shared/lib/color-scheme.ts`). Surfaces, text, dividers and the accent
+  are MAX UI's own theme variables; the app's extra tokens (urgency, status, bubbles, notices) are defined per
   scheme in `abstracts/_palette.scss` and published as `--app-*` by `base/_theme.scss`.
 - The font is the platform's system font (SF, Roboto, Segoe UI), as in MAX itself. MAX UI takes
   the font of its whole tree from `--family-base` on its root element, which carries our
@@ -69,8 +70,9 @@ notifications and that ticket's card; `admin.changed` the dictionaries and emplo
   generated markup.
 - Focus: text fields and selects show it with `field-focus` (an accent edge and a soft halo),
   full-width rows with `focus-ring-inset` (a scrolling list clips an outer ring), everything else
-  with the global outline. Selects are `shared/ui/Select`, never a native `<select>`, whose menu
-  is drawn by the OS.
+  with the global outline. Selects are `shared/ui/Select` and dates `shared/ui/DatePicker`, never
+  a native `<select>` or `<input type="date">`, whose popups are drawn by the OS. Popups anchor to
+  their field through `shared/lib/use-anchored-popover.ts` and share the `popover-surface` mixin.
 
 ## Layout
 

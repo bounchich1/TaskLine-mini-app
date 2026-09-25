@@ -108,6 +108,23 @@
     }
 }
 
+@mixin popover-surface {
+    position: absolute;
+    z-index: $z-index-popover;
+    margin: 0;
+    border: 1px solid $color-line;
+    border-radius: $radius-m;
+    background: $color-bg-elevated;
+    color: $color-text;
+    box-shadow: $shadow-popover;
+    overscroll-behavior: contain;
+
+    &:popover-open {
+        position: fixed;
+        inset: auto;
+    }
+}
+
 @mixin count {
     @include text(caption);
 

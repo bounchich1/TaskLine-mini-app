@@ -1,0 +1,163 @@
+@use 'abstracts' as *;
+
+.account-menu {
+    display: flex;
+    padding-left: 12px;
+    border-left: 1px solid $color-line;
+
+    @include respond-to(phone) {
+        flex: 1 1 0;
+        height: 100%;
+        padding: 0;
+        border: 0;
+    }
+}
+
+.account-menu__trigger {
+    @include text(small);
+
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    height: 40px;
+    padding: 0 6px;
+    border-radius: $radius-s;
+    background: none;
+    color: $color-text;
+    text-align: left;
+
+    @include row-hover;
+
+    &[aria-expanded='true'] {
+        background: $color-bg-muted;
+    }
+
+    @include respond-to(phone) {
+        @include text(caption);
+
+        flex: 1;
+        flex-direction: column;
+        gap: 3px;
+        justify-content: center;
+        height: 100%;
+        padding: 0;
+        border-radius: 0;
+        color: $color-text-secondary;
+        font-weight: $font-weight-medium;
+
+        &[aria-expanded='true'] {
+            background: none;
+            color: $color-text-accent;
+        }
+    }
+}
+
+.account-menu__text {
+    display: grid;
+    line-height: 1.2;
+    font-weight: $font-weight-medium;
+
+    @include respond-to(tablet) {
+        display: none;
+    }
+}
+
+.account-menu__role {
+    @include muted(caption);
+
+    font-weight: $font-weight-regular;
+}
+
+.account-menu__tab-label {
+    display: none;
+
+    @include respond-to(phone) {
+        display: block;
+    }
+}
+
+.account-panel {
+    @include popover-surface;
+
+    top: calc(100% + 4px);
+    right: 0;
+    width: 260px;
+    padding: 6px;
+
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+.account-panel__who {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 6px;
+    padding: 8px 8px 12px;
+    border-bottom: 1px solid $color-line;
+}
+
+.account-panel__name {
+    @include text(body);
+
+    display: grid;
+    min-width: 0;
+    font-weight: $font-weight-semibold;
+}
+
+.account-panel__role {
+    @include muted(label);
+
+    font-weight: $font-weight-regular;
+}
+
+.account-panel__schemes {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.account-panel__legend {
+    @include muted(label);
+
+    padding: 4px 8px;
+    font-weight: $font-weight-medium;
+}
+
+.account-panel__scheme {
+    @include text(body);
+
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    min-height: 36px;
+    padding: 6px 8px;
+    border-radius: $radius-s;
+    cursor: pointer;
+
+    @include row-hover;
+
+    &:has(:focus-visible) {
+        @include focus-ring-inset;
+    }
+
+    &--selected {
+        color: $color-text-accent;
+        font-weight: $font-weight-medium;
+    }
+}
+
+.account-panel__scheme-icon {
+    flex-shrink: 0;
+    color: $color-icon-muted;
+
+    .account-panel__scheme--selected & {
+        color: currentcolor;
+    }
+}
+
+.account-panel__scheme-label {
+    flex: 1;
+}

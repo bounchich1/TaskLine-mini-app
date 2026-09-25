@@ -2,7 +2,7 @@ import type { TicketFilters } from '@/features/ticket-queue/hooks/use-ticket-fil
 import type { Filters } from '@/features/ticket-queue/model/filter-defaults';
 import { DIMENSION_LABELS, DIMENSIONS, STATUS_LABELS, statusLabel } from '@/shared/config/labels';
 import type { Dictionary, Employee } from '@/shared/types/api';
-import { DictionarySelect, Select } from '@/shared/ui';
+import { DatePicker, DictionarySelect, Select } from '@/shared/ui';
 
 import './QueueFilters.scss';
 
@@ -57,24 +57,12 @@ export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersPro
 
             <label className="queue-filters__field">
                 С даты
-                <input
-                    type="date"
-                    value={filters.from}
-                    onChange={(event) => {
-                        change('from', event.target.value);
-                    }}
-                />
+                <DatePicker value={filters.from} max={filters.to} placeholder="Любая" onChange={onChange('from')} />
             </label>
 
             <label className="queue-filters__field">
                 По дату
-                <input
-                    type="date"
-                    value={filters.to}
-                    onChange={(event) => {
-                        change('to', event.target.value);
-                    }}
-                />
+                <DatePicker value={filters.to} min={filters.from} placeholder="Любая" onChange={onChange('to')} />
             </label>
 
             <button className="queue-filters__reset" onClick={queue.reset}>

@@ -1,7 +1,9 @@
-import { MaxUI, useSystemColorScheme } from '@maxhub/max-ui';
+import { MaxUI } from '@maxhub/max-ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { clsx } from 'clsx';
 import { useEffect, type ReactNode } from 'react';
+
+import { useColorScheme } from '@/shared/lib/color-scheme';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -11,7 +13,7 @@ const queryClient = new QueryClient({
 });
 
 export function Providers({ children }: { children: ReactNode }) {
-    const scheme = useSystemColorScheme({ listenChanges: true });
+    const scheme = useColorScheme();
 
     useEffect(() => {
         document.documentElement.dataset.scheme = scheme;

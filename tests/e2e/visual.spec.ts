@@ -31,6 +31,21 @@ for (const width of WIDTHS) {
             await expect(page).toHaveScreenshot(`notifications-${width}.png`, { fullPage: true });
         });
 
+        test('date filter calendar', async ({ page }) => {
+            await page.clock.setFixedTime(new Date('2026-09-25T12:00:00+07:00'));
+            await page.reload();
+            await page.getByRole('button', { name: 'Фильтры' }).click();
+            await page.getByLabel('С даты').click();
+            await expect(page.getByRole('dialog', { name: 'Выбор даты' })).toBeVisible();
+            await expect(page).toHaveScreenshot(`calendar-${width}.png`);
+        });
+
+        test('profile menu', async ({ page }) => {
+            await page.getByRole('button', { name: /^Профиль/ }).click();
+            await expect(page.getByRole('dialog', { name: 'Профиль' })).toBeVisible();
+            await expect(page).toHaveScreenshot(`profile-${width}.png`);
+        });
+
         test('admin', async ({ page }) => {
             await openSection(page, 'admin');
             await expect(page.getByText('Борис Иванов')).toBeVisible();

@@ -1,5 +1,6 @@
 export { Avatar } from './Avatar/Avatar';
 export { CheckboxField } from './CheckboxField/CheckboxField';
+export { DatePicker } from './DatePicker/DatePicker';
 export { DictionarySelect } from './DictionarySelect/DictionarySelect';
 export { Empty } from './Empty/Empty';
 export { ErrorNotice } from './ErrorNotice/ErrorNotice';

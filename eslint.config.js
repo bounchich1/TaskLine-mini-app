@@ -67,7 +67,9 @@ export default tseslint.config(
         },
         settings: {
             react: { version: 'detect' },
-            'jsx-a11y': { components: { Select: 'select', DictionarySelect: 'select' } },
+            'jsx-a11y': {
+                components: { Select: 'select', DictionarySelect: 'select', DatePicker: 'input' },
+            },
         },
     },
     prettier,

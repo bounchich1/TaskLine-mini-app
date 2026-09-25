@@ -1,5 +1,7 @@
 import { clsx } from 'clsx';
-import { useEffect, useLayoutEffect, useRef, type RefObject } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
+
+import { useAnchoredPopover } from '@/shared/lib/use-anchored-popover';
 
 import { Icon } from '../Icon/Icon';
 
@@ -17,65 +19,13 @@ type SelectListProps = {
     onClose: () => void;
 };
 
-const GAP = 4;
-const MARGIN = 8;
 const MAX_HEIGHT = 320;
-
-function place(anchor: HTMLElement, list: HTMLElement) {
-    const rect = anchor.getBoundingClientRect();
-    const below = window.innerHeight - rect.bottom - GAP - MARGIN;
-    const above = rect.top - GAP - MARGIN;
-    const upward = list.scrollHeight > below && above > below;
-
-    list.style.minWidth = `${rect.width}px`;
-    list.style.maxHeight = `${Math.min(MAX_HEIGHT, upward ? above : below)}px`;
-    const left = Math.min(rect.left, window.innerWidth - list.offsetWidth - MARGIN);
-
-    list.style.left = `${Math.max(MARGIN, left)}px`;
-    list.style.top = `${upward ? rect.top - GAP - list.offsetHeight : rect.bottom + GAP}px`;
-}
 
 export function SelectList(props: SelectListProps) {
     const { id, options, active, selected, anchor, label, onHighlight, onChoose, onClose } = props;
     const ref = useRef<HTMLUListElement>(null);
 
-    useLayoutEffect(() => {
-        const list = ref.current;
-        const root = anchor.current;
-
-        if (!list || !root || !('showPopover' in list)) {
-            return;
-        }
-
-        list.showPopover();
-
-        const update = () => {
-            place(root, list);
-        };
-
-        update();
-        window.addEventListener('resize', update);
-        window.addEventListener('scroll', update, true);
-
-        return () => {
-            window.removeEventListener('resize', update);
-            window.removeEventListener('scroll', update, true);
-        };
-    }, [anchor]);
-
-    useEffect(() => {
-        const outside = (event: PointerEvent) => {
-            if (!anchor.current?.contains(event.target as Node)) {
-                onClose();
-            }
-        };
-
-        document.addEventListener('pointerdown', outside, true);
-
-        return () => {
-            document.removeEventListener('pointerdown', outside, true);
-        };
-    }, [anchor, onClose]);
+    useAnchoredPopover({ anchor, popover: ref, onClose, matchWidth: true, maxHeight: MAX_HEIGHT });
 
     useEffect(() => {
         document.getElementById(optionId(id, active))?.scrollIntoView({ block: 'nearest' });

@@ -1,9 +1,11 @@
 import { clsx } from 'clsx';
+import type { CSSProperties } from 'react';
 
 import type { ConnectionState } from '@/shared/api/events-stream';
-import { roleLabel } from '@/shared/config/labels';
 import type { Session } from '@/shared/types/api';
-import { Avatar, Icon, type IconName } from '@/shared/ui';
+import { Icon, type IconName } from '@/shared/ui';
+
+import { AccountMenu } from '../AccountMenu/AccountMenu';
 
 import './AppHeader.scss';
 
@@ -42,7 +44,11 @@ export function AppHeader(props: AppHeaderProps) {
         <header className="app-header">
             <span className="app-header__org">{session.organization.name}</span>
 
-            <nav className="app-header__nav" aria-label="Основная навигация">
+            <nav
+                className="app-header__nav"
+                aria-label="Основная навигация"
+                style={{ '--nav-items': items.length } as CSSProperties}
+            >
                 {items.map((item) => (
                     <button
                         key={item.section}
@@ -80,14 +86,7 @@ export function AppHeader(props: AppHeaderProps) {
                 </span>
             </span>
 
-            <span className="app-header__profile">
-                <Avatar name={session.employee.name} size={28} />
-
-                <span className="app-header__profile-text">
-                    {session.employee.name}
-                    <small className="app-header__profile-role">{roleLabel(session.employee.role)}</small>
-                </span>
-            </span>
+            <AccountMenu session={session} />
         </header>
     );
 }

@@ -25,10 +25,13 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
     const timezone = session.organization.timezone;
     const [expanded, setExpanded] = useState<string | null>(null);
     const [section, setSection] = useState<Section>('tickets');
+
     const desktop = useMediaQuery(MEDIA.desktop);
     const queue = useTicketFilters(timezone);
+
     const dictionaries = useQuery(dictionariesQuery);
     const employees = useQuery(employeesQuery);
+
     const notifications = useNotifications();
     const live = useLiveUpdates();
     const ticketList = useTicketList(queue.query, live.connection);
