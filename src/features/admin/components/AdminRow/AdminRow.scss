@@ -8,7 +8,6 @@
   padding: 10px 0;
   border-bottom: 1px solid $color-line;
 
-  // Rows with several actions put them under the text when space runs out.
   &--wrap {
     @include respond-to(tablet) {
       flex-wrap: wrap;

@@ -14,7 +14,6 @@ type AdminDialogsProps = {
   onClose: () => void;
 };
 
-/** The open admin dialog. */
 export function AdminDialogs({ dialog, ...props }: AdminDialogsProps) {
   switch (dialog.kind) {
     case 'employee':

@@ -10,7 +10,6 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      // Component stylesheets `@use 'abstracts'` without a relative path.
       scss: { loadPaths: [fileURLToPath(new URL('./src/shared/styles', import.meta.url))] },
     },
   },

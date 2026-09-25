@@ -12,15 +12,12 @@ type TicketAsideProps = {
   ticket: Ticket;
   dictionaries: Dictionary[];
   timezone: string;
-  /** Classification cannot change (closed ticket, or a command in flight). */
   disabled: boolean;
-  /** The suggestion may be inserted into the draft. */
   canInsert: boolean;
   onClassify: (field: Dimension, value: string) => void;
   onInsertSuggestion: (text: string) => void;
 };
 
-/** The card's side column: properties and classification, the assistant, ratings. */
 export function TicketAside(props: TicketAsideProps) {
   const { ticket, timezone } = props;
   return (

@@ -8,7 +8,6 @@ type CheckboxFieldProps = {
   children: ReactNode;
 };
 
-/** An uncontrolled checkbox with its label, for forms read through FormData. */
 export function CheckboxField({ name, defaultChecked, children }: CheckboxFieldProps) {
   return (
     <label className="checkbox-field">

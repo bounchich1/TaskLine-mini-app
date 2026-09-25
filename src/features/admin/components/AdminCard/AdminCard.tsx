@@ -4,12 +4,10 @@ import './AdminCard.scss';
 
 type AdminCardProps = {
   title: string;
-  /** Shown next to the title, e.g. an "add" button. */
   action?: ReactNode;
   children: ReactNode;
 };
 
-/** A section of the admin page: a title row, then its content. */
 export function AdminCard({ title, action, children }: AdminCardProps) {
   return (
     <section className="admin-card">

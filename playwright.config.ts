@@ -18,13 +18,10 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      // PLAYWRIGHT_CHANNEL=msedge (or chrome) runs an installed browser instead of the bundled
-      // Chromium from `npx playwright install chromium`.
       use: { ...devices['Desktop Chrome'], channel: process.env.PLAYWRIGHT_CHANNEL },
     },
   ],
   webServer: {
-    // Demo mode signs in through /v1/auth/dev; every /v1 call is mocked in the tests.
     command: `npx vite --mode demo --host 127.0.0.1 --port ${PORT} --strictPort`,
     url: `http://127.0.0.1:${PORT}`,
     reuseExistingServer: false,

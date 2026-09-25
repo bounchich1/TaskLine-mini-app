@@ -5,7 +5,6 @@ type BackButton = {
   offClick: (callback: () => void) => void;
 };
 
-/** The subset of the MAX WebApp bridge (max-web-app.js) the app uses. */
 type Bridge = {
   initData?: string;
   platform?: string;
@@ -28,7 +27,6 @@ const VIEWPORT_TIMEOUT_MS = 1000;
 
 export const bridge = () => window.WebApp;
 
-/** Waits up to 3 s for the host to inject launch data; `null` outside MAX. */
 export async function waitForLaunch(): Promise<string | null> {
   for (let i = 0; i < LAUNCH_POLL_ATTEMPTS; i++) {
     if (window.WebApp?.initData) {
@@ -39,50 +37,50 @@ export async function waitForLaunch(): Promise<string | null> {
   return null;
 }
 
-/** Asks the host to confirm closing while a draft is unsent. */
-export function protectDraft(dirty: boolean): void {
+function bestEffort(action: () => void): boolean {
   try {
+    action();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function protectDraft(dirty: boolean): void {
+  bestEffort(() => {
     if (dirty) {
       bridge()?.enableClosingConfirmation?.();
     } else {
       bridge()?.disableClosingConfirmation?.();
     }
-  } catch {
-    /* Host capability is best effort. */
-  }
+  });
 }
 
-/** Shows the host back button while mounted; returns the cleanup. */
 export function bindBack(callback: () => void): () => void {
   const back = bridge()?.BackButton;
-  try {
+  bestEffort(() => {
     back?.show();
     back?.onClick(callback);
-  } catch {
-    /* Host capability is best effort. */
-  }
+  });
   return () => {
-    try {
+    bestEffort(() => {
       back?.offClick(callback);
       back?.hide();
-    } catch {
-      /* Host capability is best effort. */
-    }
+    });
   };
 }
 
-/** Publishes the host viewport height as `--host-height`. */
 export async function setViewport(): Promise<void> {
-  try {
-    const result = await Promise.race([
-      bridge()?.getViewportSize?.(),
-      new Promise<undefined>((resolve) => setTimeout(resolve, VIEWPORT_TIMEOUT_MS)),
-    ]);
-    const height = Number.parseFloat(result?.height ?? '');
-    if (Number.isFinite(height) && height >= 300 && height < 5000) {
-      document.documentElement.style.setProperty('--host-height', `${height}px`);
-    }
-  } catch {
-    /* Host capability is best effort. */
+  await applyViewport().catch(() => undefined);
+}
+
+async function applyViewport(): Promise<void> {
+  const result = await Promise.race([
+    bridge()?.getViewportSize?.(),
+    new Promise<undefined>((resolve) => setTimeout(resolve, VIEWPORT_TIMEOUT_MS)),
+  ]);
+  const height = Number.parseFloat(result?.height ?? '');
+  if (Number.isFinite(height) && height >= 300 && height < 5000) {
+    document.documentElement.style.setProperty('--host-height', `${height}px`);
   }
 }

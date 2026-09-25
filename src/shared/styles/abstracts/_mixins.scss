@@ -2,7 +2,6 @@
 @use 'breakpoints' as *;
 @use 'typography' as *;
 
-/// Hides content visually but keeps it for screen readers.
 @mixin visually-hidden {
   position: absolute;
   width: 1px;
@@ -17,14 +16,11 @@
   outline-offset: 2px;
 }
 
-/// The focus ring of a full-width row, drawn inside it: a scrolling list clips an outer ring.
 @mixin focus-ring-inset {
   outline: 2px solid $color-focus;
   outline-offset: -2px;
 }
 
-/// Focus of a text field or a select: an accent edge with a soft halo. An offset outline would
-/// read as a second border around the field. `$bordered: false` for fields without a border.
 @mixin field-focus($bordered: true) {
   outline: none;
 
@@ -38,21 +34,18 @@
   }
 }
 
-/// One line of text, cut with an ellipsis.
 @mixin truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/// Secondary text: dates, counts, hints.
 @mixin muted($step: label) {
   @include text($step);
 
   color: $color-text-muted;
 }
 
-/// The title of a section inside a page or a panel (sentence case, not shouting).
 @mixin section-title {
   @include text(small);
 
@@ -61,7 +54,6 @@
   color: $color-text-secondary;
 }
 
-/// A borderless inline action that looks like a link.
 @mixin text-button($step: small) {
   @include text($step);
 
@@ -78,7 +70,6 @@
   }
 }
 
-/// A square button that holds a single icon.
 @mixin icon-button($size: 32px) {
   display: inline-grid;
   place-items: center;
@@ -96,7 +87,6 @@
   }
 }
 
-/// Native form controls outside MAX UI (selects, date and text inputs, textareas).
 @mixin input-control {
   @include text(body);
 
@@ -118,7 +108,6 @@
   }
 }
 
-/// A small count next to a label (tabs, navigation).
 @mixin count {
   @include text(caption);
 
@@ -132,7 +121,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/// A list row that reacts to the pointer.
 @mixin row-hover {
   @media (hover: hover) {
     &:hover {

@@ -16,10 +16,6 @@ type ClassificationFieldsProps = {
   onChange: (field: Dimension, value: string) => void;
 };
 
-/**
- * Tag, urgency and complexity as property rows; archived values
- * appear only if already selected.
- */
 export function ClassificationFields({
   ticket,
   dictionaries,

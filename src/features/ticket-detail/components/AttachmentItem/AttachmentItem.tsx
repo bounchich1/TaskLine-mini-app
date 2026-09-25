@@ -20,7 +20,6 @@ function downloadLabel(busy: boolean, needsGrant: boolean) {
   return needsGrant ? 'Подготовить' : 'Скачать';
 }
 
-/** Inside MAX, prepare a short-lived link first, then hand it to the host to download. */
 function useAttachmentDownload(file: Attachment) {
   const [grant, setGrant] = useState<DownloadGrant | null>(null);
   const [error, setError] = useState<unknown>(null);
@@ -51,7 +50,6 @@ function useAttachmentDownload(file: Attachment) {
   return { download, busy, error, needsGrant: native && !grant };
 }
 
-/** An attachment of a message, with its scan status and a download button once clean. */
 export function AttachmentItem({ file }: { file: Attachment }) {
   const { download, busy, error, needsGrant } = useAttachmentDownload(file);
   return (

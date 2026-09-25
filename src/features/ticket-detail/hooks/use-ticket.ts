@@ -11,7 +11,6 @@ export function useTicket(id: string) {
   });
 }
 
-/** Refetches the ticket, its conversation and the queue after a change to the ticket. */
 export function useRefreshTicket(id: string) {
   const cache = useQueryClient();
   return async () => {

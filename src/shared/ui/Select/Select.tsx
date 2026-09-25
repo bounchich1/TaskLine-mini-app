@@ -10,28 +10,18 @@ import './Select.scss';
 
 export type SelectProps = {
   options: readonly SelectOption[];
-  /** Controlled value; leave out to let the select keep its own (see `defaultValue`). */
   value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
-  /** Submits the value with the surrounding form. */
   name?: string;
-  /** Shown while the value matches no option. */
   placeholder?: string;
   disabled?: boolean;
-  /** `field` is a bordered form control; `plain` reads as text until hovered or focused. */
   appearance?: 'field' | 'plain';
-  /** Trigger height: 36 px, or 40 px to line up with MAX UI's medium inputs. */
   size?: 'medium' | 'large';
   className?: string;
   'aria-label'?: string;
 };
 
-/**
- * A select-only combobox in the app's style (the native `<select>` opens an OS menu): a button
- * showing the chosen option, and a listbox under it. Focus stays on the button; arrows,
- * Home/End, typing, Enter and Escape work as in a native select.
- */
 export function Select(props: SelectProps) {
   const { options, name, placeholder, disabled, appearance = 'field', size = 'medium' } = props;
   const label = props['aria-label'];

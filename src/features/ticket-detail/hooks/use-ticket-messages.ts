@@ -6,7 +6,6 @@ import type { Message } from '@/shared/types/api';
 
 type MessagePage = { items: Message[]; has_more: boolean; next_before: number };
 
-/** The conversation, newest page first; older pages load on demand. */
 export function useTicketMessages(id: string) {
   return useInfiniteQuery({
     queryKey: queryKeys.ticketMessages(id),

@@ -1,7 +1,5 @@
 @use 'abstracts' as *;
 
-// An app shell: the header on top (a tab bar at the bottom on phones) and a main area that fills
-// the rest of the host's viewport. Each section scrolls inside it.
 .workspace {
   display: flex;
   flex-direction: column;
@@ -25,7 +23,6 @@
   flex: 1;
   min-height: 0;
 
-  // Notifications and administration: one centered, scrolling column.
   &--page {
     overflow-y: auto;
     padding: 20px 24px 40px;

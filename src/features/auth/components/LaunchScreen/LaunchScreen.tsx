@@ -10,7 +10,6 @@ type LaunchScreenProps = {
   onRetry: () => void;
 };
 
-/** Shown until the employee is signed in: progress, then the sign-in error and a retry. */
 export function LaunchScreen({ loading, error, onRetry }: LaunchScreenProps) {
   if (loading) {
     return (

@@ -1,6 +1,5 @@
 import type { Dictionary } from '@/shared/types/api';
 
-/** Russian labels for API codes. Unknown codes fall back as noted per lookup. */
 type Labels = Readonly<Partial<Record<string, string>>>;
 
 export type Dimension = Dictionary['dimension'];
@@ -13,7 +12,6 @@ export const DIMENSION_LABELS: Readonly<Record<Dimension, string>> = {
   complexity: 'Сложность',
 };
 
-/** "Изменить тег" and the like. */
 export const DIMENSION_OBJECT_LABELS: Readonly<Record<Dimension, string>> = {
   tag: 'тег',
   urgency: 'срочность',
@@ -33,7 +31,6 @@ export const STATUS_LABELS: Labels = {
   closed: 'Закрыта',
 };
 
-/** Falls back to the code itself. */
 export const statusLabel = (status: string) => STATUS_LABELS[status] ?? status;
 
 const DELIVERY_LABELS: Labels = {
@@ -48,7 +45,6 @@ const DELIVERY_LABELS: Labels = {
   internal: 'Внутренняя запись',
 };
 
-/** Falls back to the code itself. */
 export const deliveryLabel = (state: string) => DELIVERY_LABELS[state] ?? state;
 
 const LEARNING_LABELS: Labels = {
@@ -62,7 +58,6 @@ const LEARNING_LABELS: Labels = {
   suppressed: 'Обработка остановлена',
 };
 
-/** Falls back to the code itself. */
 export const learningLabel = (status: string) => LEARNING_LABELS[status] ?? status;
 
 const NOTIFICATION_LABELS: Labels = {
@@ -75,7 +70,6 @@ const NOTIFICATION_LABELS: Labels = {
 export const notificationLabel = (type: string) =>
   NOTIFICATION_LABELS[type] ?? 'Изменение обращения';
 
-/** Roles in display order: the employee form lists them this way. */
 export const ROLE_OPTIONS = [
   ['support', 'Сотрудник поддержки'],
   ['supervisor', 'Руководитель'],
@@ -84,7 +78,6 @@ export const ROLE_OPTIONS = [
 
 const ROLE_LABELS: Labels = Object.fromEntries(ROLE_OPTIONS);
 
-/** An employee's role; one wording everywhere (header, employee list, form). */
 export const roleLabel = (role: string) => ROLE_LABELS[role] ?? role;
 
 const AUTHOR_LABELS: Labels = {
@@ -93,7 +86,6 @@ const AUTHOR_LABELS: Labels = {
   bot: 'Бот поддержки',
 };
 
-/** Staff messages show the employee's name when the server provides it. */
 export const authorLabel = (type: string, name: string | null) =>
   (type === 'staff' ? name : null) ?? AUTHOR_LABELS[type] ?? 'Системная запись';
 
@@ -113,5 +105,4 @@ const PERMIT_LABELS: Labels = {
   running: 'Выполняется',
 };
 
-/** An AI call slot. */
 export const permitLabel = (state: string) => PERMIT_LABELS[state] ?? 'Требует проверки';

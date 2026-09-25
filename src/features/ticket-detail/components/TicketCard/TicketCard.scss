@@ -1,8 +1,5 @@
 @use 'abstracts' as *;
 
-// Wide: the thread (history above the composer) and the properties column scroll separately.
-// Narrow: one scrolling column (description, properties, history) with the composer pinned to
-// the bottom.
 .ticket-card {
   container: ticket / inline-size;
   display: flex;
@@ -64,7 +61,6 @@
   }
 }
 
-// Narrow: the order of the flattened column.
 @include container-below(ticket, 760px) {
   .ticket-card__error {
     order: 1;

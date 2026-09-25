@@ -1,9 +1,7 @@
 import type { Message } from '@/shared/types/api';
 
-/** Staff deliveries that may still reach the client: closing waits for them. */
 const UNRESOLVED_DELIVERIES = ['queued', 'sending', 'retry_wait', 'unknown'];
 
-/** A staff member may cancel these deliveries. */
 export const CANCELABLE_DELIVERIES = ['queued', 'retry_wait', 'failed'];
 
 export const sortMessages = (pages: { items: Message[] }[] | undefined): Message[] =>

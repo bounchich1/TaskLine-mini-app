@@ -8,7 +8,6 @@ type ReasonFieldProps = {
   required?: boolean;
 };
 
-/** The free-text note of a ticket dialog. */
 export function ReasonField({ label, value, onChange, required = false }: ReasonFieldProps) {
   return (
     <FormField label={label}>

@@ -21,7 +21,6 @@ export const uploadKind = (file: File): UploadKind => {
 
 export const toMegabytes = (bytes: number) => bytes / MB;
 
-/** The server scans every upload; the card polls for the verdict this many times. */
 export const SCAN_POLL_ATTEMPTS = 60;
 export const SCAN_POLL_INTERVAL_MS = 1500;
 export const FAILED_SCAN_STATUSES = ['infected', 'rejected', 'failed', 'canceled'];

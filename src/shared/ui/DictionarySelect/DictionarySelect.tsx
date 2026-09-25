@@ -6,13 +6,10 @@ import { Select, type SelectProps } from '../Select/Select';
 type DictionarySelectProps = Omit<SelectProps, 'options'> & {
   items: Dictionary[] | undefined;
   dimension: Dimension;
-  /** Adds a first, empty option with this label (e.g. "Все"). */
   emptyLabel?: string;
-  /** Hides archived values, except the one currently selected. */
   activeOnly?: boolean;
 };
 
-/** A select over one classification dimension; archived values are marked "архив". */
 export function DictionarySelect({
   items,
   dimension,

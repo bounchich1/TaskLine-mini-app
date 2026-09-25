@@ -100,8 +100,6 @@ test('picks a classification value with the keyboard', async ({ page }) => {
   expect(api.callsTo('PATCH', '/v1/tickets/t1/classification')[0]?.body).toMatchObject({
     urgency: 'medium',
   });
-  // Typing only highlights; Escape closes the list without a change. (The fields are disabled
-  // while the change is saved, which drops focus. Playwright types Cyrillic without keydown.)
   await expect(urgency).toBeEnabled();
   await urgency.focus();
   await urgency.dispatchEvent('keydown', { key: 'в', bubbles: true });

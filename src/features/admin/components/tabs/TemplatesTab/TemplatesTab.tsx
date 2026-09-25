@@ -10,7 +10,6 @@ type TemplatesTabProps = {
   onEdit: (template: Template) => void;
 };
 
-/** The bot's messages to clients. */
 export function TemplatesTab({ templates, onEdit }: TemplatesTabProps) {
   return (
     <AdminCard title="Сообщения бота">

@@ -5,21 +5,14 @@ import { notifySessionExpired } from './session-events';
 
 export type ConnectionState = 'live' | 'reconnecting';
 
-/** One server-side change, as the stream's `change` event reports it. */
 export type LiveEvent = { type: string; ticket_id: string | null };
 
 export type StreamListeners = {
-  /** New changes, in order: one call per chunk read, however many events it held. */
   onEvents: (events: LiveEvent[]) => void;
-  /** Anything may have changed: on every (re)connect and when the server asks to resync. */
   onResync: () => void;
   onState: (state: ConnectionState) => void;
 };
 
-/**
- * Survives reconnects: the last event id seen and the current backoff delay. Without a cursor
- * the server starts from its newest event.
- */
 type StreamState = { cursor: string | null; delay: number };
 
 type StreamOutcome = 'closed' | 'expired';
@@ -49,7 +42,6 @@ function handlePacket(packet: string, stream: StreamState, result: ChunkResult):
   } else if (packet.includes('event: resync')) {
     result.resync = true;
   } else if (packet.includes('event: change')) {
-    // An unreadable payload still means something changed.
     result.events.push(parseEvent(packet) ?? { type: 'unknown', ticket_id: null });
   }
 }
@@ -88,7 +80,6 @@ async function readPackets(
   }
 }
 
-/** One connection, from the request until the server closes the stream. */
 async function listen(
   stream: StreamState,
   listeners: StreamListeners,
@@ -126,14 +117,8 @@ function pause(ms: number, signal: AbortSignal): Promise<void> {
   });
 }
 
-/**
- * Follows the server's UI event stream, starting from now, until `signal` aborts or the session
- * ends. Reconnects with a backoff that doubles from 1 s up to 30 s, resuming after the last
- * event seen.
- */
 export async function events(listeners: StreamListeners, signal: AbortSignal): Promise<void> {
   const stream: StreamState = { cursor: null, delay: INITIAL_DELAY_MS };
-  // A function, so TypeScript does not narrow `signal.aborted` to false across the awaits below.
   const running = () => !signal.aborted && hasSession();
   while (running()) {
     try {

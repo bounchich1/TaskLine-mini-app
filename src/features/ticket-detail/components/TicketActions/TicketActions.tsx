@@ -12,7 +12,6 @@ type TicketActionsProps = {
   onOpenDialog: (dialog: TicketDialog) => void;
 };
 
-/** Take into work, transfer, close or reopen, depending on the status and the employee. */
 export function TicketActions({
   ticket,
   active,

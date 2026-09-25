@@ -15,12 +15,10 @@ type QueueTabsProps = {
   tab: QueueTab;
   counts: TicketPage['counts'] | undefined;
   onSelect: (tab: QueueTab) => void;
-  /** The live stream reported changes since the employee last looked. */
   changed: boolean;
   onAcknowledge: () => void;
 };
 
-/** Open / closed tabs with their counts, and the "queue updated" notice. */
 export function QueueTabs({ tab, counts, onSelect, changed, onAcknowledge }: QueueTabsProps) {
   return (
     <div className="queue-tabs">

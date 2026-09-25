@@ -29,7 +29,6 @@
   background: $color-bg-muted;
   color: $color-text-secondary;
 
-  // The unread mark.
   .notification-item--unread &::after {
     content: '';
     position: absolute;

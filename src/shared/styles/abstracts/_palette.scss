@@ -1,7 +1,3 @@
-// Raw colors of the app's own tokens, for the light and dark schemes. Only base/_theme.scss reads
-// these (to publish them as CSS custom properties); components use the roles in _variables.scss.
-// Everything else — surfaces, text, dividers, the accent — comes from MAX UI's theme.
-
 $palette-light: (
   urgency-critical: #e5484d,
   urgency-high: #ef6c1a,
@@ -40,8 +36,6 @@ $palette-dark: (
   hover: rgb(255 255 255 / 5%),
   shadow: rgb(0 0 0 / 50%),
 );
-
-// The page behind the app root (overscroll, the dialog backdrop), per scheme.
 $canvas-light: #fff;
 $canvas-dark: #17181c;
 $backdrop: rgb(12 13 14 / 40%);

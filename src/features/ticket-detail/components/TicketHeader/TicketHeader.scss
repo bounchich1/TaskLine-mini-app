@@ -30,7 +30,6 @@
   gap: 8px;
   margin-left: auto;
 
-  // Below the title, the full width, when the pane is narrow.
   @include container-below(ticket, 520px) {
     flex-basis: 100%;
 

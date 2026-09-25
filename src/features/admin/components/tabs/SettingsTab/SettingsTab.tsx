@@ -13,7 +13,6 @@ type SettingsTabProps = {
   save: AdminSave;
 };
 
-/** Organization name and timezone. */
 export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
   return (
     <AdminCard title="Организация">

@@ -6,10 +6,8 @@ import { api } from '@/shared/api/http';
 import { queryKeys } from '@/shared/api/query-keys';
 import type { TicketPage } from '@/shared/types/api';
 
-/** Polling interval while the live event stream is down. */
 const FALLBACK_REFETCH_MS = 15000;
 
-/** The ticket queue for a filter query, a page at a time. */
 export function useTicketList(query: string, connection: ConnectionState) {
   const list = useInfiniteQuery({
     queryKey: queryKeys.ticketList(query),

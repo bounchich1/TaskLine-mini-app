@@ -2,7 +2,6 @@ import { dayBoundary } from '@/shared/lib/day-boundary';
 
 export type QueueTab = 'open' | 'closed';
 
-/** Queue filters, in the order they appear in the request's query string. */
 export type Filters = {
   tab: QueueTab;
   q: string;
@@ -16,7 +15,6 @@ export type Filters = {
   sort: string;
 };
 
-/** The fields of the filter panel (search, tab and sort are set elsewhere). */
 export const FILTER_FIELDS = [
   'tag',
   'urgency',
@@ -40,7 +38,6 @@ export const DEFAULT_FILTERS: Filters = {
   sort: 'urgency',
 };
 
-/** The query string of GET /v1/tickets; dates become the organization's day boundaries. */
 export function filtersQuery(filters: Filters, timezone: string): string {
   const params = new URLSearchParams();
   for (const [name, value] of Object.entries(filters)) {

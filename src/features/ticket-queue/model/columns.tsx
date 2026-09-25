@@ -25,7 +25,6 @@ const ratingColumn: ColumnDef<Ticket> = {
   ),
 };
 
-/** Queue columns; the number cell holds the row's button. Closed tickets also show the rating. */
 export function buildTicketColumns({ expanded, onToggle, tab, timezone }: ColumnOptions) {
   const columns: ColumnDef<Ticket>[] = [
     {

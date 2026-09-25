@@ -9,7 +9,6 @@
   color: $color-warning-text;
   text-align: center;
 
-  // Wider screens show the connection state in the header.
   &--offline {
     display: none;
 

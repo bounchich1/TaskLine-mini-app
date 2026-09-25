@@ -6,7 +6,6 @@ import { FormField, CheckboxField, Select } from '@/shared/ui';
 import { FormDialog } from '../FormDialog/FormDialog';
 
 type DictionaryDialogProps = {
-  /** `null` adds a new value. */
   value: Dictionary | null;
   busy: boolean;
   error: unknown;
@@ -14,7 +13,6 @@ type DictionaryDialogProps = {
   onClose: () => void;
 };
 
-/** Adds a classification value or edits one; the dimension and code are fixed once created. */
 export function DictionaryDialog({ value, busy, error, save, onClose }: DictionaryDialogProps) {
   const submit = (form: FormData) => {
     void save('/v1/admin/dictionaries', {

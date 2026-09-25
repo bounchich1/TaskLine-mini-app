@@ -21,7 +21,6 @@ function deliveryIcon(state: string): IconName {
   return state === 'failed' || state === 'unknown' ? 'alert' : 'clock';
 }
 
-/** Delivery state of a staff message, with cancel and retry where allowed. */
 export function DeliveryStatus({
   message,
   canAct,

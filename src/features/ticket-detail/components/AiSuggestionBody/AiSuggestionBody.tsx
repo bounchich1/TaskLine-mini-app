@@ -1,4 +1,3 @@
-// Part of AiSuggestionPanel: styled by AiSuggestionPanel.scss.
 import { Button } from '@maxhub/max-ui';
 
 import type { Suggestion, Ticket } from '@/shared/types/api';
@@ -14,7 +13,6 @@ const sourcesNote = (suggestion: Suggestion) =>
     ? `Источников: ${suggestion.evidence_memory_ids.length}`
     : 'Без похожих обращений';
 
-/** The panel's content for the classification state: the suggestion, or why there is none. */
 export function AiSuggestionBody({ ticket, canInsert, onInsert }: AiSuggestionBodyProps) {
   const { suggestion } = ticket;
   const solution = suggestion?.suggested_solution;

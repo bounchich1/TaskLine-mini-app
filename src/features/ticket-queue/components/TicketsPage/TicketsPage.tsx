@@ -24,18 +24,12 @@ type TicketsPageProps = {
   employees: Employee[] | undefined;
   expanded: string | null;
   onExpand: Dispatch<SetStateAction<string | null>>;
-  /** The screen fits the queue and the open ticket side by side. */
   split: boolean;
-  /** The live stream reported changes since the employee last looked. */
   changed: boolean;
   onRefresh: () => void;
   onAcknowledge: () => void;
 };
 
-/**
- * The ticket queue and the open ticket. Wide screens show the queue as a full table, or as a
- * list beside the open ticket; narrow screens show one or the other.
- */
 export function TicketsPage(props: TicketsPageProps) {
   const { session, queue, ticketList, expanded, onExpand, split } = props;
   const { list, rows, counts } = ticketList;

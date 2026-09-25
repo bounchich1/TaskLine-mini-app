@@ -21,12 +21,10 @@ type TicketCardProps = {
   session: Session;
   employees: Employee[];
   dictionaries: Dictionary[];
-  /** Unsent drafts by ticket id; owned by the app so they survive collapsing the card. */
   drafts: Map<string, Draft>;
   onClose: () => void;
 };
 
-/** An open ticket: the conversation with the reply composer, and its properties beside it. */
 export function TicketCard({
   id,
   session,
@@ -68,7 +66,6 @@ export function TicketCard({
       <div className="ticket-card__panes">
         <div className="ticket-card__thread">
           <div className="ticket-card__scroll">
-            {/* While a dialog is open, the dialog shows the command's error. */}
             {dialog ? null : <ErrorNotice className="ticket-card__error" error={command.error} />}
             <Description ticket={ticket} />
             <Conversation

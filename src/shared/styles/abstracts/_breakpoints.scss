@@ -1,31 +1,23 @@
 @use 'sass:map';
 
-// Viewport breakpoints (upper bounds). Keep in sync with shared/lib/breakpoints.ts.
-// - desktop: above `tablet`, the queue and the open ticket sit side by side;
-// - tablet: one pane at a time, navigation in the header;
-// - phone: one pane at a time, navigation in a bottom tab bar.
 $breakpoints: (
   tablet: 1099px,
   phone: 639px,
 );
 
-/// Styles for viewports at most as wide as the breakpoint.
 @mixin respond-to($name) {
   @media (max-width: map.get($breakpoints, $name)) {
     @content;
   }
 }
 
-/// Styles for viewports wider than the breakpoint.
 @mixin respond-above($name) {
   @media (min-width: map.get($breakpoints, $name) + 1px) {
     @content;
   }
 }
 
-/// Styles for a named size container (`container: <name> / inline-size`) narrower than `$width`.
 @mixin container-below($name, $width) {
-  // The name is a parameter; callers pass kebab-case names.
   // stylelint-disable-next-line container-name-pattern
   @container #{$name} (max-width: #{$width - 1px}) {
     @content;

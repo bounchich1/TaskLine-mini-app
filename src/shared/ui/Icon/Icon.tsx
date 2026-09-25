@@ -82,7 +82,6 @@ export type IconName = keyof typeof ICON_PATHS;
 
 type IconProps = { name: IconName; size?: number; className?: string };
 
-/** A 24×24 line icon drawn in `currentColor`; decorative (hidden from assistive technology). */
 export function Icon({ name, size = 20, className }: IconProps) {
   return (
     <svg

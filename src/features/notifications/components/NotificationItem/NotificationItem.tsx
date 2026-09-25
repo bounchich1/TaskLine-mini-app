@@ -20,7 +20,6 @@ type NotificationItemProps = {
   onOpen: (notification: Notification) => void;
 };
 
-/** One notification; opening it marks it read and shows its ticket. */
 export function NotificationItem({ notification, timezone, onOpen }: NotificationItemProps) {
   const unread = !notification.read_at;
   return (

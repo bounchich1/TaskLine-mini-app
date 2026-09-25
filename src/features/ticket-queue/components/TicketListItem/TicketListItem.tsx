@@ -16,13 +16,11 @@ import './TicketListItem.scss';
 type TicketListItemProps = {
   ticket: Ticket;
   selected: boolean;
-  /** Closed tickets also show the rating. */
   withRating: boolean;
   timezone: string;
   onToggle: (id: string) => void;
 };
 
-/** One ticket of the compact queue: number, status and time; the first message; the labels. */
 export function TicketListItem({
   ticket,
   selected,

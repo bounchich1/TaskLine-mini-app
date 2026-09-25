@@ -12,7 +12,6 @@ type QueueFiltersProps = {
   employees: Employee[] | undefined;
 };
 
-/** The expanded filter panel. */
 export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersProps) {
   const { filters, change } = queue;
   const onChange = (name: keyof Filters) => (value: string) => {

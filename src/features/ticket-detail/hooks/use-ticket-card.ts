@@ -11,11 +11,6 @@ import { useRefreshTicket, useTicket } from './use-ticket';
 import { useTicketCommand } from './use-ticket-command';
 import { useTicketMessages } from './use-ticket-messages';
 
-/**
- * Everything the open ticket's card works with: the ticket and its history, the draft and its
- * uploads, the open dialog, and commands. Collapsing with an unsent draft asks first; the host's
- * Back button collapses too.
- */
 export function useTicketCard(id: string, drafts: Map<string, Draft>, onClose: () => void) {
   const detail = useTicket(id);
   const history = useTicketMessages(id);

@@ -11,7 +11,6 @@ type TicketListProps = {
   onToggle: (id: string) => void;
 };
 
-/** The queue as a compact list: beside an open ticket, and on narrow screens. */
 export function TicketList({ rows, tab, timezone, expanded, onToggle }: TicketListProps) {
   return (
     <ul aria-label="Обращения">

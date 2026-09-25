@@ -23,7 +23,6 @@ import {
 
 type SetDraft = Dispatch<SetStateAction<Draft>>;
 
-/** Creates the upload and sends its content; returns the upload id. */
 async function sendFile(ticketId: string | undefined, file: File, kind: UploadKind) {
   const { id } = await api<{ id: string }>('/v1/uploads', {
     method: 'POST',
@@ -35,7 +34,6 @@ async function sendFile(ticketId: string | undefined, file: File, kind: UploadKi
   return id;
 }
 
-/** Adds the upload to the draft and polls the server's scan until it is clean. */
 async function waitForScan(upload: Upload, setDraft: SetDraft, mounted: RefObject<boolean>) {
   const { id } = upload;
   let value = upload;
@@ -75,12 +73,10 @@ function checkFile(file: File, uploadCount: number): UploadKind {
 
 type AttachmentUploadOptions = {
   ticketId: string | undefined;
-  /** Files already in the draft. */
   uploadCount: number;
   setDraft: SetDraft;
 };
 
-/** Uploads a file picked through `fileRef` into the draft, then waits for its virus scan. */
 export function useAttachmentUpload({ ticketId, uploadCount, setDraft }: AttachmentUploadOptions) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<unknown>(null);

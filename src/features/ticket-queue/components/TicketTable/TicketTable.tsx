@@ -16,7 +16,6 @@ type TicketTableProps = {
   onToggle: (id: string) => void;
 };
 
-/** The queue as a table with every column, when the screen has room and no ticket is open. */
 export function TicketTable({ rows, tab, timezone, expanded, onToggle }: TicketTableProps) {
   const columns = useMemo(
     () => buildTicketColumns({ expanded, onToggle, tab, timezone }),
@@ -41,8 +40,6 @@ export function TicketTable({ rows, tab, timezone, expanded, onToggle }: TicketT
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          // The number cell's button is the keyboard and screen reader path; a click anywhere on
-          // the row is a pointer shortcut to the same action.
           <tr
             key={row.id}
             className="ticket-table__row"

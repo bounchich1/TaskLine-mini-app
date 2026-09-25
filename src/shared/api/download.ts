@@ -4,7 +4,6 @@ import { ApiError, authHeaders } from './http';
 
 const OBJECT_URL_LIFETIME_MS = 60000;
 
-/** Downloads an attachment through the browser (outside the MAX host) as `filename`. */
 export async function downloadBrowser(id: string, filename: string): Promise<void> {
   const response = await fetch(`${API_BASE}/v1/attachments/${id}/download`, {
     headers: authHeaders(),

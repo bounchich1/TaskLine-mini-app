@@ -15,7 +15,6 @@ import type {
 
 const DIAGNOSTICS_REFETCH_MS = 15000;
 
-/** The data of each admin tab, fetched only while its tab is open. */
 export function useAdminQueries(tab: AdminTab, isAdmin: boolean) {
   const employees = useQuery({
     queryKey: queryKeys.adminEmployees,

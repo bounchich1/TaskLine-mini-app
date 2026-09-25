@@ -1,8 +1,6 @@
 @use 'sass:map';
 @use 'sass:list';
 
-// The system font of each platform: SF on Apple, Roboto on Android, Segoe UI on Windows. MAX UI
-// reads it from --family-base on its root (base/_theme.scss).
 $font-family-base:
   system-ui,
   -apple-system,
@@ -15,8 +13,6 @@ $font-family-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-semibold: 600;
-
-// The text scale: font size and line height per step.
 $type-scale: (
   caption: 11px 14px,
   label: 12px 16px,
@@ -28,7 +24,6 @@ $type-scale: (
   display: 26px 32px,
 );
 
-/// Sets the font size and line height of a step of the type scale.
 @mixin text($step) {
   $pair: map.get($type-scale, $step);
 
@@ -36,7 +31,6 @@ $type-scale: (
   line-height: list.nth($pair, 2);
 }
 
-/// The font size of a step, for declarations that need `!important` (MAX UI overrides).
 @function type-size($step) {
   @return list.nth(map.get($type-scale, $step), 1);
 }

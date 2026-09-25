@@ -15,7 +15,6 @@ type ResolutionDialogProps = {
   onClose: () => void;
 };
 
-/** Retry or give up a delivery with an unknown outcome, recording what the supervisor checked. */
 export function ResolutionDialog({
   resolution,
   busy,

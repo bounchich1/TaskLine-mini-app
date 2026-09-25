@@ -1,6 +1,3 @@
-// Deterministic API data for the smoke tests: one organization, three staff members, a small
-// queue with open and closed tickets, one ticket with a full conversation.
-
 const ORG = { name: 'ООО «Линия»', timezone: 'Asia/Krasnoyarsk' };
 
 const ME = {

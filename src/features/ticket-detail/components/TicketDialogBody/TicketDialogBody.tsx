@@ -17,7 +17,6 @@ type TicketDialogBodyProps = {
 
 const UNRESOLVED = new Error('Есть неподтверждённые отправки. Дождитесь доставки или отмените их.');
 
-/** The explanation and fields of a ticket dialog. */
 export function TicketDialogBody(props: TicketDialogBodyProps) {
   const { dialog, ticket, employees, unresolved, reason, onReason, target, onTarget } = props;
   if (dialog === 'close') {

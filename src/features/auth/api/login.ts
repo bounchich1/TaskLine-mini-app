@@ -18,7 +18,6 @@ async function requestSession(): Promise<Session> {
   return api<Session>('/v1/auth/max', { method: 'POST', body: { init_data: raw } });
 }
 
-/** Signs in; concurrent callers share one request. A failed attempt is forgotten. */
 export async function login(): Promise<Session> {
   pendingLogin ??= requestSession();
   try {
@@ -29,7 +28,6 @@ export async function login(): Promise<Session> {
   }
 }
 
-/** The next `login()` starts a new sign-in instead of reusing the last one. */
 export function forgetLogin(): void {
   pendingLogin = null;
 }

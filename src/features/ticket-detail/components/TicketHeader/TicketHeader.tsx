@@ -9,14 +9,9 @@ import './TicketHeader.scss';
 type TicketHeaderProps = {
   ticket: Ticket;
   onClose: () => void;
-  /** The ticket's actions. */
   children: ReactNode;
 };
 
-/**
- * Number, status and actions. Beside the queue the card closes with ✕ on the right; on narrow
- * screens it replaces the queue, so it goes back with an arrow on the left.
- */
 export function TicketHeader({ ticket, onClose, children }: TicketHeaderProps) {
   const split = useMediaQuery(MEDIA.desktop);
   const close = (

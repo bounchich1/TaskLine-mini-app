@@ -5,7 +5,6 @@ import { ErrorNotice, Modal } from '@/shared/ui';
 
 type FormDialogProps = {
   title: string;
-  /** Links the footer's submit button to the form. */
   formId: string;
   busy: boolean;
   error: unknown;
@@ -14,7 +13,6 @@ type FormDialogProps = {
   children: ReactNode;
 };
 
-/** A modal with a form and a "Сохранить" button. */
 export function FormDialog(props: FormDialogProps) {
   const { title, formId, busy, error, onClose, onSubmit, children } = props;
   return (

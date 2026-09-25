@@ -5,7 +5,6 @@ import { Empty } from '@/shared/ui';
 
 import './AuditTab.scss';
 
-/** Changes made by employees and administrators. */
 export function AuditTab({
   items,
   timezone,

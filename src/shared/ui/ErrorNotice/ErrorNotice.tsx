@@ -9,7 +9,6 @@ type ErrorNoticeProps = {
   className?: string;
 };
 
-/** Shows an error's message; renders nothing when `error` is empty. */
 export function ErrorNotice({ error, className }: ErrorNoticeProps) {
   if (!error) {
     return null;

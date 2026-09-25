@@ -7,12 +7,10 @@ import './AiSuggestionPanel.scss';
 
 type AiSuggestionPanelProps = {
   ticket: Ticket;
-  /** Inserting into the draft is allowed. */
   canInsert: boolean;
   onInsert: (text: string) => void;
 };
 
-/** The assistant's suggested solution: visible to staff only, never sent on its own. */
 export function AiSuggestionPanel(props: AiSuggestionPanelProps) {
   return (
     <div className="ai-panel">

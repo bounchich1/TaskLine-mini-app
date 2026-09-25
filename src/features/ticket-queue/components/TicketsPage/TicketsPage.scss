@@ -11,14 +11,11 @@
   flex-direction: column;
   min-width: 0;
 
-  // Beside the open ticket.
   .tickets-page--open.tickets-page--split & {
     flex: 0 0 $queue-pane-width;
     border-right: 1px solid $color-line-strong;
   }
 
-  // Narrow screens: the open ticket takes the queue's place (the queue stays mounted, so its
-  // scroll position survives).
   .tickets-page--open:not(.tickets-page--split) & {
     display: none;
   }

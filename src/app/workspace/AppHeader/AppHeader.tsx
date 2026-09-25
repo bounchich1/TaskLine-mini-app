@@ -13,7 +13,6 @@ type AppHeaderProps = {
   session: Session;
   section: Section;
   onSection: (section: Section) => void;
-  /** Open tickets, or undefined while the queue loads. */
   openCount: number | undefined;
   unread: number;
   connection: ConnectionState;
@@ -21,10 +20,6 @@ type AppHeaderProps = {
 
 type NavItem = { section: Section; icon: IconName; label: string; count?: number; alert?: boolean };
 
-/**
- * The organization, section navigation, live-update state and the signed-in employee. On phones
- * only the navigation remains, as a bottom tab bar.
- */
 export function AppHeader(props: AppHeaderProps) {
   const { session, section, onSection, connection } = props;
   const items: NavItem[] = [

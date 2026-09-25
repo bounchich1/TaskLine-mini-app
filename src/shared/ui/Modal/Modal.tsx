@@ -9,16 +9,10 @@ type ModalProps = {
   title: string;
   children: ReactNode;
   onClose: () => void;
-  /** Extra footer actions, after "Отмена". */
   footer?: ReactNode;
-  /** While busy the dialog cannot be dismissed. */
   busy?: boolean;
 };
 
-/**
- * A modal `<dialog>`: centered on wide screens, a bottom sheet on phones. Focus returns to the
- * previously focused element on close.
- */
 export function Modal({ title, children, onClose, footer, busy = false }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();

@@ -23,10 +23,6 @@ function coverageNote(coverage: NonNullable<Closure['coverage']>) {
     : `${messages}, текст учтён полностью`;
 }
 
-/**
- * Every closure of the ticket, newest first: the client's rating and when it came, and what the
- * assistant learned from the conversation. Ratings are read-only.
- */
 export function ClosureHistory({ closures, timezone }: { closures: Closure[]; timezone: string }) {
   const cycles = [...closures].sort((left, right) => right.cycle_no - left.cycle_no);
   return (

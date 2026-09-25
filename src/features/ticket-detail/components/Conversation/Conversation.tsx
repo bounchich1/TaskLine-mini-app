@@ -19,7 +19,6 @@ type ConversationProps = {
   onError: (error: unknown) => void;
 };
 
-/** The message history, oldest first, with a button to load earlier pages. */
 export function Conversation({ ticket, messages, history, ...messageProps }: ConversationProps) {
   return (
     <div className="conversation">

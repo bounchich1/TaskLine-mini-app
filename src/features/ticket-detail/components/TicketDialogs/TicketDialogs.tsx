@@ -17,17 +17,14 @@ type TicketDialogsProps = {
   dialog: TicketDialog;
   ticket: Ticket;
   employees: Employee[];
-  /** Some staff deliveries are still unconfirmed; the ticket cannot be closed yet. */
   unresolved: boolean;
   pending: boolean;
   error: unknown;
   onOperate: (action: string, body: unknown) => void;
   onDismiss: () => void;
-  /** Collapse the card, keeping the draft. */
   onCollapse: () => void;
 };
 
-/** Confirmation dialogs of the ticket card: close, transfer, reopen, and discard-on-collapse. */
 export function TicketDialogs(props: TicketDialogsProps) {
   const { dialog, ticket, employees, unresolved, pending, error } = props;
   const [reason, setReason] = useState('');

@@ -21,10 +21,6 @@ type WorkspaceProps = {
   drafts: Map<string, Draft>;
 };
 
-/**
- * The signed-in layout. The queue's filters and list live here, not in the tickets page, so they
- * persist across sections and keep the navigation count current.
- */
 export function Workspace({ session, drafts }: WorkspaceProps) {
   const timezone = session.organization.timezone;
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -40,7 +36,6 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
     setSection('tickets');
     setExpanded(id);
   };
-  // On narrow screens an open ticket takes the whole screen, tab bar included.
   const focused = section === 'tickets' && expanded !== null && !desktop;
   return (
     <div className={clsx('workspace', focused && 'workspace--focused')}>

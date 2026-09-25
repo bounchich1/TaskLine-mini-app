@@ -1,5 +1,3 @@
-// Part of Status: styled by Status.scss (the `status__glyph` and `status__check` elements).
-/** The glyph of each status: an empty ring, a half, three quarters, a filled check. */
 export function StatusGlyph({ status }: { status: string }) {
   return (
     <svg className="status__glyph" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">

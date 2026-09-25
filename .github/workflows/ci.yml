@@ -15,6 +15,4 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      # Format, lint (incl. architecture boundaries), stylelint, typecheck, knip, the Playwright
-      # smoke tests (screenshot tests are local-only) and the build.
       - run: npm run check

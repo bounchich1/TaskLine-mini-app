@@ -27,7 +27,6 @@
     padding-right: 24px;
   }
 
-  // Fixed widths for short values; the subject, tag and assignee share the rest.
   &--number {
     width: 28%;
   }
@@ -52,7 +51,6 @@
 
   @include row-hover;
 
-  // Keyboard focus sits on the number's button; the whole row shows it.
   &:has(:focus-visible) {
     background: $color-bg-hover;
   }
@@ -66,7 +64,6 @@
   border-bottom: 1px solid $color-line;
   vertical-align: middle;
 
-  // The number's button: room for its focus ring.
   &:first-child {
     overflow: visible;
     padding-left: 24px;

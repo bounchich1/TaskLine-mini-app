@@ -1,15 +1,9 @@
 @use 'abstracts' as *;
 
-// The only place for `!important` and selectors into MAX UI's markup: its components style their
-// inner elements with generated class names, so our components can only reach them from outside.
-
-// MAX UI buttons keep their label on one line; in narrow toolbars they shrink instead of wrapping.
 button[class*='Button__'] {
   white-space: nowrap;
 }
 
-// MAX UI's text field shows focus as a whole: the rounded field gets the ring, not the bare
-// <input> inside it (the global :focus-visible outline would draw a rectangle there).
 [class*='Input__input__']:focus-visible {
   outline: none !important;
 }

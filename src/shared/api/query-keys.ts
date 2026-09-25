@@ -1,6 +1,3 @@
-/**
- * Every TanStack Query key in the app. A prefix (e.g. `tickets`) invalidates all its variants.
- */
 export const queryKeys = {
   tickets: ['tickets'],
   ticketList: (query: string) => ['tickets', query],

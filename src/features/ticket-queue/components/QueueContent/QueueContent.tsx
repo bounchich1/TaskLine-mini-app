@@ -10,9 +10,7 @@ import './QueueContent.scss';
 type QueueContentProps = {
   rows: Ticket[];
   loading: boolean;
-  /** A search or filters are applied. */
   searching: boolean;
-  /** Show the compact list instead of the full table. */
   compact: boolean;
   tab: QueueTab;
   timezone: string;
@@ -20,7 +18,6 @@ type QueueContentProps = {
   onToggle: (id: string) => void;
 };
 
-/** The queue's rows (table or list), a loading placeholder, or the empty state. */
 export function QueueContent({ rows, loading, searching, compact, ...view }: QueueContentProps) {
   if (loading) {
     return (

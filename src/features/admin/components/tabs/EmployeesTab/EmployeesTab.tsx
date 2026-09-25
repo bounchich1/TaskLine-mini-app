@@ -8,11 +8,9 @@ import { Avatar } from '@/shared/ui';
 
 type EmployeesTabProps = {
   employees: Employee[] | undefined;
-  /** Opens the employee dialog; `null` adds a new employee. */
   onEdit: (employee: Employee | null) => void;
 };
 
-/** Staff with access to the mini-app. */
 export function EmployeesTab({ employees, onEdit }: EmployeesTabProps) {
   return (
     <AdminCard

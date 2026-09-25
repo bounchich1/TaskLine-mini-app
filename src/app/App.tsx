@@ -5,10 +5,7 @@ import type { Draft } from '@/features/ticket-detail';
 
 import { Workspace } from './workspace/Workspace';
 
-/** Signs the employee in, then shows the workspace. */
 export function App() {
-  // Unsent drafts by ticket id. Kept here so they survive the workspace remounting after the
-  // session expires; cleared when a different employee signs in.
   const [drafts] = useState(() => new Map<string, Draft>());
   const clearDrafts = useCallback(() => {
     drafts.clear();

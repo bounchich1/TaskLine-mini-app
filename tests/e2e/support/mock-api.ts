@@ -26,7 +26,6 @@ type Handler = (call: RecordedCall) => unknown;
 
 const byId = (id: string) => [...OPEN_TICKETS, ...CLOSED_TICKETS].find((item) => item.id === id);
 
-/** Page 1 of the open queue has two tickets and a cursor; page 2 has the third. */
 function ticketPage(search: URLSearchParams) {
   const counts = { open: OPEN_TICKETS.length, closed: CLOSED_TICKETS.length };
   if (search.get('tab') === 'closed') {
@@ -71,17 +70,12 @@ function mutationResult(call: RecordedCall): unknown {
   return { ok: true };
 }
 
-/**
- * Serves every /v1 request from fixtures and records it. The event stream is refused, so the
- * app stays in its "reconnecting" state and never refreshes on its own during a test.
- */
 export class MockApi {
   readonly calls: RecordedCall[] = [];
   private readonly overrides: { method: string; path: RegExp; status: number }[] = [];
 
   static async install(page: Page): Promise<MockApi> {
     const mock = new MockApi();
-    // The MAX bridge script is not needed in demo mode.
     await page.route('https://st.max.ru/**', (route) =>
       route.fulfill({ contentType: 'text/javascript', body: '' }),
     );
@@ -89,7 +83,6 @@ export class MockApi {
     return mock;
   }
 
-  /** The next matching request fails with `status` (e.g. 503 to exercise retries). */
   failNext(method: string, path: RegExp, status: number): void {
     this.overrides.push({ method, path, status });
   }

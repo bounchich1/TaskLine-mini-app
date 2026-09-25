@@ -11,11 +11,9 @@ import './TicketProperties.scss';
 type TicketPropertiesProps = {
   ticket: Ticket;
   timezone: string;
-  /** The classification rows. */
   children: ReactNode;
 };
 
-/** Assignee, the ticket's dates and its classification, as label–value rows. */
 export function TicketProperties({ ticket, timezone, children }: TicketPropertiesProps) {
   return (
     <dl className="properties">

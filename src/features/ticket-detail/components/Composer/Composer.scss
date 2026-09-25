@@ -8,7 +8,6 @@
   border-top: 1px solid $color-line;
   background: $color-bg;
 
-  // Pinned to the bottom of the single scrolling column.
   @include container-below(ticket, 760px) {
     position: sticky;
     bottom: 0;
@@ -36,7 +35,6 @@
   }
 }
 
-// Grows with the text (where the browser supports `field-sizing`) up to a limit, then scrolls.
 .composer__input {
   @include text(body);
 
@@ -91,7 +89,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-// The send button sits at the end of the bar.
 .composer__bar > :last-child {
   margin-left: auto;
 }

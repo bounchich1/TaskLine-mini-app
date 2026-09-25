@@ -10,10 +10,6 @@ const queryClient = new QueryClient({
   },
 });
 
-/**
- * MAX UI's theme and the query cache. The color scheme follows the device (as the MAX client
- * does); `app-root` and `app-root--dark` publish the app's own tokens (base/_theme.scss).
- */
 export function Providers({ children }: { children: ReactNode }) {
   const scheme = useSystemColorScheme({ listenChanges: true });
   useEffect(() => {

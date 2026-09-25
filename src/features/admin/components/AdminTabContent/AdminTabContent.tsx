@@ -19,7 +19,6 @@ type AdminTabContentProps = {
   onOpen: (dialog: AdminDialog) => void;
 };
 
-/** The body of the selected admin tab. */
 export function AdminTabContent(props: AdminTabContentProps) {
   const { queries, busy, save, onOpen } = props;
   switch (props.tab) {

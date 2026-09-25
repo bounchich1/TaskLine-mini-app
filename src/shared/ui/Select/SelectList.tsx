@@ -10,7 +10,6 @@ type SelectListProps = {
   options: readonly SelectOption[];
   active: number;
   selected: number;
-  /** The select's root: presses inside it do not close the list. */
   anchor: RefObject<HTMLElement | null>;
   label: string | undefined;
   onHighlight: (index: number) => void;
@@ -18,12 +17,10 @@ type SelectListProps = {
   onClose: () => void;
 };
 
-/** Gap between the trigger and the list, and the list's distance from the viewport's edges. */
 const GAP = 4;
 const MARGIN = 8;
 const MAX_HEIGHT = 320;
 
-/** Places the list under the anchor, or above it when there is more room there. */
 function place(anchor: HTMLElement, list: HTMLElement) {
   const rect = anchor.getBoundingClientRect();
   const below = window.innerHeight - rect.bottom - GAP - MARGIN;
@@ -36,10 +33,6 @@ function place(anchor: HTMLElement, list: HTMLElement) {
   list.style.top = `${upward ? rect.top - GAP - list.offsetHeight : rect.bottom + GAP}px`;
 }
 
-/**
- * The open list of a Select. Shown in the top layer (Popover API), so dialogs and scrolling or
- * container-query ancestors cannot clip it; without the API it falls back to CSS positioning.
- */
 export function SelectList(props: SelectListProps) {
   const { id, options, active, selected, anchor, label, onHighlight, onChoose, onClose } = props;
   const ref = useRef<HTMLUListElement>(null);
@@ -76,7 +69,6 @@ export function SelectList(props: SelectListProps) {
     document.getElementById(optionId(id, active))?.scrollIntoView({ block: 'nearest' });
   }, [id, active]);
   return (
-    // The keyboard stays on the trigger, which points into the list with aria-activedescendant.
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <ul
       ref={ref}
@@ -85,12 +77,10 @@ export function SelectList(props: SelectListProps) {
       popover="manual"
       className="select__list"
       aria-label={label}
-      // Keeps focus on the trigger when an option is pressed.
       onMouseDown={(event) => {
         event.preventDefault();
       }}
       onClick={(event) => {
-        // Canceled, so a surrounding <label> does not click the trigger and reopen the list.
         event.preventDefault();
         const option = (event.target as Element).closest<HTMLElement>('[role="option"]');
         if (option?.dataset.index) {

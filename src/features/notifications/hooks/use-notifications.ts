@@ -6,7 +6,6 @@ import type { Notification } from '@/shared/types/api';
 
 const REFETCH_MS = 15000;
 
-/** The employee's notifications, polled so the sidebar's unread count stays current. */
 export function useNotifications() {
   return useQuery({
     queryKey: queryKeys.notifications,
@@ -17,11 +16,9 @@ export function useNotifications() {
 
 export type NotificationsQuery = ReturnType<typeof useNotifications>;
 
-/** Notifications the employee has not opened yet. */
 export const countUnread = (notifications: NotificationsQuery) =>
   notifications.data?.items.filter((item) => !item.read_at).length ?? 0;
 
-/** Marks a notification read, then refetches the list. */
 export function useMarkNotificationRead() {
   const cache = useQueryClient();
   return (id: string) => {

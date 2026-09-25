@@ -11,17 +11,12 @@ import { forgetLogin, login } from '../api/login';
 const EXPIRED_MESSAGE =
   'Сессия истекла. Откройте приложение заново из MAX. Неотправленный черновик сохранён до закрытия окна.';
 
-/**
- * Signs in on mount and signs out when the server reports the session expired.
- * `onUserChange` runs when a different employee signs in than the one before (must be stable).
- */
 export function useSession(onUserChange: () => void) {
   const [session, setUser] = useState<Session | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const previousUser = useRef<string | null>(null);
   const cache = useQueryClient();
-  // Every state update happens in a promise callback, never synchronously in the effect below.
   const authenticate = useCallback(
     () =>
       login()

@@ -18,7 +18,6 @@ type ComposerProps = {
   draft: Draft;
   setDraft: Dispatch<SetStateAction<Draft>>;
   canSend: boolean;
-  /** A command is in flight. */
   pending: boolean;
   uploads: ReturnType<typeof useAttachmentUpload>;
   onSend: () => void;
@@ -34,7 +33,6 @@ function sendBlockedReason(ticket: Ticket) {
   return 'Отвечает назначенный сотрудник.';
 }
 
-/** The reply form, pinned under the history. Replies go out from the bot's name. */
 export function Composer({
   ticket,
   draft,
@@ -56,7 +54,6 @@ export function Composer({
       submit(event);
     }
   };
-  // Nothing to send or copy: the reason alone.
   if (!canSend && !isDraftDirty(draft, false)) {
     return (
       <div className="composer">

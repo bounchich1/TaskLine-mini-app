@@ -7,7 +7,6 @@ import { Icon, Select } from '@/shared/ui';
 
 import './QueueToolbar.scss';
 
-/** Search box, the filters toggle (with the number of filters set) and the sort order. */
 export function QueueToolbar({ queue }: { queue: TicketFilters }) {
   return (
     <div className="queue-toolbar">

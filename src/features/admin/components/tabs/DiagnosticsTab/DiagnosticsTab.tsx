@@ -20,7 +20,6 @@ type DiagnosticsTabProps = {
   onRetryJob: (id: string) => void;
 };
 
-/** AI call slots, and deliveries, jobs and memory writes that did not finish normally. */
 export function DiagnosticsTab({ diagnostics, ...rowProps }: DiagnosticsTabProps) {
   return (
     <>

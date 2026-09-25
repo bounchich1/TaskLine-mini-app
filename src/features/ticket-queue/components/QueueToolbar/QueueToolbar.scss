@@ -1,6 +1,5 @@
 @use 'abstracts' as *;
 
-// Beside an open ticket, and on phones, the search takes its own row.
 @mixin stacked {
   .tickets-page--open & {
     @content;

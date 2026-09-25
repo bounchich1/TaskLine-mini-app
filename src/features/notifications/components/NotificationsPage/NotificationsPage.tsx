@@ -15,7 +15,6 @@ type NotificationsPageProps = {
   onOpenTicket: (id: string) => void;
 };
 
-/** Team events addressed to the employee: new tickets and messages, transfers, ratings. */
 export function NotificationsPage({
   notifications,
   timezone,

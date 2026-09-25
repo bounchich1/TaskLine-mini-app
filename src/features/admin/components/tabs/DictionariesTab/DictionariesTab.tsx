@@ -9,11 +9,9 @@ import './DictionariesTab.scss';
 
 type DictionariesTabProps = {
   items: Dictionary[] | undefined;
-  /** Opens the dictionary dialog; `null` adds a new value. */
   onEdit: (value: Dictionary | null) => void;
 };
 
-/** Classification values by dimension, archived ones included. */
 export function DictionariesTab({ items, onEdit }: DictionariesTabProps) {
   return (
     <AdminCard

@@ -4,7 +4,6 @@ import { AdminRow } from '@/features/admin/components/AdminRow/AdminRow';
 import type { Diagnostic, DiagnosticKind, Resolution } from '@/features/admin/model/types';
 import { Icon } from '@/shared/ui';
 
-/** Failed jobs of these kinds can be retried from the admin panel. */
 const RETRYABLE_JOBS = ['file', 'scan', 'memory_delete', 'message_revision'];
 
 type DiagnosticRowProps = {
@@ -16,7 +15,6 @@ type DiagnosticRowProps = {
   onRetryJob: (id: string) => void;
 };
 
-/** One unfinished item, with the actions an operator can take on it. */
 export function DiagnosticRow({
   kind,
   item,

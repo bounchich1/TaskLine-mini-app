@@ -11,7 +11,6 @@ function zonedFormatter(timeZone: string): Intl.DateTimeFormat {
   });
 }
 
-/** The wall-clock time `instant` shows in the formatter's zone, read back as if it were UTC. */
 function wallClockAsUtc(instant: number, formatter: Intl.DateTimeFormat): number {
   const parts = Object.fromEntries(
     formatter.formatToParts(new Date(instant)).map((part) => [part.type, part.value]),
@@ -26,7 +25,6 @@ function wallClockAsUtc(instant: number, formatter: Intl.DateTimeFormat): number
   );
 }
 
-/** Converts an organization-local calendar boundary to UTC, independent of the device timezone. */
 export function dayBoundary(day: string, timeZone: string, nextDay = false): string {
   const [year, month, date] = day.split('-').map(Number);
   const target = new Date(Date.UTC(year, month - 1, date + (nextDay ? 1 : 0)));

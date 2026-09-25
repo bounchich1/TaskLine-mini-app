@@ -11,7 +11,6 @@ type DraftFilesProps = {
   setDraft: Dispatch<SetStateAction<Draft>>;
 };
 
-/** Files attached to the draft, with their scan state; removing one also deletes the upload. */
 export function DraftFiles({ uploads, setDraft }: DraftFilesProps) {
   const remove = (file: Upload) => {
     void api(`/v1/uploads/${file.id}`, { method: 'DELETE' }).catch(() => undefined);

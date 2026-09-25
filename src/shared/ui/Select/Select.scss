@@ -43,7 +43,6 @@
     }
   }
 
-  // Reads as plain text beside the other values; the frame appears on hover and focus.
   .select--plain & {
     @include text(small);
 
@@ -95,7 +94,6 @@
   }
 }
 
-// Positioned by the component in the top layer; without the Popover API, under the trigger.
 .select__list {
   position: absolute;
   top: calc(100% + 4px);

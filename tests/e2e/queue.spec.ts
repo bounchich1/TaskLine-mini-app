@@ -55,7 +55,6 @@ test('filters by dictionary values and resets the filters', async ({ page }) => 
   await expect(page.getByRole('option', { name: 'Оплата · архив' })).toHaveCount(1);
   await tag.press('Escape');
   await page.getByRole('button', { name: 'Сбросить' }).click();
-  // The unfiltered list is served from the query cache, so there may be no new request.
   await expect(tag).toHaveText('Все');
   await expect(ticketRow(page, '000002')).toBeVisible();
 });

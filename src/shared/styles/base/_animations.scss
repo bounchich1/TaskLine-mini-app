@@ -11,7 +11,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  // Overrides every component's motion, so it must win over their own declarations.
   * {
     /* stylelint-disable declaration-no-important */
     animation: none !important;

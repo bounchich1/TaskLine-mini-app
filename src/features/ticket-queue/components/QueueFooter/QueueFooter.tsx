@@ -6,11 +6,9 @@ import './QueueFooter.scss';
 
 type QueueFooterProps = {
   ticketList: TicketList;
-  /** Tickets in the current tab with the current filters. */
   total: number | undefined;
 };
 
-/** How many tickets are shown, and "show more" while there are further pages. */
 export function QueueFooter({ ticketList, total }: QueueFooterProps) {
   const { list, rows } = ticketList;
   return (

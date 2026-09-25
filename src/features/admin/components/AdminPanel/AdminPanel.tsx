@@ -22,10 +22,6 @@ type AdminPanelProps = {
   onTicket: (id: string) => void;
 };
 
-/**
- * Team and settings for administrators; supervisors with operations access see only the
- * system state.
- */
 export function AdminPanel({ session, onTicket }: AdminPanelProps) {
   const isAdmin = session.capabilities.admin;
   const [tab, setTab] = useState<AdminTab>(isAdmin ? 'employees' : 'diagnostics');
@@ -54,7 +50,6 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
           </button>
         ))}
       </div>
-      {/* While a dialog is open, the dialog shows the save error. */}
       {dialog ? null : <ErrorNotice error={error} />}
       <ErrorNotice error={queryError} />
       <AdminTabContent

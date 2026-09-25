@@ -17,10 +17,6 @@ type MessageItemProps = {
   onError: (error: unknown) => void;
 };
 
-/**
- * One message. The client on the left, staff on the right (with delivery state), the bot and
- * system records as centered notes.
- */
 export function MessageItem({ message, attachments, timezone, ...delivery }: MessageItemProps) {
   const files = attachments?.filter((file) => file.message_id === message.id) ?? [];
   const hasBody = message.deleted || message.text.length > 0;

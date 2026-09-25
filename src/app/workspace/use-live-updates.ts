@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { events, type ConnectionState, type LiveEvent } from '@/shared/api/events-stream';
 import { queryKeys } from '@/shared/api/query-keys';
 
-/** Everything a server-side change can affect. */
 const LIVE_QUERIES: QueryKey[] = [
   queryKeys.tickets,
   queryKeys.ticket,
@@ -14,13 +13,10 @@ const LIVE_QUERIES: QueryKey[] = [
   queryKeys.employees,
 ];
 
-/** Changes arriving this close together are refetched once. */
 const BATCH_MS = 300;
 
-/** Settings changes (dictionaries, employees, templates); everything else is about a ticket. */
 const isAdminEvent = (event: LiveEvent) => event.type === 'admin.changed';
 
-/** The queries one event makes stale. */
 function affectedQueries(event: LiveEvent): QueryKey[] {
   if (isAdminEvent(event)) {
     return [queryKeys.dictionaries, queryKeys.employees];
@@ -34,11 +30,6 @@ function affectedQueries(event: LiveEvent): QueryKey[] {
   ];
 }
 
-/**
- * Follows the server's event stream and refetches what each change affects, batching bursts so
- * a flood of events costs one round of requests. `changed` stays set until the employee
- * acknowledges it.
- */
 export function useLiveUpdates() {
   const cache = useQueryClient();
   const [connection, setConnection] = useState<ConnectionState>('reconnecting');
@@ -92,7 +83,6 @@ export function useLiveUpdates() {
     acknowledge: () => {
       setChanged(false);
     },
-    /** Refetches everything now. */
     refresh: () => {
       schedule(LIVE_QUERIES);
       flush();

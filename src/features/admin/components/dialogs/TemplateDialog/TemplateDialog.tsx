@@ -12,7 +12,6 @@ type TemplateDialogProps = {
   onClose: () => void;
 };
 
-/** Edits the text of a bot message. */
 export function TemplateDialog({ template, busy, error, save, onClose }: TemplateDialogProps) {
   const submit = (form: FormData) => {
     void save(`/v1/admin/templates/${template.code}`, {

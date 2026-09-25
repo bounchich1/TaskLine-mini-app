@@ -23,7 +23,6 @@ export function hasSession(): boolean {
   return session !== null;
 }
 
-/** The bearer header for requests made outside `api` (event stream, downloads). */
 export function authHeaders(): Record<string, string> {
   return { Authorization: `Bearer ${session?.token ?? ''}` };
 }
@@ -31,9 +30,7 @@ export function authHeaders(): Record<string, string> {
 export type ApiOptions = {
   method?: string;
   body?: unknown;
-  /** Sent as If-Match. */
   version?: number;
-  /** Idempotency key; a fresh one is generated for every non-GET request without it. */
   key?: string;
   signal?: AbortSignal;
 };
@@ -76,10 +73,6 @@ async function send(path: string, init: RequestInit): Promise<Response> {
   }
 }
 
-/**
- * Calls the API with the session headers. Non-2xx responses become an `ApiError`; a 401 also
- * announces that the session expired.
- */
 export async function api<T>(path: string, options: ApiOptions = {}): Promise<T> {
   const method = options.method ?? 'GET';
   const response = await send(path, {

@@ -3,7 +3,6 @@ import { expect, test } from '@playwright/test';
 import { openApp, openSection, openTicket } from './support/app';
 import { MockApi } from './support/mock-api';
 
-// Screenshot baselines are recorded per OS; CI runs on another OS, so they run locally only.
 test.skip(!!process.env.CI, 'Visual baselines are local');
 
 const WIDTHS = [1600, 1280, 800, 375];

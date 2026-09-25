@@ -12,7 +12,6 @@ import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-/** Features and the shared kernel are consumed only through their public `index.ts`. */
 const publicApi = (/** @type {string} */ type) => ({
   element: { type, fileInternalPath: 'index.ts' },
 });
@@ -35,15 +34,11 @@ export default tseslint.config(
     },
     settings: {
       react: { version: 'detect' },
-      // Our own form controls, checked as the native elements they stand for.
       'jsx-a11y': { components: { Select: 'select', DictionarySelect: 'select' } },
     },
   },
-  // Before the budget block: eslint-config-prettier turns off `curly` and `max-len`,
-  // which are deliberately re-enabled below.
   prettier,
 
-  // Readability budget: the rules that keep the code from sliding back into dense one-liners.
   {
     plugins: { 'import-x': importX, unicorn, 'react-refresh': reactRefresh },
     settings: {
@@ -74,7 +69,6 @@ export default tseslint.config(
         'error',
         { min: 2, exceptions: ['_', 'i', 'j', 'x', 'y'], properties: 'never' },
       ],
-      // `type` and `interface` are both fine; forcing interfaces drops implicit index signatures.
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
       '@typescript-eslint/consistent-type-exports': 'error',
@@ -96,14 +90,12 @@ export default tseslint.config(
         'error',
         { patterns: [{ group: ['../../*'], message: 'Use the @/ alias instead of ../../.' }] },
       ],
-      // Components are PascalCase.tsx; everything else is kebab-case.
       'unicorn/filename-case': ['error', { cases: { kebabCase: true, pascalCase: true } }],
       'react/no-multi-comp': 'error',
       'react/jsx-max-depth': ['error', { max: 6 }],
       'react/jsx-no-leaked-render': 'error',
       'react/jsx-no-useless-fragment': 'error',
       'react-refresh/only-export-components': 'error',
-      // The build has no React Compiler, so hooks it cannot memoize (TanStack Table) are fine.
       'react-hooks/incompatible-library': 'off',
     },
   },
@@ -114,7 +106,6 @@ export default tseslint.config(
     },
   },
 
-  // Architecture: where files may live and what they may import.
   {
     files: ['src/**/*.{ts,tsx}'],
     plugins: { boundaries },

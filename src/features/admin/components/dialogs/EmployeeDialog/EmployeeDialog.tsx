@@ -6,7 +6,6 @@ import { FormField, CheckboxField, Select } from '@/shared/ui';
 import { FormDialog } from '../FormDialog/FormDialog';
 
 type EmployeeDialogProps = {
-  /** `null` adds a new employee. */
   employee: Employee | null;
   busy: boolean;
   error: unknown;
@@ -14,7 +13,6 @@ type EmployeeDialogProps = {
   onClose: () => void;
 };
 
-/** Adds an employee or changes one's name, role and access. The MAX ID cannot change. */
 export function EmployeeDialog({ employee, busy, error, save, onClose }: EmployeeDialogProps) {
   const submit = (form: FormData) => {
     void save(`/v1/admin/employees${employee ? `/${employee.id}` : ''}`, {

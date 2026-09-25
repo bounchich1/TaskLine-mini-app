@@ -10,10 +10,6 @@ import {
 
 const SEARCH_DEBOUNCE_MS = 300;
 
-/**
- * Queue filters and the search box (applied after a pause in typing). Owned by the workspace, so
- * they survive switching sections.
- */
 export function useTicketFilters(timezone: string) {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [search, setSearch] = useState('');
@@ -30,7 +26,6 @@ export function useTicketFilters(timezone: string) {
   return {
     filters,
     query,
-    /** How many of the filter panel's fields are set. */
     activeFilters: FILTER_FIELDS.filter((field) => filters[field]).length,
     search,
     setSearch,

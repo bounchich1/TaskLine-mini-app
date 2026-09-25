@@ -1,25 +1,10 @@
-// Design tokens. No CSS output: every component stylesheet starts with `@use 'abstracts' as *;`.
-// Components use these instead of raw values (stylelint enforces it).
-
-// Colors are CSS custom properties, so the light and dark schemes switch at run time:
-// - MAX UI's theme (set by the <MaxUI> root for the host's color scheme): surfaces, text,
-//   dividers, the accent;
-// - the app's own tokens (`--app-*`, published by base/_theme.scss from _palette.scss).
-
-// Surfaces -------------------------------------------------------------------------------------
-
 $color-bg: var(--background-primary);
 $color-bg-subtle: var(--background-secondary);
 $color-bg-muted: var(--background-tertiary);
-
-// Menus and popovers, above the page.
 $color-bg-elevated: var(--background-card);
 $color-bg-hover: var(--app-hover);
 $color-bg-selected: var(--app-accent-tint);
 $color-bg-selected-strong: var(--app-accent-tint-strong);
-
-// Text -----------------------------------------------------------------------------------------
-
 $color-text: var(--text-primary);
 $color-text-secondary: var(--text-secondary);
 $color-text-muted: var(--text-tertiary);
@@ -27,14 +12,8 @@ $color-text-inverse: var(--text-primary-inverse-static);
 $color-text-accent: var(--text-themed);
 $color-text-negative: var(--text-negative);
 $color-icon-muted: var(--icon-tertiary);
-
-// Lines ----------------------------------------------------------------------------------------
-
 $color-line: var(--divider-secondary);
 $color-line-strong: var(--divider-primary);
-
-// Accent and states ----------------------------------------------------------------------------
-
 $color-accent: var(--button-primary);
 $color-positive: var(--icon-positive);
 $color-negative: var(--text-negative);
@@ -43,9 +22,6 @@ $color-warning-bg: var(--app-warning-bg);
 $color-warning-text: var(--app-warning-text);
 $color-focus: var(--button-primary);
 $color-focus-halo: var(--app-accent-tint-strong);
-
-// Domain ---------------------------------------------------------------------------------------
-
 $color-urgency-critical: var(--app-urgency-critical);
 $color-urgency-high: var(--app-urgency-high);
 $color-urgency-medium: var(--app-urgency-medium);
@@ -56,26 +32,14 @@ $color-status-awaiting: var(--app-status-awaiting);
 $color-status-closed: var(--app-status-closed);
 $color-bubble-client: var(--app-bubble-client);
 $color-bubble-staff: var(--app-bubble-staff);
-
-// Effects --------------------------------------------------------------------------------------
-
 $shadow-popover: 0 8px 32px var(--app-shadow);
-
-// Radii (MAX UI's scale) -----------------------------------------------------------------------
-
 $radius-s: 8px;
 $radius-m: 10px;
 $radius-l: 14px;
 $radius-xl: 18px;
-
-// Layout ---------------------------------------------------------------------------------------
-
 $header-height: 52px;
 $tab-bar-height: 56px;
 $queue-pane-width: 380px;
-
-// Layers ---------------------------------------------------------------------------------------
-
 $z-index-sticky: 5;
 $z-index-header: 20;
 $z-index-tab-bar: 20;

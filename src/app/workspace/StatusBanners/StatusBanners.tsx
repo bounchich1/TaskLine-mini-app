@@ -3,10 +3,6 @@ import { IS_DEMO } from '@/shared/config/env';
 
 import './StatusBanners.scss';
 
-/**
- * Thin strips above the workspace: the demo stand notice, and (on phones, where the header is
- * hidden) the lost connection to the server.
- */
 export function StatusBanners({ connection }: { connection: ConnectionState }) {
   return (
     <>
