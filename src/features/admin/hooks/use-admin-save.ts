@@ -4,23 +4,26 @@ import { useState } from 'react';
 import { api, type ApiOptions } from '@/shared/api/http';
 
 export function useAdminSave(onSaved: () => void) {
-  const cache = useQueryClient();
-  const [error, setError] = useState<unknown>(null);
-  const [busy, setBusy] = useState(false);
-  const save = async (path: string, options: ApiOptions) => {
-    setBusy(true);
-    setError(null);
-    try {
-      await api(path, options);
-      await cache.invalidateQueries();
-      onSaved();
-    } catch (error) {
-      setError(error);
-    } finally {
-      setBusy(false);
-    }
-  };
-  return { save, busy, error, setError };
+    const cache = useQueryClient();
+    const [error, setError] = useState<unknown>(null);
+    const [busy, setBusy] = useState(false);
+
+    const save = async (path: string, options: ApiOptions) => {
+        setBusy(true);
+        setError(null);
+
+        try {
+            await api(path, options);
+            await cache.invalidateQueries();
+            onSaved();
+        } catch (error) {
+            setError(error);
+        } finally {
+            setBusy(false);
+        }
+    };
+
+    return { save, busy, error, setError };
 }
 
 export type AdminSave = ReturnType<typeof useAdminSave>['save'];

@@ -1,25 +1,25 @@
 @use 'abstracts' as *;
 
 .description {
-  display: grid;
-  gap: 4px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid $color-line;
+    display: grid;
+    gap: 4px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $color-line;
 
-  @include container-below(ticket, 760px) {
-    padding: 16px;
-  }
+    @include container-below(ticket, 760px) {
+        padding: 16px;
+    }
 }
 
 .description__label {
-  @include muted(label);
+    @include muted(label);
 
-  font-weight: $font-weight-medium;
+    font-weight: $font-weight-medium;
 }
 
 .description__text {
-  @include text(lead);
+    @include text(lead);
 
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }

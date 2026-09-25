@@ -1,64 +1,64 @@
 @use 'abstracts' as *;
 
 .notification-item {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  width: 100%;
-  padding: 12px;
-  border-radius: $radius-m;
-  background: none;
-  color: $color-text-secondary;
-  text-align: left;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    padding: 12px;
+    border-radius: $radius-m;
+    background: none;
+    color: $color-text-secondary;
+    text-align: left;
 
-  @include row-hover;
+    @include row-hover;
 
-  &--unread {
-    color: $color-text;
-  }
+    &--unread {
+        color: $color-text;
+    }
 }
 
 .notification-item__icon {
-  position: relative;
-  display: grid;
-  flex-shrink: 0;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: $color-bg-muted;
-  color: $color-text-secondary;
-
-  .notification-item--unread &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 10px;
-    height: 10px;
-    border: 2px solid $color-bg;
+    position: relative;
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: $color-accent;
-  }
+    background: $color-bg-muted;
+    color: $color-text-secondary;
+
+    .notification-item--unread &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 10px;
+        height: 10px;
+        border: 2px solid $color-bg;
+        border-radius: 50%;
+        background: $color-accent;
+    }
 }
 
 .notification-item__title {
-  flex: 1;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 
-  .notification-item--unread & {
-    font-weight: $font-weight-medium;
-  }
+    .notification-item--unread & {
+        font-weight: $font-weight-medium;
+    }
 }
 
 .notification-item__time {
-  @include muted(label);
+    @include muted(label);
 
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
 .notification-item__arrow {
-  flex-shrink: 0;
-  color: $color-icon-muted;
+    flex-shrink: 0;
+    color: $color-icon-muted;
 }

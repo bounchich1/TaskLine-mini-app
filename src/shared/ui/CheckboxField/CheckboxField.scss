@@ -1,15 +1,15 @@
 @use 'abstracts' as *;
 
 .checkbox-field {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  cursor: pointer;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    cursor: pointer;
 }
 
 .checkbox-field__input {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  accent-color: $color-accent;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: $color-accent;
 }

@@ -1,64 +1,64 @@
 @use 'abstracts' as *;
 
 .ai-panel {
-  display: grid;
-  gap: 10px;
+    display: grid;
+    gap: 10px;
 }
 
 .ai-panel__title {
-  @include section-title;
+    @include section-title;
 
-  display: flex;
-  gap: 6px;
-  align-items: center;
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }
 
 .ai-panel__private {
-  @include muted(caption);
+    @include muted(caption);
 
-  margin-left: auto;
-  font-weight: $font-weight-regular;
+    margin-left: auto;
+    font-weight: $font-weight-regular;
 }
 
 .ai-panel__text {
-  @include text(small);
+    @include text(small);
 
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 .ai-panel__status {
-  @include muted(small);
+    @include muted(small);
 
-  &--review {
-    color: $color-warning-text;
-  }
+    &--review {
+        color: $color-warning-text;
+    }
 }
 
 .ai-panel__missing {
-  @include text(small);
+    @include text(small);
 
-  display: grid;
-  gap: 4px;
+    display: grid;
+    gap: 4px;
 }
 
 .ai-panel__missing-title {
-  color: $color-text-secondary;
-  font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
 }
 
 .ai-panel__missing-list {
-  display: grid;
-  gap: 2px;
-  padding-left: 18px;
+    display: grid;
+    gap: 2px;
+    padding-left: 18px;
 }
 
 .ai-panel__footer {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .ai-panel__sources {
-  @include muted(caption);
+    @include muted(caption);
 }

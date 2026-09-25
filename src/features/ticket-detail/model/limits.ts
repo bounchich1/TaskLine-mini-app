@@ -7,16 +7,17 @@ const MB = 1024 * 1024;
 export type UploadKind = 'image' | 'video' | 'file';
 
 export const UPLOAD_LIMITS: Readonly<Record<UploadKind, number>> = {
-  image: 20 * MB,
-  video: 100 * MB,
-  file: 25 * MB,
+    image: 20 * MB,
+    video: 100 * MB,
+    file: 25 * MB,
 };
 
 export const uploadKind = (file: File): UploadKind => {
-  if (file.type.startsWith('image/')) {
-    return 'image';
-  }
-  return file.type.startsWith('video/') ? 'video' : 'file';
+    if (file.type.startsWith('image/')) {
+        return 'image';
+    }
+
+    return file.type.startsWith('video/') ? 'video' : 'file';
 };
 
 export const toMegabytes = (bytes: number) => bytes / MB;

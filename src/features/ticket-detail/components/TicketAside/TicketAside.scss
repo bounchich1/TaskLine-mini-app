@@ -1,45 +1,45 @@
 @use 'abstracts' as *;
 
 .ticket-aside {
-  flex: 0 0 300px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  border-left: 1px solid $color-line-strong;
-  background: $color-bg-subtle;
+    flex: 0 0 300px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-left: 1px solid $color-line-strong;
+    background: $color-bg-subtle;
 
-  @include container-below(ticket, 760px) {
-    flex: none;
-    overflow: visible;
-    border-top: 1px solid $color-line;
-    border-left: 0;
-  }
+    @include container-below(ticket, 760px) {
+        flex: none;
+        overflow: visible;
+        border-top: 1px solid $color-line;
+        border-left: 0;
+    }
 }
 
 .ticket-aside__section {
-  display: grid;
-  gap: 10px;
-  padding: 16px 20px;
+    display: grid;
+    gap: 10px;
+    padding: 16px 20px;
 
-  & + & {
-    border-top: 1px solid $color-line;
-  }
+    & + & {
+        border-top: 1px solid $color-line;
+    }
 
-  @include container-below(ticket, 760px) {
-    padding: 14px 16px;
-  }
+    @include container-below(ticket, 760px) {
+        padding: 14px 16px;
+    }
 }
 
 .ticket-aside__title {
-  @include section-title;
+    @include section-title;
 
-  display: flex;
-  gap: 6px;
-  align-items: center;
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }
 
 .ticket-aside__note {
-  @include muted(caption);
+    @include muted(caption);
 
-  margin-left: auto;
-  font-weight: $font-weight-regular;
+    margin-left: auto;
+    font-weight: $font-weight-regular;
 }

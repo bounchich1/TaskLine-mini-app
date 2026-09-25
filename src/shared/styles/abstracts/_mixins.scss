@@ -3,128 +3,128 @@
 @use 'typography' as *;
 
 @mixin visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
 }
 
 @mixin focus-ring {
-  outline: 2px solid $color-focus;
-  outline-offset: 2px;
+    outline: 2px solid $color-focus;
+    outline-offset: 2px;
 }
 
 @mixin focus-ring-inset {
-  outline: 2px solid $color-focus;
-  outline-offset: -2px;
+    outline: 2px solid $color-focus;
+    outline-offset: -2px;
 }
 
 @mixin field-focus($bordered: true) {
-  outline: none;
+    outline: none;
 
-  @if $bordered {
-    border-color: $color-accent;
-    box-shadow: 0 0 0 3px $color-focus-halo;
-  } @else {
-    box-shadow:
-      inset 0 0 0 1px $color-accent,
-      0 0 0 3px $color-focus-halo;
-  }
+    @if $bordered {
+        border-color: $color-accent;
+        box-shadow: 0 0 0 3px $color-focus-halo;
+    } @else {
+        box-shadow:
+            inset 0 0 0 1px $color-accent,
+            0 0 0 3px $color-focus-halo;
+    }
 }
 
 @mixin truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 @mixin muted($step: label) {
-  @include text($step);
+    @include text($step);
 
-  color: $color-text-muted;
+    color: $color-text-muted;
 }
 
 @mixin section-title {
-  @include text(small);
+    @include text(small);
 
-  margin: 0;
-  font-weight: $font-weight-semibold;
-  color: $color-text-secondary;
+    margin: 0;
+    font-weight: $font-weight-semibold;
+    color: $color-text-secondary;
 }
 
 @mixin text-button($step: small) {
-  @include text($step);
+    @include text($step);
 
-  display: inline-flex;
-  gap: 4px;
-  align-items: center;
-  padding: 0;
-  background: none;
-  color: $color-text-accent;
-  font-weight: $font-weight-medium;
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    padding: 0;
+    background: none;
+    color: $color-text-accent;
+    font-weight: $font-weight-medium;
 
-  &:hover:not(:disabled) {
-    text-decoration: underline;
-  }
+    &:hover:not(:disabled) {
+        text-decoration: underline;
+    }
 }
 
 @mixin icon-button($size: 32px) {
-  display: inline-grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: $size;
-  height: $size;
-  padding: 0;
-  border-radius: $radius-s;
-  background: transparent;
-  color: $color-icon-muted;
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: $size;
+    height: $size;
+    padding: 0;
+    border-radius: $radius-s;
+    background: transparent;
+    color: $color-icon-muted;
 
-  &:hover:not(:disabled) {
-    background: $color-bg-hover;
-    color: $color-text;
-  }
+    &:hover:not(:disabled) {
+        background: $color-bg-hover;
+        color: $color-text;
+    }
 }
 
 @mixin input-control {
-  @include text(body);
+    @include text(body);
 
-  min-height: 36px;
-  max-width: 100%;
-  padding: 7px 10px;
-  border: 1px solid $color-line-strong;
-  border-radius: $radius-s;
-  background: $color-bg;
-  color: $color-text;
+    min-height: 36px;
+    max-width: 100%;
+    padding: 7px 10px;
+    border: 1px solid $color-line-strong;
+    border-radius: $radius-s;
+    background: $color-bg;
+    color: $color-text;
 
-  &:focus-visible {
-    @include field-focus;
-  }
+    &:focus-visible {
+        @include field-focus;
+    }
 
-  &:disabled {
-    color: $color-text-muted;
-    background: $color-bg-subtle;
-  }
+    &:disabled {
+        color: $color-text-muted;
+        background: $color-bg-subtle;
+    }
 }
 
 @mixin count {
-  @include text(caption);
+    @include text(caption);
 
-  min-width: 18px;
-  padding: 1px 5px;
-  border-radius: 9px;
-  background: $color-bg-muted;
-  color: $color-text-secondary;
-  font-weight: $font-weight-medium;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
+    min-width: 18px;
+    padding: 1px 5px;
+    border-radius: 9px;
+    background: $color-bg-muted;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
 }
 
 @mixin row-hover {
-  @media (hover: hover) {
-    &:hover {
-      background: $color-bg-hover;
+    @media (hover: hover) {
+        &:hover {
+            background: $color-bg-hover;
+        }
     }
-  }
 }

@@ -1,135 +1,135 @@
 @use 'abstracts' as *;
 
 .ticket-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
 }
 
 .ticket-table__head-cell {
-  @include muted(label);
+    @include muted(label);
 
-  position: sticky;
-  top: 0;
-  z-index: $z-index-sticky;
-  padding: 8px 12px;
-  border-bottom: 1px solid $color-line-strong;
-  background: $color-bg;
-  font-weight: $font-weight-medium;
-  text-align: left;
-  white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: $z-index-sticky;
+    padding: 8px 12px;
+    border-bottom: 1px solid $color-line-strong;
+    background: $color-bg;
+    font-weight: $font-weight-medium;
+    text-align: left;
+    white-space: nowrap;
 
-  &:first-child {
-    padding-left: 24px;
-  }
+    &:first-child {
+        padding-left: 24px;
+    }
 
-  &:last-child {
-    padding-right: 24px;
-  }
+    &:last-child {
+        padding-right: 24px;
+    }
 
-  &--number {
-    width: 28%;
-  }
+    &--number {
+        width: 28%;
+    }
 
-  &--urgency,
-  &--status {
-    width: 130px;
-  }
+    &--urgency,
+    &--status {
+        width: 130px;
+    }
 
-  &--complexity,
-  &--created {
-    width: 115px;
-  }
+    &--complexity,
+    &--created {
+        width: 115px;
+    }
 
-  &--rating {
-    width: 90px;
-  }
+    &--rating {
+        width: 90px;
+    }
 }
 
 .ticket-table__row {
-  cursor: pointer;
+    cursor: pointer;
 
-  @include row-hover;
+    @include row-hover;
 
-  &:has(:focus-visible) {
-    background: $color-bg-hover;
-  }
+    &:has(:focus-visible) {
+        background: $color-bg-hover;
+    }
 }
 
 .ticket-table__cell {
-  @include text(body);
+    @include text(body);
 
-  overflow: hidden;
-  padding: 10px 12px;
-  border-bottom: 1px solid $color-line;
-  vertical-align: middle;
+    overflow: hidden;
+    padding: 10px 12px;
+    border-bottom: 1px solid $color-line;
+    vertical-align: middle;
 
-  &:first-child {
-    overflow: visible;
-    padding-left: 24px;
-  }
+    &:first-child {
+        overflow: visible;
+        padding-left: 24px;
+    }
 
-  &:last-child {
-    padding-right: 24px;
-  }
+    &:last-child {
+        padding-right: 24px;
+    }
 }
 
 .ticket-table__subject {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
+    display: grid;
+    gap: 2px;
+    min-width: 0;
 }
 
 .ticket-table__number {
-  justify-self: start;
-  padding: 0;
-  border-radius: 4px;
-  background: none;
-  font-weight: $font-weight-semibold;
-  font-variant-numeric: tabular-nums;
+    justify-self: start;
+    padding: 0;
+    border-radius: 4px;
+    background: none;
+    font-weight: $font-weight-semibold;
+    font-variant-numeric: tabular-nums;
 }
 
 .ticket-table__preview {
-  @include truncate;
-  @include text(small);
+    @include truncate;
+    @include text(small);
 
-  color: $color-text-secondary;
+    color: $color-text-secondary;
 }
 
 .ticket-table__tag {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 2px 8px;
-  align-items: center;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 2px 8px;
+    align-items: center;
 }
 
 .ticket-table__review {
-  @include text(caption);
+    @include text(caption);
 
-  padding: 1px 6px;
-  border-radius: 4px;
-  background: $color-warning-bg;
-  color: $color-warning-text;
-  font-weight: $font-weight-medium;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: $color-warning-bg;
+    color: $color-warning-text;
+    font-weight: $font-weight-medium;
 }
 
 .ticket-table__muted {
-  color: $color-text-muted;
+    color: $color-text-muted;
 }
 
 .ticket-table__date {
-  color: $color-text-secondary;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+    color: $color-text-secondary;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
 .ticket-table__assignee {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  min-width: 0;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
 }
 
 .ticket-table__assignee-name {
-  @include truncate;
+    @include truncate;
 }

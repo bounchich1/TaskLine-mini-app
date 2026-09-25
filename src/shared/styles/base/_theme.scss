@@ -2,32 +2,32 @@
 @use 'abstracts' as *;
 
 @mixin publish($palette) {
-  @each $name, $value in $palette {
-    --app-#{$name}: #{$value};
-  }
+    @each $name, $value in $palette {
+        --app-#{$name}: #{$value};
+    }
 }
 
 .app-root {
-  @include publish($palette-light);
+    @include publish($palette-light);
 
-  --family-base: #{$font-family-base};
-  --family-headers: #{$font-family-base};
+    --family-base: #{$font-family-base};
+    --family-headers: #{$font-family-base};
 
-  min-height: var(--host-height, 100dvh);
-  color-scheme: light;
+    min-height: var(--host-height, 100dvh);
+    color-scheme: light;
 
-  &--dark {
-    @include publish($palette-dark);
+    &--dark {
+        @include publish($palette-dark);
 
-    color-scheme: dark;
-  }
+        color-scheme: dark;
+    }
 }
 
 :root {
-  background: $canvas-light;
-  font-family: $font-family-base;
+    background: $canvas-light;
+    font-family: $font-family-base;
 
-  &[data-scheme='dark'] {
-    background: $canvas-dark;
-  }
+    &[data-scheme='dark'] {
+        background: $canvas-dark;
+    }
 }

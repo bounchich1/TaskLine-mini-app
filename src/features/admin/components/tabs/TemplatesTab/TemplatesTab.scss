@@ -1,34 +1,34 @@
 @use 'abstracts' as *;
 
 .template-row {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  padding: 14px 0;
-  border-bottom: 1px solid $color-line;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid $color-line;
 }
 
 .template-row__main {
-  display: grid;
-  flex: 1;
-  gap: 4px;
-  min-width: 0;
+    display: grid;
+    flex: 1;
+    gap: 4px;
+    min-width: 0;
 }
 
 .template-row__code {
-  @include text(small);
+    @include text(small);
 
-  font-weight: $font-weight-medium;
+    font-weight: $font-weight-medium;
 }
 
 .template-row__version {
-  @include muted(caption);
+    @include muted(caption);
 }
 
 .template-row__body {
-  @include text(small);
+    @include text(small);
 
-  color: $color-text-secondary;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+    color: $color-text-secondary;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }

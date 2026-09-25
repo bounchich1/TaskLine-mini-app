@@ -9,41 +9,40 @@ import { TicketProperties } from '../TicketProperties/TicketProperties';
 import './TicketAside.scss';
 
 type TicketAsideProps = {
-  ticket: Ticket;
-  dictionaries: Dictionary[];
-  timezone: string;
-  disabled: boolean;
-  canInsert: boolean;
-  onClassify: (field: Dimension, value: string) => void;
-  onInsertSuggestion: (text: string) => void;
+    ticket: Ticket;
+    dictionaries: Dictionary[];
+    timezone: string;
+    disabled: boolean;
+    canInsert: boolean;
+    onClassify: (field: Dimension, value: string) => void;
+    onInsertSuggestion: (text: string) => void;
 };
 
 export function TicketAside(props: TicketAsideProps) {
-  const { ticket, timezone } = props;
-  return (
-    <aside className="ticket-aside" aria-label="Свойства обращения">
-      <section className="ticket-aside__section">
-        <TicketProperties ticket={ticket} timezone={timezone}>
-          <ClassificationFields
-            ticket={ticket}
-            dictionaries={props.dictionaries}
-            disabled={props.disabled}
-            onChange={props.onClassify}
-          />
-        </TicketProperties>
-      </section>
-      <section className="ticket-aside__section">
-        <AiSuggestionPanel
-          ticket={ticket}
-          canInsert={props.canInsert}
-          onInsert={props.onInsertSuggestion}
-        />
-      </section>
-      {ticket.closures?.length ? (
-        <section className="ticket-aside__section">
-          <ClosureHistory closures={ticket.closures} timezone={timezone} />
-        </section>
-      ) : null}
-    </aside>
-  );
+    const { ticket, timezone } = props;
+
+    return (
+        <aside className="ticket-aside" aria-label="Свойства обращения">
+            <section className="ticket-aside__section">
+                <TicketProperties ticket={ticket} timezone={timezone}>
+                    <ClassificationFields
+                        ticket={ticket}
+                        dictionaries={props.dictionaries}
+                        disabled={props.disabled}
+                        onChange={props.onClassify}
+                    />
+                </TicketProperties>
+            </section>
+
+            <section className="ticket-aside__section">
+                <AiSuggestionPanel ticket={ticket} canInsert={props.canInsert} onInsert={props.onInsertSuggestion} />
+            </section>
+
+            {ticket.closures?.length ? (
+                <section className="ticket-aside__section">
+                    <ClosureHistory closures={ticket.closures} timezone={timezone} />
+                </section>
+            ) : null}
+        </aside>
+    );
 }

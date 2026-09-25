@@ -4,23 +4,23 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: { loadPaths: [fileURLToPath(new URL('./src/shared/styles', import.meta.url))] },
+    plugins: [react()],
+    resolve: {
+        alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
     },
-  },
-  server: {
-    port: 5173,
-    strictPort: true,
-    proxy: {
-      '/v1': 'http://127.0.0.1:3000',
-      '/download': 'http://127.0.0.1:3000',
-      '/health': 'http://127.0.0.1:3000',
+    css: {
+        preprocessorOptions: {
+            scss: { loadPaths: [fileURLToPath(new URL('./src/shared/styles', import.meta.url))] },
+        },
     },
-  },
-  build: { sourcemap: false },
+    server: {
+        port: 5173,
+        strictPort: true,
+        proxy: {
+            '/v1': 'http://127.0.0.1:3000',
+            '/download': 'http://127.0.0.1:3000',
+            '/health': 'http://127.0.0.1:3000',
+        },
+    },
+    build: { sourcemap: false },
 });

@@ -1,17 +1,17 @@
 @use 'abstracts' as *;
 
 .queue-footer {
-  @include muted(label);
+    @include muted(label);
 
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 56px;
-  padding: 12px 24px;
-  font-variant-numeric: tabular-nums;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 56px;
+    padding: 12px 24px;
+    font-variant-numeric: tabular-nums;
 
-  .tickets-page--compact & {
-    padding: 12px 16px;
-  }
+    .tickets-page--compact & {
+        padding: 12px 16px;
+    }
 }

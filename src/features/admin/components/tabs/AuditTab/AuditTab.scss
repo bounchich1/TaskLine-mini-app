@@ -1,31 +1,31 @@
 @use 'abstracts' as *;
 
 .audit-list__item {
-  @include text(small);
+    @include text(small);
 
-  display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) auto;
-  gap: 4px 16px;
-  align-items: baseline;
-  padding: 10px 0;
-  border-bottom: 1px solid $color-line;
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr) auto;
+    gap: 4px 16px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-line;
 
-  @include respond-to(phone) {
-    grid-template-columns: minmax(0, 1fr);
-  }
+    @include respond-to(phone) {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 .audit-list__time {
-  color: $color-text-muted;
-  font-variant-numeric: tabular-nums;
+    color: $color-text-muted;
+    font-variant-numeric: tabular-nums;
 }
 
 .audit-list__action {
-  font-weight: $font-weight-medium;
+    font-weight: $font-weight-medium;
 }
 
 .audit-list__object {
-  @include muted(label);
+    @include muted(label);
 
-  overflow-wrap: anywhere;
+    overflow-wrap: anywhere;
 }

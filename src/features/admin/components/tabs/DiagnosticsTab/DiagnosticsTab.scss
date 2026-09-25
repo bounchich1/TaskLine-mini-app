@@ -1,39 +1,39 @@
 @use 'abstracts' as *;
 
 .permit-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
 }
 
 .permit-grid__slot {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 8px 10px;
-  border: 1px solid $color-line-strong;
-  border-radius: $radius-s;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 10px;
+    border: 1px solid $color-line-strong;
+    border-radius: $radius-s;
 
-  &--running {
-    border-color: $color-accent;
-    background: $color-bg-selected;
-  }
+    &--running {
+        border-color: $color-accent;
+        background: $color-bg-selected;
+    }
 
-  &--uncertain {
-    border-color: transparent;
-    background: $color-warning-bg;
-    color: $color-warning-text;
-  }
+    &--uncertain {
+        border-color: transparent;
+        background: $color-warning-bg;
+        color: $color-warning-text;
+    }
 }
 
 .permit-grid__number {
-  font-weight: $font-weight-semibold;
-  font-variant-numeric: tabular-nums;
+    font-weight: $font-weight-semibold;
+    font-variant-numeric: tabular-nums;
 }
 
 .permit-grid__state {
-  @include text(label);
+    @include text(label);
 
-  color: inherit;
-  opacity: 0.8;
+    color: inherit;
+    opacity: 0.8;
 }

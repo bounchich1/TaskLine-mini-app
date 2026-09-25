@@ -7,22 +7,22 @@ import { ResolutionDialog } from '../dialogs/ResolutionDialog/ResolutionDialog';
 import { TemplateDialog } from '../dialogs/TemplateDialog/TemplateDialog';
 
 type AdminDialogsProps = {
-  dialog: AdminDialog;
-  busy: boolean;
-  error: unknown;
-  save: AdminSave;
-  onClose: () => void;
+    dialog: AdminDialog;
+    busy: boolean;
+    error: unknown;
+    save: AdminSave;
+    onClose: () => void;
 };
 
 export function AdminDialogs({ dialog, ...props }: AdminDialogsProps) {
-  switch (dialog.kind) {
-    case 'employee':
-      return <EmployeeDialog employee={dialog.employee} {...props} />;
-    case 'dictionary':
-      return <DictionaryDialog value={dialog.value} {...props} />;
-    case 'template':
-      return <TemplateDialog template={dialog.template} {...props} />;
-    case 'resolution':
-      return <ResolutionDialog resolution={dialog.resolution} {...props} />;
-  }
+    switch (dialog.kind) {
+        case 'employee':
+            return <EmployeeDialog employee={dialog.employee} {...props} />;
+        case 'dictionary':
+            return <DictionaryDialog value={dialog.value} {...props} />;
+        case 'template':
+            return <TemplateDialog template={dialog.template} {...props} />;
+        case 'resolution':
+            return <ResolutionDialog resolution={dialog.resolution} {...props} />;
+    }
 }

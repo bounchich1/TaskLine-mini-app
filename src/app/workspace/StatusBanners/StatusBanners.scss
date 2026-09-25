@@ -1,19 +1,19 @@
 @use 'abstracts' as *;
 
 .status-banner {
-  @include text(label);
+    @include text(label);
 
-  flex-shrink: 0;
-  padding: 4px 16px;
-  background: $color-warning-bg;
-  color: $color-warning-text;
-  text-align: center;
+    flex-shrink: 0;
+    padding: 4px 16px;
+    background: $color-warning-bg;
+    color: $color-warning-text;
+    text-align: center;
 
-  &--offline {
-    display: none;
+    &--offline {
+        display: none;
 
-    @include respond-to(phone) {
-      display: block;
+        @include respond-to(phone) {
+            display: block;
+        }
     }
-  }
 }

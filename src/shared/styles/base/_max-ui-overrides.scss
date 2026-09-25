@@ -1,13 +1,13 @@
 @use 'abstracts' as *;
 
 button[class*='Button__'] {
-  white-space: nowrap;
+    white-space: nowrap;
 }
 
 [class*='Input__input__']:focus-visible {
-  outline: none !important;
+    outline: none !important;
 }
 
 label[class*='Input_size_']:focus-within {
-  @include field-focus($bordered: false);
+    @include field-focus($bordered: false);
 }

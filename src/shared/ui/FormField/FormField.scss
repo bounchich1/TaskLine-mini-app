@@ -1,18 +1,18 @@
 @use 'abstracts' as *;
 
 .form-field {
-  display: grid;
-  gap: 6px;
+    display: grid;
+    gap: 6px;
 
-  > input,
-  > textarea {
-    width: 100%;
-  }
+    > input,
+    > textarea {
+        width: 100%;
+    }
 }
 
 .form-field__label {
-  @include text(label);
+    @include text(label);
 
-  color: $color-text-secondary;
-  font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
 }

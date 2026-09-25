@@ -3,19 +3,19 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
+    margin: 0;
 }
 
 button,
 input,
 textarea,
 select {
-  font: inherit;
-  color: inherit;
+    font: inherit;
+    color: inherit;
 }
 
 button,
@@ -24,29 +24,29 @@ input,
 select,
 textarea,
 summary {
-  -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;
 }
 
 button {
-  cursor: pointer;
-  border: 0;
+    cursor: pointer;
+    border: 0;
 }
 
 button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 
 :focus-visible {
-  @include focus-ring;
+    @include focus-ring;
 }
 
 a {
-  color: inherit;
+    color: inherit;
 }
 
 ul,
 ol {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }

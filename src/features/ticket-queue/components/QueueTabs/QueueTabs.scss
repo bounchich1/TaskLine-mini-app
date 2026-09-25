@@ -1,45 +1,45 @@
 @use 'abstracts' as *;
 
 .queue-tabs {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  border-bottom: 1px solid $color-line-strong;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    border-bottom: 1px solid $color-line-strong;
 }
 
 .queue-tabs__list {
-  display: flex;
-  gap: 20px;
+    display: flex;
+    gap: 20px;
 }
 
 .queue-tabs__tab {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: -1px;
-  padding: 8px 0 9px;
-  border-bottom: 2px solid transparent;
-  background: none;
-  color: $color-text-secondary;
-  font-weight: $font-weight-medium;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: -1px;
+    padding: 8px 0 9px;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
 
-  &:hover {
-    color: $color-text;
-  }
+    &:hover {
+        color: $color-text;
+    }
 
-  &--selected {
-    border-bottom-color: $color-text;
-    color: $color-text;
-  }
+    &--selected {
+        border-bottom-color: $color-text;
+        color: $color-text;
+    }
 }
 
 .queue-tabs__count {
-  @include count;
+    @include count;
 }
 
 .queue-tabs__notice {
-  @include text-button(label);
+    @include text-button(label);
 
-  margin-left: auto;
-  color: $color-text-muted;
+    margin-left: auto;
+    color: $color-text-muted;
 }

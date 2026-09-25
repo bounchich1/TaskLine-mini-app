@@ -1,46 +1,46 @@
 @use 'abstracts' as *;
 
 .ticket-header {
-  display: flex;
-  flex-shrink: 0;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-  align-items: center;
-  min-height: 56px;
-  padding: 10px 16px 10px 24px;
-  border-bottom: 1px solid $color-line-strong;
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+    min-height: 56px;
+    padding: 10px 16px 10px 24px;
+    border-bottom: 1px solid $color-line-strong;
 
-  @include container-below(ticket, 760px) {
-    padding: 8px 12px;
-  }
+    @include container-below(ticket, 760px) {
+        padding: 8px 12px;
+    }
 }
 
 .ticket-header__title {
-  font-variant-numeric: tabular-nums;
+    font-variant-numeric: tabular-nums;
 }
 
 .ticket-header__status {
-  @include text(small);
+    @include text(small);
 
-  color: $color-text-secondary;
+    color: $color-text-secondary;
 }
 
 .ticket-header__actions {
-  display: flex;
-  gap: 8px;
-  margin-left: auto;
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
 
-  @include container-below(ticket, 520px) {
-    flex-basis: 100%;
+    @include container-below(ticket, 520px) {
+        flex-basis: 100%;
 
-    > * {
-      flex: 1;
+        > * {
+            flex: 1;
+        }
     }
-  }
 }
 
 .ticket-header__close {
-  @include icon-button(36px);
+    @include icon-button(36px);
 
-  color: $color-text-secondary;
+    color: $color-text-secondary;
 }

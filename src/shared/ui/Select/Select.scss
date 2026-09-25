@@ -1,156 +1,156 @@
 @use 'abstracts' as *;
 
 .select {
-  position: relative;
-  min-width: 0;
+    position: relative;
+    min-width: 0;
 }
 
 .select__trigger {
-  @include text(body);
+    @include text(body);
 
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  width: 100%;
-  min-height: 36px;
-  padding: 0 8px 0 10px;
-  border: 1px solid transparent;
-  border-radius: $radius-s;
-  background: transparent;
-  color: $color-text;
-  text-align: left;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    width: 100%;
+    min-height: 36px;
+    padding: 0 8px 0 10px;
+    border: 1px solid transparent;
+    border-radius: $radius-s;
+    background: transparent;
+    color: $color-text;
+    text-align: left;
 
-  &:focus-visible {
-    @include field-focus;
-  }
-
-  &:disabled {
-    opacity: 1;
-    color: $color-text-muted;
-  }
-
-  .select--large & {
-    min-height: 40px;
-    border-radius: $radius-m;
-  }
-
-  .select--field & {
-    border-color: $color-line-strong;
-    background: $color-bg;
+    &:focus-visible {
+        @include field-focus;
+    }
 
     &:disabled {
-      background: $color-bg-subtle;
+        opacity: 1;
+        color: $color-text-muted;
     }
-  }
 
-  .select--plain & {
-    @include text(small);
-
-    width: auto;
-    max-width: 100%;
-    min-height: 30px;
-    padding: 0 6px 0 8px;
-    font-weight: $font-weight-medium;
-
-    @media (hover: hover) {
-      &:hover:not(:disabled) {
-        background: $color-bg-hover;
-      }
+    .select--large & {
+        min-height: 40px;
+        border-radius: $radius-m;
     }
-  }
 
-  &[aria-expanded='true'] {
-    @include field-focus;
-  }
+    .select--field & {
+        border-color: $color-line-strong;
+        background: $color-bg;
+
+        &:disabled {
+            background: $color-bg-subtle;
+        }
+    }
+
+    .select--plain & {
+        @include text(small);
+
+        width: auto;
+        max-width: 100%;
+        min-height: 30px;
+        padding: 0 6px 0 8px;
+        font-weight: $font-weight-medium;
+
+        @media (hover: hover) {
+            &:hover:not(:disabled) {
+                background: $color-bg-hover;
+            }
+        }
+    }
+
+    &[aria-expanded='true'] {
+        @include field-focus;
+    }
 }
 
 .select__value {
-  @include truncate;
+    @include truncate;
 
-  flex: 1;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 
-  &--placeholder {
-    color: $color-text-muted;
-  }
+    &--placeholder {
+        color: $color-text-muted;
+    }
 }
 
 .select__note {
-  color: $color-text-muted;
-  font-weight: $font-weight-regular;
+    color: $color-text-muted;
+    font-weight: $font-weight-regular;
 }
 
 .select__chevron {
-  flex-shrink: 0;
-  color: $color-icon-muted;
-  transition: transform 0.15s ease;
+    flex-shrink: 0;
+    color: $color-icon-muted;
+    transition: transform 0.15s ease;
 
-  [aria-expanded='true'] > & {
-    transform: rotate(180deg);
-  }
+    [aria-expanded='true'] > & {
+        transform: rotate(180deg);
+    }
 
-  .select--plain :disabled > & {
-    visibility: hidden;
-  }
+    .select--plain :disabled > & {
+        visibility: hidden;
+    }
 }
 
 .select__list {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  z-index: $z-index-popover;
-  min-width: 100%;
-  max-height: 320px;
-  margin: 0;
-  padding: 4px;
-  overflow-y: auto;
-  border: 1px solid $color-line;
-  border-radius: $radius-m;
-  background: $color-bg-elevated;
-  color: $color-text;
-  box-shadow: $shadow-popover;
-  list-style: none;
-  overscroll-behavior: contain;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: $z-index-popover;
+    min-width: 100%;
+    max-height: 320px;
+    margin: 0;
+    padding: 4px;
+    overflow-y: auto;
+    border: 1px solid $color-line;
+    border-radius: $radius-m;
+    background: $color-bg-elevated;
+    color: $color-text;
+    box-shadow: $shadow-popover;
+    list-style: none;
+    overscroll-behavior: contain;
 
-  &:popover-open {
-    position: fixed;
-    inset: auto;
-  }
+    &:popover-open {
+        position: fixed;
+        inset: auto;
+    }
 }
 
 .select__option {
-  @include text(body);
+    @include text(body);
 
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  min-height: 34px;
-  padding: 6px 8px 6px 10px;
-  border-radius: $radius-s;
-  cursor: pointer;
-  user-select: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 8px 6px 10px;
+    border-radius: $radius-s;
+    cursor: pointer;
+    user-select: none;
 
-  &--active {
-    background: $color-bg-hover;
-  }
+    &--active {
+        background: $color-bg-hover;
+    }
 
-  &--selected {
-    color: $color-text-accent;
-    font-weight: $font-weight-medium;
-  }
+    &--selected {
+        color: $color-text-accent;
+        font-weight: $font-weight-medium;
+    }
 }
 
 .select__label {
-  flex: 1;
-  white-space: nowrap;
+    flex: 1;
+    white-space: nowrap;
 }
 
 .select__check {
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 .select__empty {
-  @include muted(body);
+    @include muted(body);
 
-  padding: 6px 10px;
+    padding: 6px 10px;
 }

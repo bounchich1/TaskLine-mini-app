@@ -1,31 +1,31 @@
 @use 'abstracts' as *;
 
 .delivery-status {
-  @include muted(caption);
+    @include muted(caption);
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 8px;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 4px;
 
-  &--delivered {
-    color: $color-text-muted;
-  }
+    &--delivered {
+        color: $color-text-muted;
+    }
 
-  &--unknown,
-  &--failed {
-    color: $color-negative;
-  }
+    &--unknown,
+    &--failed {
+        color: $color-negative;
+    }
 }
 
 .delivery-status__state {
-  display: inline-flex;
-  gap: 3px;
-  align-items: center;
+    display: inline-flex;
+    gap: 3px;
+    align-items: center;
 }
 
 .delivery-status__action {
-  @include text-button(caption);
+    @include text-button(caption);
 }

@@ -1,32 +1,32 @@
 @use 'abstracts' as *;
 
 .admin-card {
-  display: grid;
-  gap: 12px;
+    display: grid;
+    gap: 12px;
 
-  & + & {
-    margin-top: 28px;
-  }
+    & + & {
+        margin-top: 28px;
+    }
 }
 
 .admin-card__header {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 32px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
 }
 
 .admin-card__title {
-  @include text(lead);
+    @include text(lead);
 
-  font-weight: $font-weight-semibold;
+    font-weight: $font-weight-semibold;
 }
 
 .admin-card__help {
-  @include muted(small);
+    @include muted(small);
 }
 
 .admin-card__list {
-  border-top: 1px solid $color-line;
+    border-top: 1px solid $color-line;
 }

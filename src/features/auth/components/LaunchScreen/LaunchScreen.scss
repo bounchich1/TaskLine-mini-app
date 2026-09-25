@@ -1,28 +1,28 @@
 @use 'abstracts' as *;
 
 .launch-screen {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  max-width: 400px;
-  min-height: var(--host-height, 100dvh);
-  margin: 0 auto;
-  padding: 24px;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+    min-height: var(--host-height, 100dvh);
+    margin: 0 auto;
+    padding: 24px;
+    text-align: center;
 }
 
 .launch-screen__title {
-  @include text(title);
+    @include text(title);
 }
 
 .launch-screen__text {
-  @include text(small);
+    @include text(small);
 
-  color: $color-text-secondary;
+    color: $color-text-secondary;
 }
 
 .launch-screen__error {
-  text-align: left;
+    text-align: left;
 }

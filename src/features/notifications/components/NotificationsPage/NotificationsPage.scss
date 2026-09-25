@@ -1,18 +1,18 @@
 @use 'abstracts' as *;
 
 .notifications-page {
-  display: grid;
-  gap: 12px;
-  max-width: 720px;
-  margin: 0 auto;
+    display: grid;
+    gap: 12px;
+    max-width: 720px;
+    margin: 0 auto;
 }
 
 .notifications-page__count {
-  @include muted(small);
+    @include muted(small);
 }
 
 .notifications-page__list {
-  display: grid;
-  margin: 0 -12px;
-  list-style: none;
+    display: grid;
+    margin: 0 -12px;
+    list-style: none;
 }

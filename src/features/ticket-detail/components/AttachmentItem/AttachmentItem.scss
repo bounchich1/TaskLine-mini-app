@@ -1,53 +1,53 @@
 @use 'abstracts' as *;
 
 .attachment {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  width: 280px;
-  max-width: 100%;
-  padding: 8px 10px;
-  border: 1px solid $color-line-strong;
-  border-radius: $radius-m;
-  background: $color-bg;
-  text-align: left;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 280px;
+    max-width: 100%;
+    padding: 8px 10px;
+    border: 1px solid $color-line-strong;
+    border-radius: $radius-m;
+    background: $color-bg;
+    text-align: left;
 }
 
 .attachment__icon {
-  display: grid;
-  flex-shrink: 0;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: $radius-s;
-  background: $color-bg-muted;
-  color: $color-text-secondary;
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-s;
+    background: $color-bg-muted;
+    color: $color-text-secondary;
 }
 
 .attachment__info {
-  display: grid;
-  flex: 1;
-  gap: 1px;
-  min-width: 0;
+    display: grid;
+    flex: 1;
+    gap: 1px;
+    min-width: 0;
 }
 
 .attachment__name {
-  @include text(small);
-  @include truncate;
+    @include text(small);
+    @include truncate;
 
-  font-weight: $font-weight-medium;
+    font-weight: $font-weight-medium;
 }
 
 .attachment__status {
-  @include muted(caption);
+    @include muted(caption);
 }
 
 .attachment__download {
-  @include text-button(label);
+    @include text-button(label);
 
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 .attachment__error {
-  margin-top: 4px;
+    margin-top: 4px;
 }

@@ -1,20 +1,20 @@
 @use 'abstracts' as *;
 
 .empty-state {
-  padding: 48px 24px;
-  text-align: center;
+    padding: 48px 24px;
+    text-align: center;
 }
 
 .empty-state__title {
-  @include text(lead);
+    @include text(lead);
 
-  font-weight: $font-weight-medium;
-  color: $color-text;
+    font-weight: $font-weight-medium;
+    color: $color-text;
 }
 
 .empty-state__text {
-  @include muted(small);
+    @include muted(small);
 
-  max-width: 320px;
-  margin: 4px auto 0;
+    max-width: 320px;
+    margin: 4px auto 0;
 }

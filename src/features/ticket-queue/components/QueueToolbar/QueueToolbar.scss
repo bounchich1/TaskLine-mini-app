@@ -1,68 +1,68 @@
 @use 'abstracts' as *;
 
 @mixin stacked {
-  .tickets-page--open & {
-    @content;
-  }
+    .tickets-page--open & {
+        @content;
+    }
 
-  @include respond-to(phone) {
-    @content;
-  }
+    @include respond-to(phone) {
+        @content;
+    }
 }
 
 .queue-toolbar {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 
-  @include stacked {
-    flex-wrap: wrap;
-  }
+    @include stacked {
+        flex-wrap: wrap;
+    }
 }
 
 .queue-toolbar__search {
-  flex: 1;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 
-  @include stacked {
-    flex-basis: 100%;
-  }
+    @include stacked {
+        flex-basis: 100%;
+    }
 }
 
 .queue-toolbar__filter {
-  display: inline-flex;
-  flex-shrink: 0;
-  gap: 6px;
-  align-items: center;
-  height: 40px;
-  padding: 0 12px;
-  border: 1px solid $color-line-strong;
-  border-radius: $radius-m;
-  background: $color-bg;
-  color: $color-text-secondary;
-  font-weight: $font-weight-medium;
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 6px;
+    align-items: center;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid $color-line-strong;
+    border-radius: $radius-m;
+    background: $color-bg;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
 
-  @include row-hover;
+    @include row-hover;
 
-  &--active {
-    border-color: $color-accent;
-    color: $color-text-accent;
-  }
+    &--active {
+        border-color: $color-accent;
+        color: $color-text-accent;
+    }
 }
 
 .queue-toolbar__filter-count {
-  @include count;
+    @include count;
 
-  background: $color-accent;
-  color: $color-text-inverse;
+    background: $color-accent;
+    color: $color-text-inverse;
 }
 
 .queue-toolbar__sort {
-  flex-shrink: 0;
-  width: 170px;
+    flex-shrink: 0;
+    width: 170px;
 
-  @include stacked {
-    flex: 1;
-    width: auto;
-  }
+    @include stacked {
+        flex: 1;
+        width: auto;
+    }
 }

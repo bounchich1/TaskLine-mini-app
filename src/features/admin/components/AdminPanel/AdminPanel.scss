@@ -1,35 +1,35 @@
 @use 'abstracts' as *;
 
 .admin-panel {
-  display: grid;
-  gap: 20px;
-  max-width: 960px;
-  margin: 0 auto;
+    display: grid;
+    gap: 20px;
+    max-width: 960px;
+    margin: 0 auto;
 }
 
 .admin-tabs {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  border-bottom: 1px solid $color-line-strong;
-  scrollbar-width: none;
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    border-bottom: 1px solid $color-line-strong;
+    scrollbar-width: none;
 }
 
 .admin-tabs__tab {
-  flex-shrink: 0;
-  margin-bottom: -1px;
-  padding: 8px 0 9px;
-  border-bottom: 2px solid transparent;
-  background: none;
-  color: $color-text-secondary;
-  font-weight: $font-weight-medium;
+    flex-shrink: 0;
+    margin-bottom: -1px;
+    padding: 8px 0 9px;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
 
-  &:hover {
-    color: $color-text;
-  }
+    &:hover {
+        color: $color-text;
+    }
 
-  &--selected {
-    border-bottom-color: $color-text;
-    color: $color-text;
-  }
+    &--selected {
+        border-bottom-color: $color-text;
+        color: $color-text;
+    }
 }

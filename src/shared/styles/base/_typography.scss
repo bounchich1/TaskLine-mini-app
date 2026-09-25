@@ -1,42 +1,42 @@
 @use 'abstracts' as *;
 
 :root {
-  @include text(body);
+    @include text(body);
 
-  font-synthesis: none;
-  text-size-adjust: 100%;
+    font-synthesis: none;
+    text-size-adjust: 100%;
 }
 
 h1,
 h2,
 h3,
 p {
-  margin: 0;
+    margin: 0;
 }
 
 h1 {
-  @include text(heading);
+    @include text(heading);
 
-  font-weight: $font-weight-semibold;
-  letter-spacing: -0.2px;
+    font-weight: $font-weight-semibold;
+    letter-spacing: -0.2px;
 }
 
 h2 {
-  @include text(title);
+    @include text(title);
 
-  font-weight: $font-weight-semibold;
+    font-weight: $font-weight-semibold;
 }
 
 h3 {
-  @include text(small);
+    @include text(small);
 
-  font-weight: $font-weight-semibold;
+    font-weight: $font-weight-semibold;
 }
 
 small {
-  @include text(label);
+    @include text(label);
 }
 
 code {
-  font-family: $font-family-mono;
+    font-family: $font-family-mono;
 }

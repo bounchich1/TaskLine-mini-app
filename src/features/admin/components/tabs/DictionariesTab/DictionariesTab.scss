@@ -1,11 +1,11 @@
 @use 'abstracts' as *;
 
 .dictionaries-tab__group {
-  display: grid;
-  gap: 6px;
-  margin-top: 12px;
+    display: grid;
+    gap: 6px;
+    margin-top: 12px;
 }
 
 .dictionaries-tab__group-title {
-  @include section-title;
+    @include section-title;
 }

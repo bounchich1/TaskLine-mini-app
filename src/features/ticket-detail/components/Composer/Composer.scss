@@ -1,98 +1,98 @@
 @use 'abstracts' as *;
 
 .composer {
-  display: grid;
-  flex-shrink: 0;
-  gap: 8px;
-  padding: 12px 24px 16px;
-  border-top: 1px solid $color-line;
-  background: $color-bg;
+    display: grid;
+    flex-shrink: 0;
+    gap: 8px;
+    padding: 12px 24px 16px;
+    border-top: 1px solid $color-line;
+    background: $color-bg;
 
-  @include container-below(ticket, 760px) {
-    position: sticky;
-    bottom: 0;
-    z-index: $z-index-sticky;
-    padding: 8px 12px calc(10px + env(safe-area-inset-bottom));
-  }
+    @include container-below(ticket, 760px) {
+        position: sticky;
+        bottom: 0;
+        z-index: $z-index-sticky;
+        padding: 8px 12px calc(10px + env(safe-area-inset-bottom));
+    }
 }
 
 .composer__notice {
-  @include muted(label);
+    @include muted(label);
 }
 
 .composer__box {
-  display: grid;
-  border-radius: $radius-l;
-  background: $color-bg-muted;
-  transition: box-shadow 0.15s ease;
+    display: grid;
+    border-radius: $radius-l;
+    background: $color-bg-muted;
+    transition: box-shadow 0.15s ease;
 
-  &:focus-within {
-    @include field-focus($bordered: false);
-  }
+    &:focus-within {
+        @include field-focus($bordered: false);
+    }
 
-  &--locked {
-    color: $color-text-muted;
-  }
+    &--locked {
+        color: $color-text-muted;
+    }
 }
 
 .composer__input {
-  @include text(body);
+    @include text(body);
 
-  display: block;
-  width: 100%;
-  min-height: 68px;
-  max-height: 240px;
-  padding: 12px 14px 4px;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  resize: none;
-  field-sizing: content;
+    display: block;
+    width: 100%;
+    min-height: 68px;
+    max-height: 240px;
+    padding: 12px 14px 4px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    resize: none;
+    field-sizing: content;
 
-  &::placeholder {
-    color: $color-text-muted;
-  }
+    &::placeholder {
+        color: $color-text-muted;
+    }
 
-  &:focus-visible {
-    outline: none;
-  }
+    &:focus-visible {
+        outline: none;
+    }
 }
 
 .composer__bar {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 4px 8px 8px 10px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 4px 8px 8px 10px;
 }
 
 .composer__attach {
-  @include text-button(small);
+    @include text-button(small);
 
-  color: $color-text-secondary;
+    color: $color-text-secondary;
 
-  &:hover:not(:disabled) {
-    color: $color-text;
-    text-decoration: none;
-  }
+    &:hover:not(:disabled) {
+        color: $color-text;
+        text-decoration: none;
+    }
 }
 
 .composer__attach-label {
-  @include container-below(ticket, 520px) {
-    @include visually-hidden;
-  }
+    @include container-below(ticket, 520px) {
+        @include visually-hidden;
+    }
 }
 
 .composer__count {
-  @include muted(caption);
+    @include muted(caption);
 
-  margin-left: auto;
-  font-variant-numeric: tabular-nums;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
 }
 
 .composer__bar > :last-child {
-  margin-left: auto;
+    margin-left: auto;
 }
 
 .composer__count + :last-child {
-  margin-left: 0;
+    margin-left: 0;
 }

@@ -1,63 +1,63 @@
 @use 'abstracts' as *;
 
 .message {
-  display: grid;
-  justify-items: start;
-  gap: 4px;
-  max-width: min(78%, 560px);
+    display: grid;
+    justify-items: start;
+    gap: 4px;
+    max-width: min(78%, 560px);
 
-  &--staff {
-    justify-self: end;
-    justify-items: end;
-  }
+    &--staff {
+        justify-self: end;
+        justify-items: end;
+    }
 
-  &--bot,
-  &--system {
-    justify-self: center;
-    justify-items: center;
-    max-width: 90%;
-    text-align: center;
-  }
+    &--bot,
+    &--system {
+        justify-self: center;
+        justify-items: center;
+        max-width: 90%;
+        text-align: center;
+    }
 }
 
 .message__meta {
-  @include muted(caption);
+    @include muted(caption);
 
-  display: flex;
-  gap: 6px;
-  padding: 0 4px;
+    display: flex;
+    gap: 6px;
+    padding: 0 4px;
 }
 
 .message__author {
-  color: $color-text-secondary;
-  font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
 }
 
 .message__bubble {
-  @include text(lead);
+    @include text(lead);
 
-  padding: 8px 12px;
-  border-radius: $radius-l $radius-l $radius-l 4px;
-  background: $color-bubble-client;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+    padding: 8px 12px;
+    border-radius: $radius-l $radius-l $radius-l 4px;
+    background: $color-bubble-client;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 
-  .message--staff & {
-    border-radius: $radius-l $radius-l 4px;
-    background: $color-bubble-staff;
-  }
+    .message--staff & {
+        border-radius: $radius-l $radius-l 4px;
+        background: $color-bubble-staff;
+    }
 
-  .message--bot &,
-  .message--system & {
-    @include text(small);
+    .message--bot &,
+    .message--system & {
+        @include text(small);
 
-    padding: 0;
-    border-radius: 0;
-    background: none;
-    color: $color-text-secondary;
-  }
+        padding: 0;
+        border-radius: 0;
+        background: none;
+        color: $color-text-secondary;
+    }
 }
 
 .message__deleted {
-  color: $color-text-muted;
+    color: $color-text-muted;
 }

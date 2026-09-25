@@ -1,25 +1,25 @@
 @use 'sass:map';
 
 $breakpoints: (
-  tablet: 1099px,
-  phone: 639px,
+    tablet: 1099px,
+    phone: 639px,
 );
 
 @mixin respond-to($name) {
-  @media (max-width: map.get($breakpoints, $name)) {
-    @content;
-  }
+    @media (max-width: map.get($breakpoints, $name)) {
+        @content;
+    }
 }
 
 @mixin respond-above($name) {
-  @media (min-width: map.get($breakpoints, $name) + 1px) {
-    @content;
-  }
+    @media (min-width: map.get($breakpoints, $name) + 1px) {
+        @content;
+    }
 }
 
 @mixin container-below($name, $width) {
-  // stylelint-disable-next-line container-name-pattern
-  @container #{$name} (max-width: #{$width - 1px}) {
-    @content;
-  }
+    // stylelint-disable-next-line container-name-pattern
+    @container #{$name} (max-width: #{$width - 1px}) {
+        @content;
+    }
 }

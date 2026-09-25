@@ -12,48 +12,57 @@ import { useTicketCommand } from './use-ticket-command';
 import { useTicketMessages } from './use-ticket-messages';
 
 export function useTicketCard(id: string, drafts: Map<string, Draft>, onClose: () => void) {
-  const detail = useTicket(id);
-  const history = useTicketMessages(id);
-  const [draft, setDraft] = useDraft(id, drafts);
-  const uploads = useAttachmentUpload({
-    ticketId: detail.data?.id,
-    uploadCount: draft.uploads.length,
-    setDraft,
-  });
-  const [dialog, setDialog] = useState<TicketDialog | null>(null);
-  const refresh = useRefreshTicket(id);
-  const { command, operate } = useTicketCommand({
-    id,
-    version: detail.data?.version,
-    refresh,
-    onDone: (action) => {
-      setDialog(null);
-      if (action === 'messages') {
-        setDraft(emptyDraft());
-      }
-    },
-  });
-  const dirty = isDraftDirty(draft, uploads.uploading);
-  useDraftGuard(id, drafts, draft, dirty);
-  const requestClose = useCallback(() => {
-    if (dirty) {
-      setDialog('discard');
-    } else {
-      onClose();
-    }
-  }, [dirty, onClose]);
-  useEffect(() => bindBack(requestClose), [requestClose]);
-  return {
-    detail,
-    history,
-    draft,
-    setDraft,
-    uploads,
-    dialog,
-    setDialog,
-    refresh,
-    command,
-    operate,
-    requestClose,
-  };
+    const detail = useTicket(id);
+    const history = useTicketMessages(id);
+    const [draft, setDraft] = useDraft(id, drafts);
+
+    const uploads = useAttachmentUpload({
+        ticketId: detail.data?.id,
+        uploadCount: draft.uploads.length,
+        setDraft,
+    });
+
+    const [dialog, setDialog] = useState<TicketDialog | null>(null);
+    const refresh = useRefreshTicket(id);
+
+    const { command, operate } = useTicketCommand({
+        id,
+        version: detail.data?.version,
+        refresh,
+        onDone: (action) => {
+            setDialog(null);
+
+            if (action === 'messages') {
+                setDraft(emptyDraft());
+            }
+        },
+    });
+
+    const dirty = isDraftDirty(draft, uploads.uploading);
+
+    useDraftGuard(id, drafts, draft, dirty);
+
+    const requestClose = useCallback(() => {
+        if (dirty) {
+            setDialog('discard');
+        } else {
+            onClose();
+        }
+    }, [dirty, onClose]);
+
+    useEffect(() => bindBack(requestClose), [requestClose]);
+
+    return {
+        detail,
+        history,
+        draft,
+        setDraft,
+        uploads,
+        dialog,
+        setDialog,
+        refresh,
+        command,
+        operate,
+        requestClose,
+    };
 }

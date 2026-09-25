@@ -1,58 +1,58 @@
 @use 'abstracts' as *;
 
 .admin-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  min-height: 56px;
-  padding: 10px 0;
-  border-bottom: 1px solid $color-line;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    min-height: 56px;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-line;
 
-  &--wrap {
-    @include respond-to(tablet) {
-      flex-wrap: wrap;
+    &--wrap {
+        @include respond-to(tablet) {
+            flex-wrap: wrap;
+        }
     }
-  }
 
-  @include respond-to(phone) {
-    gap: 10px;
-  }
+    @include respond-to(phone) {
+        gap: 10px;
+    }
 }
 
 .admin-row__main {
-  display: grid;
-  flex: 1;
-  gap: 2px;
-  min-width: 0;
+    display: grid;
+    flex: 1;
+    gap: 2px;
+    min-width: 0;
 
-  .admin-row--wrap & {
-    @include respond-to(phone) {
-      min-width: 160px;
+    .admin-row--wrap & {
+        @include respond-to(phone) {
+            min-width: 160px;
+        }
     }
-  }
 }
 
 .admin-row__title {
-  font-weight: $font-weight-medium;
-  overflow-wrap: anywhere;
+    font-weight: $font-weight-medium;
+    overflow-wrap: anywhere;
 }
 
 .admin-row__meta {
-  @include muted(label);
+    @include muted(label);
 
-  overflow-wrap: anywhere;
+    overflow-wrap: anywhere;
 }
 
 .admin-row__status {
-  @include muted(label);
+    @include muted(label);
 
-  white-space: nowrap;
+    white-space: nowrap;
 
-  &--negative {
-    color: $color-negative;
-  }
+    &--negative {
+        color: $color-negative;
+    }
 }
 
 .admin-row__link {
-  @include text-button;
+    @include text-button;
 }

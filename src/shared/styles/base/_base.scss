@@ -1,16 +1,16 @@
 @use 'abstracts' as *;
 
 .visually-hidden {
-  @include visually-hidden;
+    @include visually-hidden;
 }
 
 input:not([type='checkbox'], [type='radio'], [class]),
 textarea:not([class]) {
-  @include input-control;
+    @include input-control;
 }
 
 textarea:not([class]) {
-  width: 100%;
-  min-height: 88px;
-  resize: vertical;
+    width: 100%;
+    min-height: 88px;
+    resize: vertical;
 }
