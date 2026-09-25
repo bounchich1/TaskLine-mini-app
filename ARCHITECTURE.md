@@ -101,5 +101,6 @@ notifications and that ticket's card; `admin.changed` the dictionaries and emplo
 
 `npm run check` runs Prettier, ESLint, stylelint, `tsc`, knip, the Playwright tests and the
 build; CI runs the same. The Playwright suite mocks every `/v1` call; the screenshot tests run
-locally only (baselines are per OS). Locally, `PLAYWRIGHT_CHANNEL=msedge` (or `chrome`) uses an
-installed browser instead of the bundled Chromium.
+locally only. Their baselines differ per OS, so they are not tracked: the first local run records
+them (and fails once), later runs compare against them. Locally, `PLAYWRIGHT_CHANNEL=msedge` (or
+`chrome`) uses an installed browser instead of the bundled Chromium.
