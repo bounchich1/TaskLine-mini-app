@@ -1,5 +1,6 @@
 // @ts-check
 import js from '@eslint/js';
+import stylistic from '@stylistic/eslint-plugin';
 import prettier from 'eslint-config-prettier';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import boundaries from 'eslint-plugin-boundaries';
@@ -15,6 +16,38 @@ import tseslint from 'typescript-eslint';
 const publicApi = (/** @type {string} */ type) => ({
   element: { type, fileInternalPath: 'index.ts' },
 });
+
+const SPACED_STATEMENTS = [
+  'multiline-const',
+  'multiline-let',
+  'multiline-expression',
+  'multiline-export',
+  'multiline-type',
+  'block-like',
+  'class',
+  'interface',
+];
+
+const jsxNewline = stylistic.rules['jsx-newline'];
+
+const hasInlineText = (node) =>
+  node.parent.children.some((child) => child.type === 'JSXText' && child.value.trim() !== '');
+
+const jsxBlockNewline = {
+  ...jsxNewline,
+  create: (context) =>
+    jsxNewline.create(
+      Object.create(context, {
+        report: {
+          value: (descriptor) => {
+            if (!hasInlineText(descriptor.node)) {
+              context.report(descriptor);
+            }
+          },
+        },
+      }),
+    ),
+};
 
 export default tseslint.config(
   {
@@ -40,7 +73,13 @@ export default tseslint.config(
   prettier,
 
   {
-    plugins: { 'import-x': importX, unicorn, 'react-refresh': reactRefresh },
+    plugins: {
+      '@stylistic': stylistic,
+      local: { rules: { 'jsx-block-newline': jsxBlockNewline } },
+      'import-x': importX,
+      unicorn,
+      'react-refresh': reactRefresh,
+    },
     settings: {
       'import-x/resolver-next': [createTypeScriptImportResolver()],
     },
@@ -61,10 +100,25 @@ export default tseslint.config(
           ignoreRegExpLiterals: true,
           ignoreTemplateLiterals: true,
           ignoreStrings: false,
+          ignorePattern: String.raw`^\s*<path d="`,
         },
       ],
       curly: ['error', 'all'],
       'no-nested-ternary': 'error',
+      '@stylistic/padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: '*', next: 'return' },
+        { blankLine: 'always', prev: ['const', 'let'], next: '*' },
+        {
+          blankLine: 'any',
+          prev: ['singleline-const', 'singleline-let'],
+          next: ['singleline-const', 'singleline-let'],
+        },
+        { blankLine: 'always', prev: '*', next: SPACED_STATEMENTS },
+        { blankLine: 'always', prev: SPACED_STATEMENTS, next: '*' },
+      ],
+      '@stylistic/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+      'local/jsx-block-newline': ['error', { prevent: true, allowMultilines: true }],
       'id-length': [
         'error',
         { min: 2, exceptions: ['_', 'i', 'j', 'x', 'y'], properties: 'never' },
