@@ -1,25 +1,17 @@
 @use 'abstracts' as *;
 
 .queue-footer {
-  @include text(caption);
+  @include muted(label);
 
-  padding: 17px 23px;
   display: flex;
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
-  color: $slate-300;
+  min-height: 56px;
+  padding: 12px 24px;
+  font-variant-numeric: tabular-nums;
 
-  @include respond-to(phone) {
-    @include text(micro);
-
-    padding: 14px 13px;
-    gap: 10px;
-  }
-}
-
-.queue-footer__timezone {
-  @include respond-to(phone) {
-    max-width: 150px;
-    text-align: right;
+  .tickets-page--compact & {
+    padding: 12px 16px;
   }
 }

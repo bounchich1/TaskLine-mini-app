@@ -1,0 +1,39 @@
+@use 'sass:map';
+@use 'abstracts' as *;
+
+// The app's own color tokens as CSS custom properties, next to MAX UI's theme. The MaxUI root
+// (`<MaxUI className="app-root">`) carries `app-root--dark` in the dark scheme; see
+// app/providers.tsx.
+
+@mixin publish($palette) {
+  @each $name, $value in $palette {
+    --app-#{$name}: #{$value};
+  }
+}
+
+.app-root {
+  @include publish($palette-light);
+
+  // MAX UI sets the font of its whole tree from --family-base on this element.
+  --family-base: #{$font-family-base};
+  --family-headers: #{$font-family-base};
+
+  min-height: var(--host-height, 100dvh);
+  color-scheme: light;
+
+  &--dark {
+    @include publish($palette-dark);
+
+    color-scheme: dark;
+  }
+}
+
+// The document behind the app (overscroll, the area under the dialog backdrop).
+:root {
+  background: $canvas-light;
+  font-family: $font-family-base;
+
+  &[data-scheme='dark'] {
+    background: $canvas-dark;
+  }
+}

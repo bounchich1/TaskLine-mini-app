@@ -1,0 +1,14 @@
+@use 'abstracts' as *;
+
+.queue-content__skeleton {
+  display: grid;
+  gap: 1px;
+  padding: 8px 16px;
+}
+
+.queue-content__skeleton-row {
+  height: 64px;
+  border-radius: $radius-s;
+  background: $color-bg-muted;
+  animation: pulse 1.4s ease-in-out infinite;
+}

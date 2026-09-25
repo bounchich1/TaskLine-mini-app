@@ -1,49 +1,52 @@
 @use 'abstracts' as *;
 
-.tickets-page__queue {
-  @include card(9px);
-
-  overflow: hidden;
-}
-
-.tickets-page__skeleton {
-  padding: 15px 25px;
-}
-
-.tickets-page__skeleton-row {
-  height: 42px;
-  background: linear-gradient(90deg, $slate-50, $slate-100, $slate-50);
-  margin: 12px 0;
-  border-radius: 5px;
-  animation: pulse 1.5s infinite;
-}
-
-.tickets-page__privacy {
-  @include text(tiny);
-
+.tickets-page {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 22px 0;
-  color: $slate-400;
+  height: 100%;
+}
 
-  @include respond-to(tablet) {
-    @include text(micro);
+.tickets-page__queue {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
 
-    text-align: center;
+  // Beside the open ticket.
+  .tickets-page--open.tickets-page--split & {
+    flex: 0 0 $queue-pane-width;
+    border-right: 1px solid $color-line-strong;
   }
 
-  @include respond-to(phone) {
-    @include text(micro);
-
-    align-items: flex-start;
-    padding: 0 5px;
+  // Narrow screens: the open ticket takes the queue's place (the queue stays mounted, so its
+  // scroll position survives).
+  .tickets-page--open:not(.tickets-page--split) & {
+    display: none;
   }
 }
 
-.tickets-page__privacy-icon {
-  @include respond-to(phone) {
-    flex-shrink: 0;
+.tickets-page__head {
+  display: grid;
+  flex-shrink: 0;
+  gap: 12px;
+  padding: 16px 24px 12px;
+
+  .tickets-page--compact & {
+    padding: 12px 16px;
   }
+}
+
+.tickets-page__refresh {
+  @include icon-button;
+}
+
+.tickets-page__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.tickets-page__detail {
+  flex: 1;
+  min-width: 0;
 }

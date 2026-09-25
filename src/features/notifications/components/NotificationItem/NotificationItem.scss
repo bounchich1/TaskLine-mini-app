@@ -2,69 +2,64 @@
 
 .notification-item {
   display: flex;
-  width: 100%;
-  text-align: left;
+  gap: 12px;
   align-items: center;
-  gap: 15px;
-  background: $white;
-  padding: 23px 0;
-  border-bottom: 1px solid $color-line;
+  width: 100%;
+  padding: 12px;
+  border-radius: $radius-m;
+  background: none;
+  color: $color-text-secondary;
+  text-align: left;
 
-  &:last-child {
-    border: 0;
-  }
+  @include row-hover;
 
-  @include respond-to(phone) {
-    gap: 10px;
-  }
-
-  &--read {
-    opacity: 0.6;
-  }
-}
-
-.notification-item__content {
-  flex: 1;
-}
-
-.notification-item__title {
-  @include text(body);
-
-  color: $slate-700;
-  font-weight: $font-weight-medium;
-
-  @include respond-to(phone) {
-    @include text(small);
-  }
-}
-
-.notification-item__time {
-  @include text(caption);
-
-  display: block;
-  color: $slate-400;
-  margin-top: 6px;
-
-  @include respond-to(phone) {
-    @include text(tiny);
+  &--unread {
+    color: $color-text;
   }
 }
 
 .notification-item__icon {
-  background: $teal-100;
-  color: $teal-400;
+  position: relative;
   display: grid;
+  flex-shrink: 0;
   place-items: center;
-  height: 39px;
-  width: 39px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $color-bg-muted;
+  color: $color-text-secondary;
 
-  @include respond-to(phone) {
-    width: 32px;
-    height: 32px;
+  // The unread mark.
+  .notification-item--unread &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border: 2px solid $color-bg;
+    border-radius: 50%;
+    background: $color-accent;
   }
 }
 
+.notification-item__title {
+  flex: 1;
+  min-width: 0;
+
+  .notification-item--unread & {
+    font-weight: $font-weight-medium;
+  }
+}
+
+.notification-item__time {
+  @include muted(label);
+
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .notification-item__arrow {
-  color: $slate-400;
+  flex-shrink: 0;
+  color: $color-icon-muted;
 }

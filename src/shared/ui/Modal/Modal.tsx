@@ -1,5 +1,5 @@
 import { Button } from '@maxhub/max-ui';
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 
 import { Icon } from '../Icon/Icon';
 
@@ -15,9 +15,13 @@ type ModalProps = {
   busy?: boolean;
 };
 
-/** A modal `<dialog>`; focus returns to the previously focused element on close. */
+/**
+ * A modal `<dialog>`: centered on wide screens, a bottom sheet on phones. Focus returns to the
+ * previously focused element on close.
+ */
 export function Modal({ title, children, onClose, footer, busy = false }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
   useEffect(() => {
     const dialog = ref.current;
     const previous = document.activeElement as HTMLElement | null;
@@ -37,10 +41,10 @@ export function Modal({ title, children, onClose, footer, busy = false }: ModalP
           onClose();
         }
       }}
-      aria-labelledby="dialog-title"
+      aria-labelledby={titleId}
     >
       <div className="modal__header">
-        <h2 className="modal__title" id="dialog-title">
+        <h2 className="modal__title" id={titleId}>
           {title}
         </h2>
         <button
@@ -49,12 +53,12 @@ export function Modal({ title, children, onClose, footer, busy = false }: ModalP
           disabled={busy}
           onClick={onClose}
         >
-          <Icon name="close" />
+          <Icon name="close" size={18} />
         </button>
       </div>
       <div className="modal__body">{children}</div>
       <div className="modal__footer">
-        <Button variant="secondary" disabled={busy} onClick={onClose}>
+        <Button variant="secondary" size="small" disabled={busy} onClick={onClose}>
           Отмена
         </Button>
         {footer}

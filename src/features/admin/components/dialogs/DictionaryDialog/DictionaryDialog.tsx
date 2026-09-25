@@ -1,7 +1,7 @@
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
 import { DIMENSION_LABELS, DIMENSIONS } from '@/shared/config/labels';
 import type { Dictionary } from '@/shared/types/api';
-import { FormField, CheckboxField } from '@/shared/ui';
+import { FormField, CheckboxField, Select } from '@/shared/ui';
 
 import { FormDialog } from '../FormDialog/FormDialog';
 
@@ -39,13 +39,15 @@ export function DictionaryDialog({ value, busy, error, save, onClose }: Dictiona
       onSubmit={submit}
     >
       <FormField label="Справочник">
-        <select name="dimension" defaultValue={value?.dimension ?? 'tag'} disabled={!!value}>
-          {DIMENSIONS.map((dimension) => (
-            <option key={dimension} value={dimension}>
-              {DIMENSION_LABELS[dimension]}
-            </option>
-          ))}
-        </select>
+        <Select
+          name="dimension"
+          options={DIMENSIONS.map((dimension) => ({
+            value: dimension,
+            label: DIMENSION_LABELS[dimension],
+          }))}
+          defaultValue={value?.dimension ?? 'tag'}
+          disabled={!!value}
+        />
       </FormField>
       <FormField label="Код">
         <input

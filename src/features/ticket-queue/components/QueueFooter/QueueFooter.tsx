@@ -4,30 +4,31 @@ import type { TicketList } from '@/features/ticket-queue/hooks/use-ticket-list';
 
 import './QueueFooter.scss';
 
-/** How many tickets are shown, and "show more" while there are further pages. */
-export function QueueFooter({
-  ticketList,
-  timezone,
-}: {
+type QueueFooterProps = {
   ticketList: TicketList;
-  timezone: string;
-}) {
+  /** Tickets in the current tab with the current filters. */
+  total: number | undefined;
+};
+
+/** How many tickets are shown, and "show more" while there are further pages. */
+export function QueueFooter({ ticketList, total }: QueueFooterProps) {
   const { list, rows } = ticketList;
   return (
     <div className="queue-footer">
-      <span>Показано {rows.length} обращений</span>
+      <span>
+        Показано {rows.length}
+        {total === undefined ? null : ` из ${total}`}
+      </span>
       {list.hasNextPage ? (
         <Button
           variant="secondary"
-          size="small"
+          size="xsmall"
           loading={list.isFetchingNextPage}
           onClick={() => void list.fetchNextPage()}
         >
           Показать ещё
         </Button>
-      ) : (
-        <span className="queue-footer__timezone">Часовой пояс: {timezone}</span>
-      )}
+      ) : null}
     </div>
   );
 }

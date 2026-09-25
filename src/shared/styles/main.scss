@@ -1,4 +1,5 @@
 // Global styles, imported once from app/main.tsx. Component styles live next to components.
+@use 'base/theme';
 @use 'base/typography';
 @use 'base/reset';
 @use 'base/base';

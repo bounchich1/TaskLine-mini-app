@@ -23,7 +23,7 @@ export function FormDialog(props: FormDialogProps) {
       onClose={onClose}
       busy={busy}
       footer={
-        <Button form={formId} type="submit" loading={busy}>
+        <Button form={formId} type="submit" size="small" loading={busy}>
           Сохранить
         </Button>
       }

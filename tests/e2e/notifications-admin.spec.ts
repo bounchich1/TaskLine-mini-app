@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { openApp, ticketCard } from './support/app';
+import { chooseOption, openApp, ticketCard } from './support/app';
 import { MockApi } from './support/mock-api';
 
 let api: MockApi;
@@ -42,7 +42,7 @@ test('adds an employee', async ({ page }) => {
   const dialog = page.getByRole('dialog', { name: 'Добавить сотрудника' });
   await dialog.getByLabel('MAX ID').fill('2001');
   await dialog.getByLabel('Имя').fill('Галина');
-  await dialog.getByLabel('Роль').selectOption('supervisor');
+  await chooseOption(dialog.getByLabel('Роль'), 'Руководитель');
   await dialog.getByRole('button', { name: 'Сохранить' }).click();
   await expect.poll(() => api.callsTo('POST', '/v1/admin/employees').length).toBe(1);
   const [call] = api.callsTo('POST', '/v1/admin/employees');

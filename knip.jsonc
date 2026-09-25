@@ -2,6 +2,4 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   // Stylesheets are checked by stylelint; knip cannot follow Sass `loadPaths`.
   "project": ["src/**/*.{ts,tsx}", "tests/**/*.ts"],
-  // Referenced only from url() in shared/styles/base/_typography.scss.
-  "ignoreDependencies": ["@fontsource-variable/inter"],
 }

@@ -1,6 +1,6 @@
 import type { TicketDialog } from '@/features/ticket-detail/model/dialogs';
 import type { Employee, Ticket } from '@/shared/types/api';
-import { FormField } from '@/shared/ui';
+import { ErrorNotice, FormField, Select } from '@/shared/ui';
 
 import { ReasonField } from '../ReasonField/ReasonField';
 
@@ -15,6 +15,8 @@ type TicketDialogBodyProps = {
   onTarget: (value: string) => void;
 };
 
+const UNRESOLVED = new Error('Есть неподтверждённые отправки. Дождитесь доставки или отмените их.');
+
 /** The explanation and fields of a ticket dialog. */
 export function TicketDialogBody(props: TicketDialogBodyProps) {
   const { dialog, ticket, employees, unresolved, reason, onReason, target, onTarget } = props;
@@ -25,11 +27,7 @@ export function TicketDialogBody(props: TicketDialogBodyProps) {
           Обращение №{ticket.number} перейдёт в «Ожидает оценки». Клиент получит просьбу оценить
           работу поддержки. Переписка будет сохранена для анализа.
         </p>
-        {unresolved ? (
-          <div className="error-notice">
-            Есть неподтверждённые отправки. Дождитесь доставки или отмените их.
-          </div>
-        ) : null}
+        {unresolved ? <ErrorNotice error={UNRESOLVED} /> : null}
         <ReasonField label="Внутренний итог (необязательно)" value={reason} onChange={onReason} />
       </>
     );
@@ -38,21 +36,14 @@ export function TicketDialogBody(props: TicketDialogBodyProps) {
     return (
       <>
         <FormField label="Новый исполнитель">
-          <select
-            value={target}
-            onChange={(event) => {
-              onTarget(event.target.value);
-            }}
-          >
-            <option value="">Выберите сотрудника</option>
-            {employees
+          <Select
+            placeholder="Выберите сотрудника"
+            options={employees
               .filter((employee) => !employee.blocked && employee.id !== ticket.assignee_id)
-              .map((employee) => (
-                <option key={employee.id} value={employee.id}>
-                  {employee.name}
-                </option>
-              ))}
-          </select>
+              .map((employee) => ({ value: employee.id, label: employee.name }))}
+            value={target}
+            onChange={onTarget}
+          />
         </FormField>
         <ReasonField label="Комментарий к передаче" value={reason} onChange={onReason} required />
       </>

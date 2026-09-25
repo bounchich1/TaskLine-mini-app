@@ -20,7 +20,7 @@ export function DictionariesTab({ items, onEdit }: DictionariesTabProps) {
       title="Справочники классификации"
       action={
         <Button
-          size="small"
+          size="xsmall"
           onClick={() => {
             onEdit(null);
           }}
@@ -35,30 +35,30 @@ export function DictionariesTab({ items, onEdit }: DictionariesTabProps) {
       {DIMENSIONS.map((dimension) => (
         <div className="dictionaries-tab__group" key={dimension}>
           <h3 className="dictionaries-tab__group-title">{DIMENSION_GROUP_LABELS[dimension]}</h3>
-          {items
-            ?.filter((value) => value.dimension === dimension)
-            .map((value) => (
-              <AdminRow key={value.code}>
-                <div className="admin-row__main">
-                  <strong className="admin-row__title">{value.label}</strong>
-                  <small className="admin-row__meta">
-                    {value.code} · приоритет {value.rank} · версия {value.version}
-                  </small>
-                </div>
-                <span className="admin-row__status">
-                  {value.active ? 'Используется' : 'В архиве'}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => {
-                    onEdit(value);
-                  }}
-                >
-                  Изменить
-                </Button>
-              </AdminRow>
-            ))}
+          <div className="admin-card__list">
+            {items
+              ?.filter((value) => value.dimension === dimension)
+              .map((value) => (
+                <AdminRow key={value.code}>
+                  <div className="admin-row__main">
+                    <strong className="admin-row__title">{value.label}</strong>
+                    <small className="admin-row__meta">
+                      <code>{value.code}</code> · приоритет {value.rank} · версия {value.version}
+                      {value.active ? null : <span className="admin-row__status"> · В архиве</span>}
+                    </small>
+                  </div>
+                  <Button
+                    variant="secondary"
+                    size="xsmall"
+                    onClick={() => {
+                      onEdit(value);
+                    }}
+                  >
+                    Изменить
+                  </Button>
+                </AdminRow>
+              ))}
+          </div>
         </div>
       ))}
     </AdminCard>

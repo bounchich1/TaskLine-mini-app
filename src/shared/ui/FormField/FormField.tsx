@@ -6,7 +6,7 @@ import './FormField.scss';
 export function FormField({ label, children }: { label: ReactNode; children: ReactNode }) {
   return (
     <label className="form-field">
-      {label}
+      <span className="form-field__label">{label}</span>
       {children}
     </label>
   );

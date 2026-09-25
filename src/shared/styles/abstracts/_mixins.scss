@@ -9,111 +9,134 @@
   height: 1px;
   overflow: hidden;
   clip-path: inset(50%);
-}
-
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/// A white panel with a hairline border.
-@mixin card($radius: 8px) {
-  background: $color-surface;
-  border: 1px solid $color-line;
-  border-radius: $radius;
+  white-space: nowrap;
 }
 
 @mixin focus-ring {
-  outline: 3px solid $color-focus;
-  outline-offset: 3px;
+  outline: 2px solid $color-focus;
+  outline-offset: 2px;
 }
 
-@mixin scroll-y($max-height) {
-  max-height: $max-height;
-  overflow-y: auto;
+/// The focus ring of a full-width row, drawn inside it: a scrolling list clips an outer ring.
+@mixin focus-ring-inset {
+  outline: 2px solid $color-focus;
+  outline-offset: -2px;
 }
 
-/// A small rounded label (counts, statuses).
-@mixin pill($padding: 2px 6px, $radius: 4px) {
-  padding: $padding;
-  border-radius: $radius;
+/// Focus of a text field or a select: an accent edge with a soft halo. An offset outline would
+/// read as a second border around the field. `$bordered: false` for fields without a border.
+@mixin field-focus($bordered: true) {
+  outline: none;
+
+  @if $bordered {
+    border-color: $color-accent;
+    box-shadow: 0 0 0 3px $color-focus-halo;
+  } @else {
+    box-shadow:
+      inset 0 0 0 1px $color-accent,
+      0 0 0 3px $color-focus-halo;
+  }
+}
+
+/// One line of text, cut with an ellipsis.
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/// Secondary text: dates, counts, hints.
+@mixin muted($step: label) {
+  @include text($step);
+
+  color: $color-text-muted;
+}
+
+/// The title of a section inside a page or a panel (sentence case, not shouting).
+@mixin section-title {
+  @include text(small);
+
+  margin: 0;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
 }
 
 /// A borderless inline action that looks like a link.
 @mixin text-button($step: small) {
+  @include text($step);
+
   display: inline-flex;
   gap: 4px;
   align-items: center;
-  background: none;
-  color: $teal-700;
   padding: 0;
+  background: none;
+  color: $color-text-accent;
+  font-weight: $font-weight-medium;
 
-  @include text($step);
-}
-
-/// A square button that holds a single icon.
-@mixin icon-button {
-  padding: 5px;
-  display: grid;
-  place-items: center;
-  background: transparent;
-  color: $slate-400;
-  border-radius: 5px;
-}
-
-/// The small upper-case caption above a title.
-@mixin eyebrow($step: tiny, $margin-bottom: 12px) {
-  display: block;
-  color: $slate-500;
-  font-weight: $font-weight-bold;
-  letter-spacing: 1.6px;
-  margin-bottom: $margin-bottom;
-
-  @include text($step);
-
-  @include respond-to(phone) {
-    @include text(micro);
+  &:hover:not(:disabled) {
+    text-decoration: underline;
   }
 }
 
-/// The upper-case caption of a panel section.
-@mixin section-label {
-  letter-spacing: 1.4px;
-  color: $slate-400;
-  font-weight: $font-weight-semibold;
-
-  @include text(micro);
-}
-
-@mixin online-dot {
-  display: inline-block;
-  height: 6px;
-  width: 6px;
-  border-radius: 50%;
-  background: $teal-400;
-}
-
-/// The app's logo tile.
-@mixin brand-mark {
-  width: 39px;
-  height: 39px;
-  display: grid;
+/// A square button that holds a single icon.
+@mixin icon-button($size: 32px) {
+  display: inline-grid;
   place-items: center;
-  background: $teal-500;
-  border-radius: 11px;
-  color: $white;
+  flex-shrink: 0;
+  width: $size;
+  height: $size;
+  padding: 0;
+  border-radius: $radius-s;
+  background: transparent;
+  color: $color-icon-muted;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-hover;
+    color: $color-text;
+  }
 }
 
-/// Text inputs outside MAX UI (date filters, form fields).
+/// Native form controls outside MAX UI (selects, date and text inputs, textareas).
 @mixin input-control {
-  border: 1px solid $slate-200;
-  border-radius: 6px;
-  padding: 9px 10px;
-  color: $slate-800;
-  background: $white;
-  min-height: 37px;
-  max-width: 100%;
+  @include text(body);
 
-  @include text(lead);
+  min-height: 36px;
+  max-width: 100%;
+  padding: 7px 10px;
+  border: 1px solid $color-line-strong;
+  border-radius: $radius-s;
+  background: $color-bg;
+  color: $color-text;
+
+  &:focus-visible {
+    @include field-focus;
+  }
+
+  &:disabled {
+    color: $color-text-muted;
+    background: $color-bg-subtle;
+  }
+}
+
+/// A small count next to a label (tabs, navigation).
+@mixin count {
+  @include text(caption);
+
+  min-width: 18px;
+  padding: 1px 5px;
+  border-radius: 9px;
+  background: $color-bg-muted;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/// A list row that reacts to the pointer.
+@mixin row-hover {
+  @media (hover: hover) {
+    &:hover {
+      background: $color-bg-hover;
+    }
+  }
 }

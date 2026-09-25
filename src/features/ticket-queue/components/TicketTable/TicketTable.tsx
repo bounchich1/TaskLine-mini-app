@@ -1,6 +1,6 @@
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { clsx } from 'clsx';
-import { Fragment, useMemo, type Dispatch, type ReactNode, type SetStateAction } from 'react';
+import { useMemo } from 'react';
 
 import { buildTicketColumns } from '@/features/ticket-queue/model/columns';
 import type { QueueTab } from '@/features/ticket-queue/model/filter-defaults';
@@ -13,58 +13,53 @@ type TicketTableProps = {
   tab: QueueTab;
   timezone: string;
   expanded: string | null;
-  onExpand: Dispatch<SetStateAction<string | null>>;
-  /** The expanded ticket's card, shown in a full-width row under it. */
-  detail: ReactNode;
+  onToggle: (id: string) => void;
 };
 
-/** The queue table; the expanded ticket opens inline under its row. */
-export function TicketTable({ rows, tab, timezone, expanded, onExpand, detail }: TicketTableProps) {
+/** The queue as a table with every column, when the screen has room and no ticket is open. */
+export function TicketTable({ rows, tab, timezone, expanded, onToggle }: TicketTableProps) {
   const columns = useMemo(
-    () => buildTicketColumns({ expanded, onExpand, tab, timezone }),
-    [expanded, onExpand, tab, timezone],
+    () => buildTicketColumns({ expanded, onToggle, tab, timezone }),
+    [expanded, onToggle, tab, timezone],
   );
   const table = useReactTable({ data: rows, columns, getCoreRowModel: getCoreRowModel() });
   return (
-    <div className="ticket-table">
-      <table className="ticket-table__table">
-        <thead>
-          {table.getHeaderGroups().map((group) => (
-            <tr key={group.id}>
-              {group.headers.map((header) => (
-                <th className="ticket-table__head-cell" key={header.id}>
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <Fragment key={row.id}>
-              <tr
-                className={clsx(
-                  'ticket-table__row',
-                  expanded === row.original.id && 'ticket-table__row--expanded',
-                )}
+    <table className={clsx('ticket-table', `ticket-table--${tab}`)}>
+      <thead>
+        {table.getHeaderGroups().map((group) => (
+          <tr key={group.id}>
+            {group.headers.map((header) => (
+              <th
+                className={`ticket-table__head-cell ticket-table__head-cell--${header.id}`}
+                key={header.id}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <td className="ticket-table__cell" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-              {expanded === row.original.id ? (
-                <tr>
-                  <td className="ticket-table__detail-cell" colSpan={columns.length}>
-                    {detail}
-                  </td>
-                </tr>
-              ) : null}
-            </Fragment>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                {flexRender(header.column.columnDef.header, header.getContext())}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody>
+        {table.getRowModel().rows.map((row) => (
+          // The number cell's button is the keyboard and screen reader path; a click anywhere on
+          // the row is a pointer shortcut to the same action.
+          <tr
+            key={row.id}
+            className="ticket-table__row"
+            onClick={(event) => {
+              if (!(event.target instanceof HTMLButtonElement)) {
+                onToggle(row.original.id);
+              }
+            }}
+          >
+            {row.getVisibleCells().map((cell) => (
+              <td className="ticket-table__cell" key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }

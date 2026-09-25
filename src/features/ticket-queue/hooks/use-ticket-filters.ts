@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import {
   DEFAULT_FILTERS,
+  FILTER_FIELDS,
   filtersQuery,
   type Filters,
   type QueueTab,
@@ -29,6 +30,8 @@ export function useTicketFilters(timezone: string) {
   return {
     filters,
     query,
+    /** How many of the filter panel's fields are set. */
+    activeFilters: FILTER_FIELDS.filter((field) => filters[field]).length,
     search,
     setSearch,
     filterOpen,

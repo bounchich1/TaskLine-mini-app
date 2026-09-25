@@ -1,7 +1,7 @@
 export const SORT_OPTIONS = [
-  ['urgency', 'По срочности'],
-  ['newest', 'Сначала новые'],
-  ['oldest', 'Сначала старые'],
-  ['complexity', 'По сложности'],
-  ['rating', 'По оценке'],
-] as const;
+  { value: 'urgency', label: 'По срочности' },
+  { value: 'newest', label: 'Сначала новые' },
+  { value: 'oldest', label: 'Сначала старые' },
+  { value: 'complexity', label: 'По сложности' },
+  { value: 'rating', label: 'По оценке' },
+];

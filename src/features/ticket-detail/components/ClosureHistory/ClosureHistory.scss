@@ -1,51 +1,49 @@
 @use 'abstracts' as *;
 
-.closure-history {
-  @include card(7px);
+.closures {
+  display: grid;
+  gap: 10px;
+}
 
-  padding: 17px;
+.closures__title {
+  @include section-title;
+}
 
-  // Full width under the two-column aside.
-  @include respond-to(tablet) {
-    grid-column: 1 / -1;
+.closures__list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+
+.closures__item {
+  display: grid;
+  gap: 2px;
+
+  & + & {
+    padding-top: 12px;
+    border-top: 1px solid $color-line;
   }
-
-  @include respond-to(phone) {
-    width: 100%;
-  }
 }
 
-.closure-history__label {
-  @include section-label;
+.closures__head {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
 }
 
-.closure-history__item {
-  border-top: 1px solid $color-line;
-  padding-top: 13px;
-  margin-top: 13px;
-}
-
-.closure-history__rating {
+.closures__rating {
   @include text(title);
 
-  font-weight: $font-weight-medium;
-  color: $teal-700;
+  font-weight: $font-weight-semibold;
+  font-variant-numeric: tabular-nums;
+
+  &--none {
+    @include text(small);
+
+    color: $color-text-secondary;
+  }
 }
 
-.closure-history__meta {
-  @include text(tiny);
-
-  display: block;
-  color: $sage-400;
-  margin-top: 5px;
-}
-
-.closure-history__learning {
-  @include text(tiny);
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: $sage-600;
-  margin: 10px 0 0;
+.closures__meta {
+  @include muted(label);
 }

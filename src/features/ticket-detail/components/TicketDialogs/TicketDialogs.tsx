@@ -34,9 +34,12 @@ export function TicketDialogs(props: TicketDialogsProps) {
   const [target, setTarget] = useState('');
   const footer =
     dialog === 'discard' ? (
-      <Button onClick={props.onCollapse}>Сохранить и свернуть</Button>
+      <Button size="small" onClick={props.onCollapse}>
+        Сохранить и свернуть
+      </Button>
     ) : (
       <Button
+        size="small"
         loading={pending}
         disabled={isDialogIncomplete(dialog, { reason, target, unresolved })}
         onClick={() => {

@@ -1,23 +1,31 @@
 @use 'abstracts' as *;
 
 .delivery-status {
-  @include text(micro);
+  @include muted(caption);
 
   display: flex;
-  gap: 4px;
+  flex-wrap: wrap;
+  gap: 4px 8px;
   align-items: center;
   justify-content: flex-end;
-  color: $sage-400;
-  margin-top: 5px;
+  padding: 0 4px;
+
+  &--delivered {
+    color: $color-text-muted;
+  }
 
   &--unknown,
   &--failed {
-    color: $red-700;
+    color: $color-negative;
   }
 }
 
-.delivery-status__action {
-  @include text-button(tiny);
+.delivery-status__state {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
 
-  margin-left: 5px;
+.delivery-status__action {
+  @include text-button(caption);
 }

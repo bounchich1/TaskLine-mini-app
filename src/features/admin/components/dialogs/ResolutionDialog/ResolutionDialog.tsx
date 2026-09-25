@@ -32,6 +32,7 @@ export function ResolutionDialog({
       busy={busy}
       footer={
         <Button
+          size="small"
           loading={busy}
           disabled={evidence.trim().length < MIN_EVIDENCE_LENGTH}
           onClick={() => {

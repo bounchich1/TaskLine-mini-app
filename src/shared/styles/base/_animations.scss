@@ -4,6 +4,12 @@
   }
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   // Overrides every component's motion, so it must win over their own declarations.
   * {

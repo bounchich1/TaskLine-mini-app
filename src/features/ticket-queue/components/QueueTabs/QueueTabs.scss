@@ -1,78 +1,45 @@
 @use 'abstracts' as *;
 
 .queue-tabs {
-  height: 65px;
-  padding: 0 23px;
-  border-bottom: 1px solid $color-line;
   display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-
-  @include respond-to(tablet) {
-    padding: 0 15px;
-  }
-
-  @include respond-to(phone) {
-    height: 54px;
-    padding: 0 13px;
-  }
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid $color-line-strong;
 }
 
 .queue-tabs__list {
   display: flex;
-  gap: 26px;
-
-  @include respond-to(phone) {
-    gap: 23px;
-  }
+  gap: 20px;
 }
 
 .queue-tabs__tab {
-  @include text(body);
-
-  background: none;
-  color: $slate-500;
   display: flex;
+  gap: 6px;
   align-items: center;
-  gap: 9px;
-  padding: 0 1px;
+  margin-bottom: -1px;
+  padding: 8px 0 9px;
   border-bottom: 2px solid transparent;
+  background: none;
+  color: $color-text-secondary;
   font-weight: $font-weight-medium;
 
-  @include respond-to(phone) {
-    @include text(small);
+  &:hover {
+    color: $color-text;
   }
 
   &--selected {
-    color: $teal-700;
-    border-color: $teal-700;
+    border-bottom-color: $color-text;
+    color: $color-text;
   }
 }
 
 .queue-tabs__count {
-  @include text(caption);
-
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: $slate-50;
-
-  .queue-tabs__tab--selected & {
-    background: $teal-100;
-    color: $teal-700;
-  }
-}
-
-.queue-tabs__subtitle {
-  @include text(caption);
-
-  color: $slate-400;
-  align-self: center;
-
-  @include respond-to(laptop) {
-    display: none;
-  }
+  @include count;
 }
 
 .queue-tabs__notice {
-  @include text-button;
+  @include text-button(label);
+
+  margin-left: auto;
+  color: $color-text-muted;
 }

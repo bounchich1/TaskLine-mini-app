@@ -1,0 +1,40 @@
+@use 'abstracts' as *;
+
+.urgency {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  color: var(--urgency-text, #{$color-text});
+
+  &--1 {
+    --urgency-color: #{$color-urgency-low};
+  }
+
+  &--2 {
+    --urgency-color: #{$color-urgency-medium};
+  }
+
+  &--3 {
+    --urgency-color: #{$color-urgency-high};
+  }
+
+  &--4 {
+    --urgency-color: #{$color-urgency-critical};
+    --urgency-text: #{$color-urgency-critical};
+
+    font-weight: $font-weight-medium;
+  }
+}
+
+.urgency__bars {
+  flex-shrink: 0;
+}
+
+.urgency__bar {
+  fill: $color-line-strong;
+
+  &--on {
+    fill: var(--urgency-color, #{$color-text-muted});
+  }
+}

@@ -1,36 +1,18 @@
 @use 'abstracts' as *;
 
-.ticket-details {
-  @include card(7px);
-
-  padding: 17px;
-
-  @include respond-to(phone) {
-    width: 100%;
-  }
+.properties {
+  display: grid;
+  gap: 8px;
+  margin: 0;
 }
 
-.ticket-details__label {
-  @include section-label;
-}
-
-.ticket-details__assignee {
-  display: flex;
-  gap: 9px;
+.properties__person {
+  display: inline-flex;
+  gap: 6px;
   align-items: center;
-  margin: 15px 0 17px;
-}
-
-.ticket-details__assignee-caption {
-  @include text(tiny);
-
-  color: $slate-400;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.ticket-details__assignee-name {
-  @include text(small);
-
   font-weight: $font-weight-medium;
+}
+
+.properties__empty {
+  color: $color-text-muted;
 }

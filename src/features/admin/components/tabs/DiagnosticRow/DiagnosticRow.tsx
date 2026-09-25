@@ -51,7 +51,7 @@ export function DiagnosticRow({
       {uncertainDelivery ? (
         <>
           <Button
-            size="small"
+            size="xsmall"
             variant="secondary"
             onClick={() => {
               onResolve({ item, action: 'cancel' });
@@ -60,7 +60,7 @@ export function DiagnosticRow({
             Не повторять
           </Button>
           <Button
-            size="small"
+            size="xsmall"
             variant="secondary"
             onClick={() => {
               onResolve({ item, action: 'retry' });
@@ -73,7 +73,7 @@ export function DiagnosticRow({
       {retryableJob ? (
         <Button
           variant="secondary"
-          size="small"
+          size="xsmall"
           disabled={busy}
           onClick={() => {
             onRetryJob(item.id);

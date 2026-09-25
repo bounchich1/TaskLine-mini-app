@@ -1,60 +1,89 @@
 @use 'abstracts' as *;
 
+// Wide: the thread (history above the composer) and the properties column scroll separately.
+// Narrow: one scrolling column (description, properties, history) with the composer pinned to
+// the bottom.
 .ticket-card {
-  background: $teal-50;
-  padding: 25px;
-  border-top: 1px solid $teal-200;
-
-  @include respond-to(laptop) {
-    padding: 20px;
-  }
-
-  @include respond-to(tablet) {
-    min-width: 600px;
-  }
-
-  @include respond-to(phone) {
-    min-width: 0;
-    padding: 17px 13px;
-  }
+  container: ticket / inline-size;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: $color-bg;
 
   &--loading {
-    @include text(body);
+    @include muted(small);
 
-    color: $slate-500;
-    padding: 30px;
-    text-align: center;
+    display: grid;
+    place-items: center;
+  }
 
-    @include respond-to(laptop) {
-      padding: 20px;
-    }
-
-    @include respond-to(phone) {
-      padding: 17px 13px;
-    }
+  &--failed {
+    display: grid;
+    gap: 12px;
+    align-content: center;
+    justify-items: center;
+    padding: 24px;
   }
 }
 
-.ticket-card__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 260px;
-  gap: 25px;
+.ticket-card__panes {
+  display: flex;
+  flex: 1;
+  min-height: 0;
 
-  @include respond-above(wide) {
-    grid-template-columns: minmax(0, 1fr) 300px;
-  }
-
-  @include respond-to(laptop) {
-    grid-template-columns: minmax(0, 1fr) 225px;
-    gap: 17px;
-  }
-
-  @include respond-to(tablet) {
-    grid-template-columns: 1fr;
-  }
-
-  @include respond-to(phone) {
-    display: flex;
+  @include container-below(ticket, 760px) {
     flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+.ticket-card__thread {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+
+  @include container-below(ticket, 760px) {
+    display: contents;
+  }
+}
+
+.ticket-card__scroll {
+  display: grid;
+  flex: 1;
+  align-content: start;
+  gap: 20px;
+  min-height: 0;
+  padding: 20px 24px 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  @include container-below(ticket, 760px) {
+    display: contents;
+  }
+}
+
+// Narrow: the order of the flattened column.
+@include container-below(ticket, 760px) {
+  .ticket-card__error {
+    order: 1;
+    margin: 12px 16px 0;
+  }
+
+  .description {
+    order: 2;
+  }
+
+  .ticket-aside {
+    order: 3;
+  }
+
+  .conversation {
+    order: 4;
+  }
+
+  .composer {
+    order: 5;
   }
 }

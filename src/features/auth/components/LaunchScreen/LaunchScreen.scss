@@ -1,47 +1,28 @@
 @use 'abstracts' as *;
 
 .launch-screen {
-  min-height: 100dvh;
   display: flex;
+  flex-direction: column;
+  gap: 12px;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  max-width: 480px;
-  margin: auto;
+  max-width: 400px;
+  min-height: var(--host-height, 100dvh);
+  margin: 0 auto;
+  padding: 24px;
   text-align: center;
-  padding: 28px;
-}
-
-.launch-screen__mark {
-  @include brand-mark;
-
-  width: 65px;
-  height: 65px;
-  margin-bottom: 30px;
-  border-radius: 17px;
-}
-
-.launch-screen__eyebrow {
-  @include eyebrow;
 }
 
 .launch-screen__title {
-  @include text(display-md);
-
-  @include respond-to(phone) {
-    @include text(display-sm);
-  }
+  @include text(title);
 }
 
 .launch-screen__text {
-  @include text(lead);
+  @include text(small);
 
-  color: $slate-500;
+  color: $color-text-secondary;
 }
 
-.launch-screen__foot {
-  @include text(caption);
-
-  color: $slate-300;
-  margin-top: 30px;
+.launch-screen__error {
+  text-align: left;
 }

@@ -1,27 +1,40 @@
 import type { ReactNode } from 'react';
 
+import { formatDate } from '@/shared/lib/format-date';
 import type { Ticket } from '@/shared/types/api';
-import { Avatar, Icon } from '@/shared/ui';
+import { Avatar } from '@/shared/ui';
+
+import { PropertyRow } from '../PropertyRow/PropertyRow';
 
 import './TicketProperties.scss';
 
-/** Assignee, classification and actions of the ticket. */
-export function TicketProperties({ ticket, children }: { ticket: Ticket; children: ReactNode }) {
+type TicketPropertiesProps = {
+  ticket: Ticket;
+  timezone: string;
+  /** The classification rows. */
+  children: ReactNode;
+};
+
+/** Assignee, the ticket's dates and its classification, as label–value rows. */
+export function TicketProperties({ ticket, timezone, children }: TicketPropertiesProps) {
   return (
-    <div className="ticket-details">
-      <span className="ticket-details__label">ДЕТАЛИ И ДЕЙСТВИЯ</span>
-      <div className="ticket-details__assignee">
-        <Avatar size="small">
-          <Icon name="user" size={16} />
-        </Avatar>
-        <div>
-          <small className="ticket-details__assignee-caption">Исполнитель</small>
-          <strong className="ticket-details__assignee-name">
-            {ticket.assignee_name ?? 'Не назначен'}
-          </strong>
-        </div>
-      </div>
+    <dl className="properties">
+      <PropertyRow label="Исполнитель">
+        {ticket.assignee_name ? (
+          <span className="properties__person">
+            <Avatar name={ticket.assignee_name} size={20} />
+            {ticket.assignee_name}
+          </span>
+        ) : (
+          <span className="properties__empty">Не назначен</span>
+        )}
+      </PropertyRow>
+      <PropertyRow label="Создано">{formatDate(ticket.created_at, timezone)}</PropertyRow>
+      <PropertyRow label="Взято">{formatDate(ticket.taken_at, timezone)}</PropertyRow>
+      {ticket.closed_at ? (
+        <PropertyRow label="Закрыто">{formatDate(ticket.closed_at, timezone)}</PropertyRow>
+      ) : null}
       {children}
-    </div>
+    </dl>
   );
 }

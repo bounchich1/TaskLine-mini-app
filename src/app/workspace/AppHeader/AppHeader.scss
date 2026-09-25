@@ -1,0 +1,179 @@
+@use 'abstracts' as *;
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: $z-index-header;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  height: $header-height;
+  padding: 0 16px 0 20px;
+  border-bottom: 1px solid $color-line-strong;
+  background: $color-bg;
+
+  // A bottom tab bar with the navigation only.
+  @include respond-to(phone) {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: $z-index-tab-bar;
+    height: calc(#{$tab-bar-height} + env(safe-area-inset-bottom));
+    padding: 0 0 env(safe-area-inset-bottom);
+    border-top: 1px solid $color-line-strong;
+    border-bottom: 0;
+  }
+}
+
+.app-header__org {
+  @include text(lead);
+  @include truncate;
+
+  max-width: 220px;
+  font-weight: $font-weight-semibold;
+
+  @include respond-to(phone) {
+    display: none;
+  }
+}
+
+.app-header__nav {
+  display: flex;
+  gap: 2px;
+
+  @include respond-to(phone) {
+    flex: 1;
+    justify-content: space-around;
+    height: 100%;
+  }
+}
+
+.app-header__nav-item {
+  @include text(body);
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: $radius-s;
+  background: none;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+
+  @include row-hover;
+
+  &--active {
+    background: $color-bg-muted;
+    color: $color-text;
+  }
+
+  @include respond-to(phone) {
+    @include text(caption);
+
+    position: relative;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+    justify-content: center;
+    height: 100%;
+    padding: 0;
+    border-radius: 0;
+
+    &--active {
+      background: none;
+      color: $color-text-accent;
+    }
+  }
+}
+
+.app-header__nav-icon {
+  display: none;
+
+  @include respond-to(phone) {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.app-header__nav-count {
+  @include count;
+
+  &--alert {
+    background: $color-accent;
+    color: $color-text-inverse;
+  }
+
+  // A badge on the icon's corner.
+  @include respond-to(phone) {
+    position: absolute;
+    top: 5px;
+    left: calc(50% + 6px);
+  }
+}
+
+.app-header__connection {
+  @include muted(label);
+
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+  white-space: nowrap;
+
+  &--reconnecting {
+    color: $color-warning-text;
+  }
+
+  @include respond-to(phone) {
+    display: none;
+  }
+}
+
+.app-header__connection-text {
+  @include respond-to(tablet) {
+    @include visually-hidden;
+  }
+}
+
+.app-header__connection-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $color-positive;
+
+  .app-header__connection--reconnecting & {
+    background: $color-urgency-medium;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+}
+
+.app-header__profile {
+  @include text(small);
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-left: 16px;
+  border-left: 1px solid $color-line;
+
+  @include respond-to(phone) {
+    display: none;
+  }
+}
+
+.app-header__profile-text {
+  display: grid;
+  line-height: 1.2;
+  font-weight: $font-weight-medium;
+
+  @include respond-to(tablet) {
+    display: none;
+  }
+}
+
+.app-header__profile-role {
+  @include muted(caption);
+
+  font-weight: $font-weight-regular;
+}

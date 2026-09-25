@@ -1,8 +1,9 @@
 import {
+  countUnread,
   useMarkNotificationRead,
   type NotificationsQuery,
 } from '@/features/notifications/hooks/use-notifications';
-import { Empty, ErrorNotice, PageHeading } from '@/shared/ui';
+import { Empty, ErrorNotice, PageHeader } from '@/shared/ui';
 
 import { NotificationItem } from '../NotificationItem/NotificationItem';
 
@@ -22,13 +23,18 @@ export function NotificationsPage({
 }: NotificationsPageProps) {
   const markRead = useMarkNotificationRead();
   const items = notifications.data?.items;
+  const unread = countUnread(notifications);
   return (
-    <>
-      <PageHeading eyebrow="СОБЫТИЯ КОМАНДЫ" title="Уведомления" />
+    <div className="notifications-page">
+      <PageHeader title="Уведомления">
+        {unread > 0 ? (
+          <span className="notifications-page__count">Не прочитано: {unread}</span>
+        ) : null}
+      </PageHeader>
       <ErrorNotice error={notifications.error} />
-      <section className="notifications-page__list">
-        {items?.length ? (
-          items.map((notification) => (
+      {items?.length ? (
+        <ul className="notifications-page__list">
+          {items.map((notification) => (
             <NotificationItem
               key={notification.id}
               notification={notification}
@@ -38,11 +44,13 @@ export function NotificationsPage({
                 onOpenTicket(notification.ticket_id);
               }}
             />
-          ))
-        ) : (
-          <Empty title="Вы в курсе всех событий">Новые сообщения и оценки появятся здесь.</Empty>
-        )}
-      </section>
-    </>
+          ))}
+        </ul>
+      ) : (
+        <Empty title="Уведомлений нет">
+          Здесь появятся новые обращения, сообщения клиентов, передачи и оценки.
+        </Empty>
+      )}
+    </div>
   );
 }

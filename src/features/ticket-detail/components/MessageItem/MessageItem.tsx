@@ -17,26 +17,35 @@ type MessageItemProps = {
   onError: (error: unknown) => void;
 };
 
-/** One message of the conversation with its attachments and, for staff, its delivery. */
+/**
+ * One message. The client on the left, staff on the right (with delivery state), the bot and
+ * system records as centered notes.
+ */
 export function MessageItem({ message, attachments, timezone, ...delivery }: MessageItemProps) {
+  const files = attachments?.filter((file) => file.message_id === message.id) ?? [];
+  const hasBody = message.deleted || message.text.length > 0;
   return (
-    <div className={`message message--${message.author_type}`}>
+    <li className={`message message--${message.author_type}`}>
       <div className="message__meta">
         <strong className="message__author">
           {authorLabel(message.author_type, message.author_name)}
         </strong>
         <time dateTime={message.created_at}>{formatDate(message.created_at, timezone)}</time>
-        {message.revision > 1 ? <span>изменено</span> : null}
+        {message.revision > 1 ? <span>· изменено</span> : null}
       </div>
-      <div className="message__body">
-        {message.deleted ? <em>Сообщение удалено клиентом</em> : message.text}
-        {attachments
-          ?.filter((file) => file.message_id === message.id)
-          .map((file) => (
-            <AttachmentItem file={file} key={file.id} />
-          ))}
-      </div>
+      {hasBody ? (
+        <div className="message__bubble">
+          {message.deleted ? (
+            <em className="message__deleted">Сообщение удалено клиентом</em>
+          ) : (
+            message.text
+          )}
+        </div>
+      ) : null}
+      {files.map((file) => (
+        <AttachmentItem file={file} key={file.id} />
+      ))}
       {message.author_type === 'staff' ? <DeliveryStatus message={message} {...delivery} /> : null}
-    </div>
+    </li>
   );
 }

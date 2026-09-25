@@ -1,89 +1,78 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { clsx } from 'clsx';
-import type { Dispatch, SetStateAction } from 'react';
 
 import { formatDate } from '@/shared/lib/format-date';
 import type { Ticket } from '@/shared/types/api';
-import { Avatar, Badge, Icon } from '@/shared/ui';
+import { Avatar, Status, Urgency } from '@/shared/ui';
 
 import type { QueueTab } from './filter-defaults';
+import { complexityText, isClassifying, ratingText, tagText, urgencyText } from './ticket-fields';
 
 type ColumnOptions = {
   expanded: string | null;
-  onExpand: Dispatch<SetStateAction<string | null>>;
+  onToggle: (id: string) => void;
   tab: QueueTab;
   timezone: string;
 };
 
-/** While the assistant classifies a new ticket its labels are not known yet. */
-const classifying = (ticket: Ticket) => ticket.ai_status === 'pending';
-
-function ratingLabel(ticket: Ticket) {
-  if (ticket.rating) {
-    return `${ticket.rating} / 10`;
-  }
-  return ticket.status === 'awaiting_rating' ? 'Ожидается' : 'Без оценки';
-}
+const muted = (ticket: Ticket) => isClassifying(ticket) && 'ticket-table__muted';
 
 const ratingColumn: ColumnDef<Ticket> = {
   id: 'rating',
   header: 'Оценка',
-  cell: ({ row }) => <span>{ratingLabel(row.original)}</span>,
+  cell: ({ row: { original: ticket } }) => (
+    <span className={clsx(!ticket.rating && 'ticket-table__muted')}>{ratingText(ticket)}</span>
+  ),
 };
 
-/** Queue columns; the number cell expands the ticket. Closed tickets also show the rating. */
-export function buildTicketColumns({ expanded, onExpand, tab, timezone }: ColumnOptions) {
+/** Queue columns; the number cell holds the row's button. Closed tickets also show the rating. */
+export function buildTicketColumns({ expanded, onToggle, tab, timezone }: ColumnOptions) {
   const columns: ColumnDef<Ticket>[] = [
     {
       id: 'number',
       header: 'Обращение',
       cell: ({ row: { original: ticket } }) => (
-        <button
-          className="ticket-table__link"
-          onClick={() => {
-            onExpand((id) => (id === ticket.id ? null : ticket.id));
-          }}
-          aria-expanded={expanded === ticket.id}
-        >
-          <span
-            className={clsx(
-              'ticket-table__arrow',
-              expanded === ticket.id && 'ticket-table__arrow--open',
-            )}
+        <div className="ticket-table__subject">
+          <button
+            className="ticket-table__number"
+            onClick={() => {
+              onToggle(ticket.id);
+            }}
+            aria-expanded={expanded === ticket.id}
           >
-            <Icon name="arrow" size={15} />
-          </span>
-          <span>
             №{ticket.number}
-            <small className="ticket-table__link-meta">
-              {classifying(ticket) ? 'Определяется…' : ticket.tag_label}
-              {ticket.review_required ? ' · Проверить' : null}
-            </small>
-          </span>
-        </button>
+          </button>
+          <span className="ticket-table__preview">{ticket.description}</span>
+        </div>
+      ),
+    },
+    {
+      id: 'tag',
+      header: 'Тег',
+      cell: ({ row: { original: ticket } }) => (
+        <span className="ticket-table__tag">
+          <span className={clsx(muted(ticket))}>{tagText(ticket)}</span>
+          {ticket.review_required ? <span className="ticket-table__review">Проверить</span> : null}
+        </span>
       ),
     },
     {
       id: 'urgency',
       header: 'Срочность',
       cell: ({ row: { original: ticket } }) => (
-        <span className={`ticket-table__urgency ticket-table__urgency--${ticket.urgency}`}>
-          {classifying(ticket) ? 'Определяется' : ticket.urgency_label}
-        </span>
+        <Urgency code={isClassifying(ticket) ? '' : ticket.urgency} label={urgencyText(ticket)} />
       ),
     },
     {
       id: 'complexity',
       header: 'Сложность',
       cell: ({ row: { original: ticket } }) => (
-        <span className="ticket-table__muted">
-          {classifying(ticket) ? 'Определяется' : ticket.complexity_label}
-        </span>
+        <span className={clsx(muted(ticket))}>{complexityText(ticket)}</span>
       ),
     },
-    { id: 'status', header: 'Статус', cell: ({ row }) => <Badge status={row.original.status} /> },
+    { id: 'status', header: 'Статус', cell: ({ row }) => <Status status={row.original.status} /> },
     {
-      id: 'created_at',
+      id: 'created',
       header: 'Создано',
       cell: ({ row: { original: ticket } }) => (
         <time className="ticket-table__date" dateTime={ticket.created_at}>
@@ -97,8 +86,8 @@ export function buildTicketColumns({ expanded, onExpand, tab, timezone }: Column
       cell: ({ row: { original: ticket } }) =>
         ticket.assignee_name ? (
           <span className="ticket-table__assignee">
-            <Avatar size="small">{ticket.assignee_name[0]}</Avatar>
-            {ticket.assignee_name}
+            <Avatar name={ticket.assignee_name} size={20} />
+            <span className="ticket-table__assignee-name">{ticket.assignee_name}</span>
           </span>
         ) : (
           <span className="ticket-table__muted">Не назначен</span>

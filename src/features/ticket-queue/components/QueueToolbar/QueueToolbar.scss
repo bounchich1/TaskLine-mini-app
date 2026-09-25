@@ -1,78 +1,69 @@
 @use 'abstracts' as *;
 
-.queue-toolbar {
-  padding: 19px 23px;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-
-  @include respond-to(tablet) {
-    padding: 15px;
-    gap: 8px;
+// Beside an open ticket, and on phones, the search takes its own row.
+@mixin stacked {
+  .tickets-page--open & {
+    @content;
   }
 
   @include respond-to(phone) {
+    @content;
+  }
+}
+
+.queue-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  @include stacked {
     flex-wrap: wrap;
-    padding: 13px;
-    gap: 8px;
   }
 }
 
 .queue-toolbar__search {
   flex: 1;
-  max-width: 380px;
+  min-width: 0;
 
-  @include respond-to(phone) {
-    max-width: none;
-    flex: 1 1 calc(100% - 50px);
+  @include stacked {
+    flex-basis: 100%;
   }
 }
 
 .queue-toolbar__filter {
-  @include text(small);
-
-  height: 38px;
-  background: $white;
-  border: 1px solid $slate-200;
-  border-radius: 7px;
-  padding: 0 13px;
-  display: flex;
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 6px;
   align-items: center;
-  gap: 7px;
-  color: $slate-600;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid $color-line-strong;
+  border-radius: $radius-m;
+  background: $color-bg;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
 
-  // Icon only.
-  @include respond-to(phone) {
-    font-size: 0;
-    padding: 0 9px;
-    width: 35px;
-    height: 35px;
-  }
+  @include row-hover;
 
-  &--selected {
-    background: $teal-100;
-    color: $teal-700;
+  &--active {
+    border-color: $color-accent;
+    color: $color-text-accent;
   }
 }
 
-.queue-toolbar__filter-icon {
-  @include respond-to(phone) {
-    flex-shrink: 0;
-  }
+.queue-toolbar__filter-count {
+  @include count;
+
+  background: $color-accent;
+  color: $color-text-inverse;
 }
 
 .queue-toolbar__sort {
-  margin-left: auto;
-}
+  flex-shrink: 0;
+  width: 170px;
 
-.queue-toolbar__sort-select {
-  @include text(small);
-
-  @include respond-to(phone) {
-    @include text(caption);
-
-    min-height: 31px;
-    padding-top: 6px;
-    padding-bottom: 6px;
+  @include stacked {
+    flex: 1;
+    width: auto;
   }
 }

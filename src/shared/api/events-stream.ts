@@ -5,38 +5,59 @@ import { notifySessionExpired } from './session-events';
 
 export type ConnectionState = 'live' | 'reconnecting';
 
-type Listeners = {
-  onChange: () => void;
+/** One server-side change, as the stream's `change` event reports it. */
+export type LiveEvent = { type: string; ticket_id: string | null };
+
+export type StreamListeners = {
+  /** New changes, in order: one call per chunk read, however many events it held. */
+  onEvents: (events: LiveEvent[]) => void;
+  /** Anything may have changed: on every (re)connect and when the server asks to resync. */
+  onResync: () => void;
   onState: (state: ConnectionState) => void;
 };
 
-/** Survives reconnects: the last event id seen and the current backoff delay. */
-type StreamState = { cursor: string; delay: number };
+/**
+ * Survives reconnects: the last event id seen and the current backoff delay. Without a cursor
+ * the server starts from its newest event.
+ */
+type StreamState = { cursor: string | null; delay: number };
 
 type StreamOutcome = 'closed' | 'expired';
+
+type ChunkResult = { events: LiveEvent[]; resync: boolean; expired: boolean };
 
 const INITIAL_DELAY_MS = 1000;
 const MAX_DELAY_MS = 30000;
 const MAX_BUFFERED_CHARS = 1024 * 1024;
 
-function handlePacket(packet: string, stream: StreamState, onChange: () => void): boolean {
+function parseEvent(packet: string): LiveEvent | null {
+  const data = /^data: (.*)$/m.exec(packet);
+  try {
+    return data ? (JSON.parse(data[1]) as LiveEvent) : null;
+  } catch {
+    return null;
+  }
+}
+
+function handlePacket(packet: string, stream: StreamState, result: ChunkResult): void {
   const id = /^id: (\d+)$/m.exec(packet);
   if (id) {
     stream.cursor = id[1];
   }
   if (packet.includes('event: session_expired')) {
-    return false;
+    result.expired = true;
+  } else if (packet.includes('event: resync')) {
+    result.resync = true;
+  } else if (packet.includes('event: change')) {
+    // An unreadable payload still means something changed.
+    result.events.push(parseEvent(packet) ?? { type: 'unknown', ticket_id: null });
   }
-  if (/event: (change|resync)/.test(packet)) {
-    onChange();
-  }
-  return true;
 }
 
 async function readPackets(
   body: ReadableStream<Uint8Array>,
   stream: StreamState,
-  onChange: () => void,
+  listeners: StreamListeners,
 ): Promise<StreamOutcome> {
   const reader = body.getReader();
   const decoder = new TextDecoder();
@@ -52,8 +73,17 @@ async function readPackets(
     }
     const packets = buffered.split('\n\n');
     buffered = packets.pop() ?? '';
-    if (!packets.every((packet) => handlePacket(packet, stream, onChange))) {
+    const result: ChunkResult = { events: [], resync: false, expired: false };
+    for (const packet of packets) {
+      handlePacket(packet, stream, result);
+    }
+    if (result.expired) {
       return 'expired';
+    }
+    if (result.resync) {
+      listeners.onResync();
+    } else if (result.events.length > 0) {
+      listeners.onEvents(result.events);
     }
   }
 }
@@ -61,13 +91,15 @@ async function readPackets(
 /** One connection, from the request until the server closes the stream. */
 async function listen(
   stream: StreamState,
-  listeners: Listeners,
+  listeners: StreamListeners,
   signal: AbortSignal,
 ): Promise<StreamOutcome> {
-  const response = await fetch(
-    `${API_BASE}/v1/events?cursor=${encodeURIComponent(stream.cursor)}`,
-    { headers: authHeaders(), credentials: 'include', signal },
-  );
+  const query = stream.cursor === null ? '' : `?cursor=${encodeURIComponent(stream.cursor)}`;
+  const response = await fetch(`${API_BASE}/v1/events${query}`, {
+    headers: authHeaders(),
+    credentials: 'include',
+    signal,
+  });
   if (response.status === 401) {
     return 'expired';
   }
@@ -75,9 +107,9 @@ async function listen(
     throw new Error('stream');
   }
   listeners.onState('live');
-  listeners.onChange();
+  listeners.onResync();
   stream.delay = INITIAL_DELAY_MS;
-  return readPackets(response.body, stream, listeners.onChange);
+  return readPackets(response.body, stream, listeners);
 }
 
 function pause(ms: number, signal: AbortSignal): Promise<void> {
@@ -95,22 +127,17 @@ function pause(ms: number, signal: AbortSignal): Promise<void> {
 }
 
 /**
- * Follows the server's UI event stream until `signal` aborts or the session ends. Calls
- * `onChange` on connect and on every change/resync event; reconnects with a backoff that
- * doubles from 1 s up to 30 s.
+ * Follows the server's UI event stream, starting from now, until `signal` aborts or the session
+ * ends. Reconnects with a backoff that doubles from 1 s up to 30 s, resuming after the last
+ * event seen.
  */
-export async function events(
-  cursor: string,
-  onChange: () => void,
-  onState: (state: ConnectionState) => void,
-  signal: AbortSignal,
-): Promise<void> {
-  const stream: StreamState = { cursor, delay: INITIAL_DELAY_MS };
+export async function events(listeners: StreamListeners, signal: AbortSignal): Promise<void> {
+  const stream: StreamState = { cursor: null, delay: INITIAL_DELAY_MS };
   // A function, so TypeScript does not narrow `signal.aborted` to false across the awaits below.
   const running = () => !signal.aborted && hasSession();
   while (running()) {
     try {
-      if ((await listen(stream, { onChange, onState }, signal)) === 'expired') {
+      if ((await listen(stream, listeners, signal)) === 'expired') {
         notifySessionExpired();
         return;
       }
@@ -119,7 +146,7 @@ export async function events(
         return;
       }
     }
-    onState('reconnecting');
+    listeners.onState('reconnecting');
     await pause(stream.delay, signal);
     stream.delay = Math.min(MAX_DELAY_MS, stream.delay * 2);
   }

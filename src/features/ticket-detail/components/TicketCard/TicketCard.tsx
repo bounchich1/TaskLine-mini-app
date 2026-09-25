@@ -1,27 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
-
-import { useAttachmentUpload } from '@/features/ticket-detail/hooks/use-attachment-upload';
-import { useDraft, useDraftGuard } from '@/features/ticket-detail/hooks/use-draft';
-import { useRefreshTicket, useTicket } from '@/features/ticket-detail/hooks/use-ticket';
-import { useTicketCommand } from '@/features/ticket-detail/hooks/use-ticket-command';
-import { useTicketMessages } from '@/features/ticket-detail/hooks/use-ticket-messages';
-import type { TicketDialog } from '@/features/ticket-detail/model/dialogs';
-import {
-  appendToDraft,
-  draftMessage,
-  emptyDraft,
-  isDraftDirty,
-  type Draft,
-} from '@/features/ticket-detail/model/draft';
+import { useTicketCard } from '@/features/ticket-detail/hooks/use-ticket-card';
+import { appendToDraft, draftMessage, type Draft } from '@/features/ticket-detail/model/draft';
 import { MAX_REPLY_LENGTH } from '@/features/ticket-detail/model/limits';
 import { hasUnresolvedDelivery, sortMessages } from '@/features/ticket-detail/model/messages';
-import { bindBack } from '@/shared/platform/max-bridge';
 import type { Dictionary, Employee, Session } from '@/shared/types/api';
 import { ErrorNotice } from '@/shared/ui';
 
 import { Composer } from '../Composer/Composer';
 import { Conversation } from '../Conversation/Conversation';
-import { ProblemBlock } from '../ProblemBlock/ProblemBlock';
+import { Description } from '../Description/Description';
+import { TicketActions } from '../TicketActions/TicketActions';
 import { TicketAside } from '../TicketAside/TicketAside';
 import { TicketDialogs } from '../TicketDialogs/TicketDialogs';
 import { TicketHeader } from '../TicketHeader/TicketHeader';
@@ -39,7 +26,7 @@ type TicketCardProps = {
   onClose: () => void;
 };
 
-/** An expanded ticket: conversation, reply composer, properties, assistant and dialogs. */
+/** An open ticket: the conversation with the reply composer, and its properties beside it. */
 export function TicketCard({
   id,
   session,
@@ -48,40 +35,11 @@ export function TicketCard({
   drafts,
   onClose,
 }: TicketCardProps) {
-  const detail = useTicket(id);
-  const history = useTicketMessages(id);
-  const [draft, setDraft] = useDraft(id, drafts);
+  const card = useTicketCard(id, drafts, onClose);
+  const { detail, history, draft, setDraft, uploads, dialog, setDialog, command, operate } = card;
   const ticket = detail.data;
-  const uploads = useAttachmentUpload({
-    ticketId: ticket?.id,
-    uploadCount: draft.uploads.length,
-    setDraft,
-  });
-  const [dialog, setDialog] = useState<TicketDialog | null>(null);
-  const refresh = useRefreshTicket(id);
-  const { command, operate } = useTicketCommand({
-    id,
-    version: ticket?.version,
-    refresh,
-    onDone: (action) => {
-      setDialog(null);
-      if (action === 'messages') {
-        setDraft(emptyDraft());
-      }
-    },
-  });
-  const dirty = isDraftDirty(draft, uploads.uploading);
-  useDraftGuard(id, drafts, draft, dirty);
-  const requestClose = useCallback(() => {
-    if (dirty) {
-      setDialog('discard');
-    } else {
-      onClose();
-    }
-  }, [dirty, onClose]);
-  useEffect(() => bindBack(requestClose), [requestClose]);
   if (detail.isPending) {
-    return <div className="ticket-card ticket-card--loading">Загружаем переписку…</div>;
+    return <div className="ticket-card ticket-card--loading">Загружаем обращение…</div>;
   }
   if (!ticket) {
     return <TicketLoadFailed error={detail.error} onRetry={() => void detail.refetch()} />;
@@ -91,29 +49,45 @@ export function TicketCard({
   const canAct = ticket.assignee_id === session.employee.id || session.capabilities.act_on_others;
   const canSend = ticket.status === 'in_progress' && canAct;
   const messages = sortMessages(history.data?.pages);
+  const pending = command.isPending;
+  const canInsert = canSend && !pending;
   return (
     <section className="ticket-card" aria-label={`Обращение №${ticket.number}`}>
-      <TicketHeader ticket={ticket} onClose={requestClose} />
-      <ErrorNotice error={command.error} />
-      <div className="ticket-card__grid">
-        <div>
-          <ProblemBlock ticket={ticket} timezone={timezone} />
-          <Conversation
-            ticket={ticket}
-            messages={messages}
-            history={history}
-            timezone={timezone}
-            canAct={canAct}
-            canSend={canSend}
-            onChanged={refresh}
-            onError={uploads.setUploadError}
-          />
+      <TicketHeader ticket={ticket} onClose={card.requestClose}>
+        <TicketActions
+          ticket={ticket}
+          active={active}
+          canAct={canAct}
+          pending={pending}
+          onAssign={() => {
+            operate('assign');
+          }}
+          onOpenDialog={setDialog}
+        />
+      </TicketHeader>
+      <div className="ticket-card__panes">
+        <div className="ticket-card__thread">
+          <div className="ticket-card__scroll">
+            {/* While a dialog is open, the dialog shows the command's error. */}
+            {dialog ? null : <ErrorNotice className="ticket-card__error" error={command.error} />}
+            <Description ticket={ticket} />
+            <Conversation
+              ticket={ticket}
+              messages={messages}
+              history={history}
+              timezone={timezone}
+              canAct={canAct}
+              canSend={canSend}
+              onChanged={card.refresh}
+              onError={uploads.setUploadError}
+            />
+          </div>
           <Composer
             ticket={ticket}
             draft={draft}
             setDraft={setDraft}
             canSend={canSend}
-            pending={command.isPending}
+            pending={pending}
             uploads={uploads}
             onSend={() => {
               operate('messages', draftMessage(draft));
@@ -124,12 +98,14 @@ export function TicketCard({
           ticket={ticket}
           dictionaries={dictionaries}
           timezone={timezone}
-          active={active}
-          canAct={canAct}
-          canSend={canSend}
-          pending={command.isPending}
-          operate={operate}
-          onOpenDialog={setDialog}
+          disabled={!active || pending}
+          canInsert={canInsert}
+          onClassify={(field, value) => {
+            operate('classification', {
+              [field]: value,
+              revisions: { [field]: ticket[`${field}_revision`] },
+            });
+          }}
           onInsertSuggestion={(text) => {
             setDraft(appendToDraft(text, MAX_REPLY_LENGTH));
           }}
@@ -141,7 +117,7 @@ export function TicketCard({
           ticket={ticket}
           employees={employees}
           unresolved={hasUnresolvedDelivery(messages)}
-          pending={command.isPending}
+          pending={pending}
           error={command.error}
           onOperate={operate}
           onDismiss={() => {

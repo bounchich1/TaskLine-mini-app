@@ -2,25 +2,46 @@
 
 .ticket-header {
   display: flex;
-  justify-content: space-between;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 8px 12px;
   align-items: center;
-  margin-bottom: 21px;
-}
+  min-height: 56px;
+  padding: 10px 16px 10px 24px;
+  border-bottom: 1px solid $color-line-strong;
 
-.ticket-header__eyebrow {
-  @include eyebrow(micro, 8px);
+  @include container-below(ticket, 760px) {
+    padding: 8px 12px;
+  }
 }
 
 .ticket-header__title {
-  @include text(heading);
+  font-variant-numeric: tabular-nums;
+}
 
+.ticket-header__status {
+  @include text(small);
+
+  color: $color-text-secondary;
+}
+
+.ticket-header__actions {
   display: flex;
-  gap: 12px;
-  align-items: center;
-  margin: 0;
-  letter-spacing: 0.2px;
+  gap: 8px;
+  margin-left: auto;
+
+  // Below the title, the full width, when the pane is narrow.
+  @include container-below(ticket, 520px) {
+    flex-basis: 100%;
+
+    > * {
+      flex: 1;
+    }
+  }
 }
 
 .ticket-header__close {
-  @include icon-button;
+  @include icon-button(36px);
+
+  color: $color-text-secondary;
 }

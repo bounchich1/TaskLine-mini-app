@@ -20,7 +20,7 @@ type QueueTabsProps = {
   onAcknowledge: () => void;
 };
 
-/** Open / closed tabs and the "data updated" notice. */
+/** Open / closed tabs with their counts, and the "queue updated" notice. */
 export function QueueTabs({ tab, counts, onSelect, changed, onAcknowledge }: QueueTabsProps) {
   return (
     <div className="queue-tabs">
@@ -36,19 +36,16 @@ export function QueueTabs({ tab, counts, onSelect, changed, onAcknowledge }: Que
             }}
           >
             {label}
-            <span className="queue-tabs__count">{counts?.[value] ?? 0}</span>
+            <span className="queue-tabs__count">{counts?.[value] ?? '–'}</span>
           </button>
         ))}
       </div>
-      <span className="queue-tabs__subtitle">
-        {changed ? (
-          <button className="queue-tabs__notice" onClick={onAcknowledge}>
-            Данные обновлены <Icon name="check" size={14} />
-          </button>
-        ) : (
-          'Единая очередь команды'
-        )}
-      </span>
+      {changed ? (
+        <button className="queue-tabs__notice" onClick={onAcknowledge}>
+          <Icon name="check" size={14} />
+          Очередь обновлена
+        </button>
+      ) : null}
     </div>
   );
 }

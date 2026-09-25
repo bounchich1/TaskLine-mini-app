@@ -1,22 +1,36 @@
+import type { ReactNode } from 'react';
+
+import { MEDIA, useMediaQuery } from '@/shared/lib/use-media-query';
 import type { Ticket } from '@/shared/types/api';
-import { Badge, Icon } from '@/shared/ui';
+import { Icon, Status } from '@/shared/ui';
 
 import './TicketHeader.scss';
 
-/** The card title: ticket number, status and the collapse button. */
-export function TicketHeader({ ticket, onClose }: { ticket: Ticket; onClose: () => void }) {
+type TicketHeaderProps = {
+  ticket: Ticket;
+  onClose: () => void;
+  /** The ticket's actions. */
+  children: ReactNode;
+};
+
+/**
+ * Number, status and actions. Beside the queue the card closes with ✕ on the right; on narrow
+ * screens it replaces the queue, so it goes back with an arrow on the left.
+ */
+export function TicketHeader({ ticket, onClose, children }: TicketHeaderProps) {
+  const split = useMediaQuery(MEDIA.desktop);
+  const close = (
+    <button className="ticket-header__close" aria-label="Свернуть обращение" onClick={onClose}>
+      <Icon name={split ? 'close' : 'back'} size={20} />
+    </button>
+  );
   return (
     <div className="ticket-header">
-      <div>
-        <span className="ticket-header__eyebrow">КАРТОЧКА ОБРАЩЕНИЯ</span>
-        <h2 className="ticket-header__title">
-          №{ticket.number}
-          <Badge status={ticket.status} />
-        </h2>
-      </div>
-      <button className="ticket-header__close" aria-label="Свернуть обращение" onClick={onClose}>
-        <Icon name="close" />
-      </button>
+      {split ? null : close}
+      <h2 className="ticket-header__title">№{ticket.number}</h2>
+      <Status className="ticket-header__status" status={ticket.status} />
+      <div className="ticket-header__actions">{children}</div>
+      {split ? close : null}
     </div>
   );
 }

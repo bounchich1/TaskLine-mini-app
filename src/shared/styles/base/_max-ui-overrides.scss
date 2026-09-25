@@ -3,36 +3,17 @@
 // The only place for `!important` and selectors into MAX UI's markup: its components style their
 // inner elements with generated class names, so our components can only reach them from outside.
 
-// The MaxUI provider's root element (`<MaxUI className="app-root">`). MAX UI sets the font of the
-// whole tree from --family-base on that element (Roboto on Android, the system font on iOS), so
-// this is where the app font takes effect — for our components and MAX UI's alike.
-.app-root {
-  --family-base: #{$font-family-base};
+// MAX UI buttons keep their label on one line; in narrow toolbars they shrink instead of wrapping.
+button[class*='Button__'] {
+  white-space: nowrap;
 }
 
-button[class*='Button'] {
-  font-size: type-size(small) !important;
-  border-radius: 6px !important;
+// MAX UI's text field shows focus as a whole: the rounded field gets the ring, not the bare
+// <input> inside it (the global :focus-visible outline would draw a rectangle there).
+[class*='Input__input__']:focus-visible {
+  outline: none !important;
 }
 
-.queue-toolbar__search input {
-  font-size: type-size(body) !important;
-
-  @include respond-to(phone) {
-    font-size: type-size(small) !important;
-  }
-}
-
-.composer__input {
-  font-size: type-size(body) !important;
-  background: $white !important;
-}
-
-// After the generic button rule: same specificity, so the later one wins.
-.page-heading button {
-  @include respond-to(phone) {
-    min-height: 31px;
-    font-size: type-size(tiny) !important;
-    padding: 6px 9px !important;
-  }
+label[class*='Input_size_']:focus-within {
+  @include field-focus($bordered: false);
 }

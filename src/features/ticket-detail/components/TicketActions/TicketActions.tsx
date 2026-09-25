@@ -2,9 +2,6 @@ import { Button } from '@maxhub/max-ui';
 
 import type { TicketDialog } from '@/features/ticket-detail/model/dialogs';
 import type { Ticket } from '@/shared/types/api';
-import { Icon } from '@/shared/ui';
-
-import './TicketActions.scss';
 
 type TicketActionsProps = {
   ticket: Ticket;
@@ -24,50 +21,51 @@ export function TicketActions({
   onAssign,
   onOpenDialog,
 }: TicketActionsProps) {
-  return (
-    <div className="ticket-actions">
-      {ticket.status === 'open' ? (
-        <Button size="small" loading={pending} onClick={onAssign}>
-          Взять в работу
-        </Button>
-      ) : null}
-      {ticket.status === 'in_progress' && canAct ? (
-        <>
-          <Button
-            variant="secondary"
-            size="small"
-            disabled={pending}
-            onClick={() => {
-              onOpenDialog('transfer');
-            }}
-          >
-            Передать сотруднику
-          </Button>
-          <Button
-            variant="primary"
-            size="small"
-            disabled={pending}
-            onClick={() => {
-              onOpenDialog('close');
-            }}
-            iconBefore={<Icon name="check" size={16} />}
-          >
-            Закрыть обращение
-          </Button>
-        </>
-      ) : null}
-      {!active && canAct ? (
+  if (ticket.status === 'open') {
+    return (
+      <Button size="xsmall" loading={pending} onClick={onAssign}>
+        Взять в работу
+      </Button>
+    );
+  }
+  if (!canAct) {
+    return null;
+  }
+  if (ticket.status === 'in_progress') {
+    return (
+      <>
         <Button
           variant="secondary"
-          size="small"
+          size="xsmall"
           disabled={pending}
           onClick={() => {
-            onOpenDialog('reopen');
+            onOpenDialog('transfer');
           }}
         >
-          Переоткрыть
+          Передать сотруднику
         </Button>
-      ) : null}
-    </div>
+        <Button
+          size="xsmall"
+          disabled={pending}
+          onClick={() => {
+            onOpenDialog('close');
+          }}
+        >
+          Закрыть обращение
+        </Button>
+      </>
+    );
+  }
+  return active ? null : (
+    <Button
+      variant="secondary"
+      size="xsmall"
+      disabled={pending}
+      onClick={() => {
+        onOpenDialog('reopen');
+      }}
+    >
+      Переоткрыть
+    </Button>
   );
 }

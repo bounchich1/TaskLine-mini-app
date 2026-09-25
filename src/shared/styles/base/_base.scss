@@ -4,15 +4,15 @@
   @include visually-hidden;
 }
 
-// Native selects share one look (MAX UI has no select).
-select {
-  @include text(body);
+// Native controls share one look (MAX UI has no date or plain text input; selects are
+// shared/ui/Select). The native pickers follow `color-scheme`, set per theme in base/_theme.scss.
+input:not([type='checkbox'], [type='radio'], [class]),
+textarea:not([class]) {
+  @include input-control;
+}
 
-  border: 1px solid $slate-200;
-  border-radius: 6px;
-  padding: 9px 25px 9px 10px;
-  background: $white;
-  color: $slate-700;
-  max-width: 100%;
-  min-height: 37px;
+textarea:not([class]) {
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
 }

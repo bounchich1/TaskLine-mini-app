@@ -1,22 +1,23 @@
 @use 'abstracts' as *;
 
 .audit-list__item {
-  @include text(caption);
+  @include text(small);
 
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  padding: 14px 0;
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) auto;
+  gap: 4px 16px;
+  align-items: baseline;
+  padding: 10px 0;
   border-bottom: 1px solid $color-line;
 
-  @include respond-to(tablet) {
-    flex-wrap: wrap;
-    gap: 8px;
+  @include respond-to(phone) {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
 .audit-list__time {
-  color: $slate-400;
+  color: $color-text-muted;
+  font-variant-numeric: tabular-nums;
 }
 
 .audit-list__action {
@@ -24,13 +25,7 @@
 }
 
 .audit-list__object {
-  @include text(tiny);
+  @include muted(label);
 
-  margin-left: auto;
-  color: $slate-400;
   overflow-wrap: anywhere;
-
-  @include respond-to(tablet) {
-    margin: 0;
-  }
 }

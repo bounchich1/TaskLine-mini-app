@@ -2,38 +2,38 @@
 
 .permit-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-
-  @include respond-to(phone) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
 }
 
 .permit-grid__slot {
-  padding: 12px;
-  background: $teal-100;
-  border-radius: 5px;
-  color: $sage-500;
-
-  &--uncertain {
-    background: $amber-100;
-    color: $amber-700;
-  }
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid $color-line-strong;
+  border-radius: $radius-s;
 
   &--running {
-    background: $blue-100;
-    color: $blue-500;
+    border-color: $color-accent;
+    background: $color-bg-selected;
+  }
+
+  &--uncertain {
+    border-color: transparent;
+    background: $color-warning-bg;
+    color: $color-warning-text;
   }
 }
 
 .permit-grid__number {
-  @include text(title);
-
-  display: block;
-  margin-bottom: 5px;
+  font-weight: $font-weight-semibold;
+  font-variant-numeric: tabular-nums;
 }
 
 .permit-grid__state {
-  @include text(tiny);
+  @include text(label);
+
+  color: inherit;
+  opacity: 0.8;
 }

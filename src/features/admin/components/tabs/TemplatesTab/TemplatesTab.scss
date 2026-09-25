@@ -2,43 +2,33 @@
 
 .template-row {
   display: flex;
+  gap: 16px;
   align-items: flex-start;
-  gap: 20px;
-  padding: 18px 0;
+  padding: 14px 0;
   border-bottom: 1px solid $color-line;
-
-  @include respond-to(phone) {
-    gap: 7px;
-  }
 }
 
 .template-row__main {
+  display: grid;
   flex: 1;
+  gap: 4px;
+  min-width: 0;
 }
 
 .template-row__code {
-  @include text(body);
+  @include text(small);
 
-  @include respond-to(phone) {
-    @include text(caption);
-  }
+  font-weight: $font-weight-medium;
 }
 
 .template-row__version {
-  @include text(tiny);
-
-  color: $slate-400;
-  margin-left: 10px;
+  @include muted(caption);
 }
 
 .template-row__body {
-  @include text(body);
+  @include text(small);
 
-  color: $slate-600;
+  color: $color-text-secondary;
   white-space: pre-wrap;
-  margin: 10px 0 0;
-
-  @include respond-to(phone) {
-    @include text(small);
-  }
+  overflow-wrap: anywhere;
 }

@@ -16,7 +16,7 @@ export function AuditTab({
   return (
     <AdminCard title="Журнал изменений">
       {items?.length ? (
-        <div className="audit-list">
+        <div className="audit-list admin-card__list">
           {items.map((item) => (
             <div className="audit-list__item" key={item.id}>
               <time className="audit-list__time">{formatDate(item.created_at, timezone)}</time>

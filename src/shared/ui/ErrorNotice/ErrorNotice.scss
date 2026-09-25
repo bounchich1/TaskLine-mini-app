@@ -1,15 +1,20 @@
 @use 'abstracts' as *;
 
 .error-notice {
-  @include text(body);
+  @include text(small);
 
-  background: $red-100;
-  border: 1px solid $red-200;
-  border-radius: 6px;
-  color: $red-700;
-  padding: 11px 13px;
-  line-height: 1.55;
-  margin: 10px 0;
-  white-space: normal;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 9px 12px;
+  border-radius: $radius-m;
+  background: $color-negative-bg;
+  color: $color-text;
   overflow-wrap: anywhere;
+}
+
+.error-notice__icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: $color-negative;
 }

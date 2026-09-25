@@ -1,18 +1,46 @@
 @use 'abstracts' as *;
 
 .ticket-aside {
+  flex: 0 0 300px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-left: 1px solid $color-line-strong;
+  background: $color-bg-subtle;
+
+  @include container-below(ticket, 760px) {
+    flex: none;
+    overflow: visible;
+    border-top: 1px solid $color-line;
+    border-left: 0;
+  }
+}
+
+.ticket-aside__section {
+  display: grid;
+  gap: 10px;
+  padding: 16px 20px;
+
+  & + & {
+    border-top: 1px solid $color-line;
+  }
+
+  @include container-below(ticket, 760px) {
+    padding: 14px 16px;
+  }
+}
+
+// Shared by the aside's sections.
+.ticket-aside__title {
+  @include section-title;
+
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  gap: 6px;
+  align-items: center;
+}
 
-  @include respond-to(tablet) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
+.ticket-aside__note {
+  @include muted(caption);
 
-  @include respond-to(phone) {
-    display: flex;
-    flex-direction: column;
-  }
+  margin-left: auto;
+  font-weight: $font-weight-regular;
 }

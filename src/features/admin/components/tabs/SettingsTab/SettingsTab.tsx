@@ -40,7 +40,7 @@ export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
           Политика согласия, ключи сервисов и ограничения ИИ настраиваются при развёртывании
           сервера.
         </p>
-        <Button type="submit" loading={busy}>
+        <Button className="settings-form__submit" type="submit" size="small" loading={busy}>
           Сохранить
         </Button>
       </form>

@@ -31,8 +31,8 @@ export function DiagnosticsTab({ diagnostics, ...rowProps }: DiagnosticsTabProps
               className={`permit-grid__slot permit-grid__slot--${permit.state}`}
               key={permit.slot}
             >
-              <strong className="permit-grid__number">{permit.slot}</strong>
-              <small className="permit-grid__state">{permitLabel(permit.state)}</small>
+              <span className="permit-grid__number">{permit.slot}</span>
+              <span className="permit-grid__state">{permitLabel(permit.state)}</span>
             </div>
           ))}
         </div>
@@ -43,9 +43,11 @@ export function DiagnosticsTab({ diagnostics, ...rowProps }: DiagnosticsTabProps
       {SECTIONS.map(([kind, title]) => (
         <AdminCard title={title} key={kind}>
           {diagnostics?.[kind].length ? (
-            diagnostics[kind].map((item) => (
-              <DiagnosticRow key={item.id} kind={kind} item={item} {...rowProps} />
-            ))
+            <div className="admin-card__list">
+              {diagnostics[kind].map((item) => (
+                <DiagnosticRow key={item.id} kind={kind} item={item} {...rowProps} />
+              ))}
+            </div>
           ) : (
             <p className="admin-card__help">Нет записей.</p>
           )}

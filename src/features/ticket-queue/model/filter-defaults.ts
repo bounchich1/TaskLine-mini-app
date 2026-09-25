@@ -16,6 +16,17 @@ export type Filters = {
   sort: string;
 };
 
+/** The fields of the filter panel (search, tab and sort are set elsewhere). */
+export const FILTER_FIELDS = [
+  'tag',
+  'urgency',
+  'complexity',
+  'status',
+  'assignee',
+  'from',
+  'to',
+] as const satisfies readonly (keyof Filters)[];
+
 export const DEFAULT_FILTERS: Filters = {
   tab: 'open',
   q: '',

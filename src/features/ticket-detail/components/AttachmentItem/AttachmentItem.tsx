@@ -56,18 +56,22 @@ export function AttachmentItem({ file }: { file: Attachment }) {
   const { download, busy, error, needsGrant } = useAttachmentDownload(file);
   return (
     <div className="attachment">
-      <Icon name="clip" size={17} />
+      <span className="attachment__icon">
+        <Icon name="file" size={18} />
+      </span>
       <div className="attachment__info">
-        <strong className="attachment__name">{file.filename}</strong>
+        <strong className="attachment__name" title={file.filename}>
+          {file.filename}
+        </strong>
         <small className="attachment__status">
           {file.status === 'clean' ? fileSize(file.bytes) : attachmentStatusLabel(file.status)}
         </small>
-        <ErrorNotice error={error} />
+        <ErrorNotice className="attachment__error" error={error} />
       </div>
       {file.status === 'clean' ? (
         <button className="attachment__download" disabled={busy} onClick={download}>
-          {downloadLabel(busy, needsGrant)}
           <Icon name="download" size={14} />
+          {downloadLabel(busy, needsGrant)}
         </button>
       ) : null}
     </div>

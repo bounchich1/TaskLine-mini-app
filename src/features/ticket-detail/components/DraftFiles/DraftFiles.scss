@@ -4,28 +4,31 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 10px;
+  padding: 8px 8px 0;
 }
 
 .draft-files__item {
-  @include text(caption);
+  @include text(label);
 
   display: flex;
+  gap: 6px;
   align-items: center;
-  gap: 5px;
-  background: $teal-100;
-  padding: 6px 8px;
-  border-radius: 4px;
+  max-width: 100%;
+  padding: 4px 4px 4px 8px;
+  border-radius: $radius-s;
+  background: $color-bg-muted;
+}
+
+.draft-files__name {
+  @include truncate;
+
+  max-width: 200px;
 }
 
 .draft-files__status {
-  @include text(micro);
-
-  color: $sage-400;
+  color: $color-text-muted;
 }
 
 .draft-files__remove {
-  background: none;
-  display: flex;
-  color: $sage-500;
+  @include icon-button(22px);
 }

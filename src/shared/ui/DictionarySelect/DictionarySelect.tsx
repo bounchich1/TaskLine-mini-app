@@ -1,50 +1,36 @@
-import type { SelectHTMLAttributes } from 'react';
-
 import type { Dimension } from '@/shared/config/labels';
 import type { Dictionary } from '@/shared/types/api';
 
-type DictionarySelectProps = Omit<
-  SelectHTMLAttributes<HTMLSelectElement>,
-  'value' | 'onChange' | 'children'
-> & {
+import { Select, type SelectProps } from '../Select/Select';
+
+type DictionarySelectProps = Omit<SelectProps, 'options'> & {
   items: Dictionary[] | undefined;
   dimension: Dimension;
-  value: string;
-  onChange: (value: string) => void;
   /** Adds a first, empty option with this label (e.g. "Все"). */
   emptyLabel?: string;
   /** Hides archived values, except the one currently selected. */
   activeOnly?: boolean;
 };
 
-/** A `<select>` over one classification dimension; archived values are marked "(архив)". */
+/** A select over one classification dimension; archived values are marked "архив". */
 export function DictionarySelect({
   items,
   dimension,
-  value,
-  onChange,
   emptyLabel,
   activeOnly = false,
   ...selectProps
 }: DictionarySelectProps) {
-  const options = items?.filter(
-    (item) => item.dimension === dimension && (!activeOnly || item.active || item.code === value),
-  );
-  return (
-    <select
-      {...selectProps}
-      value={value}
-      onChange={(event) => {
-        onChange(event.target.value);
-      }}
-    >
-      {emptyLabel === undefined ? null : <option value="">{emptyLabel}</option>}
-      {options?.map((item) => (
-        <option key={item.code} value={item.code}>
-          {item.label}
-          {item.active ? '' : ' (архив)'}
-        </option>
-      ))}
-    </select>
-  );
+  const values = (items ?? [])
+    .filter(
+      (item) =>
+        item.dimension === dimension &&
+        (!activeOnly || item.active || item.code === selectProps.value),
+    )
+    .map((item) => ({
+      value: item.code,
+      label: item.label,
+      note: item.active ? undefined : 'архив',
+    }));
+  const options = emptyLabel === undefined ? values : [{ value: '', label: emptyLabel }, ...values];
+  return <Select {...selectProps} options={options} />;
 }

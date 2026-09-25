@@ -1,5 +1,11 @@
 @use 'abstracts' as *;
 
 .settings-form {
+  display: grid;
+  gap: 14px;
   max-width: 440px;
+}
+
+.settings-form__submit {
+  justify-self: start;
 }

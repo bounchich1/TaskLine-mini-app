@@ -1,76 +1,82 @@
 // Design tokens. No CSS output: every component stylesheet starts with `@use 'abstracts' as *;`.
 // Components use these instead of raw values (stylelint enforces it).
 
-// Palette ------------------------------------------------------------------------------------
+// Colors are CSS custom properties, so the light and dark schemes switch at run time:
+// - MAX UI's theme (set by the <MaxUI> root for the host's color scheme): surfaces, text,
+//   dividers, the accent;
+// - the app's own tokens (`--app-*`, published by base/_theme.scss from _palette.scss).
 
-// Slate: text and lines on light surfaces, darkest first.
-$slate-900: #203542;
-$slate-800: #314954;
-$slate-700: #496673;
-$slate-600: #667f8c;
-$slate-500: #7d919b;
-$slate-400: #93a3ad;
-$slate-300: #a3b1b7;
-$slate-200: #dfe6e9;
-$slate-100: #e7ecef;
-$slate-50: #f5f7f8;
-$white: #fff;
+// Surfaces -------------------------------------------------------------------------------------
 
-// Navy: the sidebar.
-$navy-900: #132d3c;
-$navy-800: #244654;
-$navy-700: #315161;
-$navy-600: #476571;
-$navy-500: #6f8c9b;
-$navy-300: #a9bec8;
-$navy-100: #e1e9ec;
+$color-bg: var(--background-primary);
+$color-bg-subtle: var(--background-secondary);
+$color-bg-muted: var(--background-tertiary);
 
-// Teal: the brand.
-$teal-700: #257e70;
-$teal-500: #269a8e;
-$teal-400: #4ca58b;
-$teal-300: #69beba;
-$teal-200: #dbe9e3;
-$teal-100: #eaf5f0;
-$teal-50: #f8fbfa;
+// Menus and popovers, above the page.
+$color-bg-elevated: var(--background-card);
+$color-bg-hover: var(--app-hover);
+$color-bg-selected: var(--app-accent-tint);
+$color-bg-selected-strong: var(--app-accent-tint-strong);
 
-// Sage: quiet green text (the assistant, learning, attachments).
-$sage-600: #668376;
-$sage-500: #7d9488;
-$sage-400: #8fa99b;
+// Text -----------------------------------------------------------------------------------------
 
-// Status and urgency hues.
-$amber-700: #aa8140;
-$amber-600: #bf8852;
-$amber-400: #d4a271;
-$amber-200: #f0e6cf;
-$amber-100: #fcf4e7;
-$red-700: #a35346;
-$red-600: #c55b59;
-$red-200: #f1d4cd;
-$red-100: #fff0ed;
-$blue-600: #497cb0;
-$blue-500: #6f8db4;
-$blue-400: #8ca4b7;
-$blue-100: #edf2fa;
-$violet-600: #8d69a6;
-$violet-100: #f3eef9;
+$color-text: var(--text-primary);
+$color-text-secondary: var(--text-secondary);
+$color-text-muted: var(--text-tertiary);
+$color-text-inverse: var(--text-primary-inverse-static);
+$color-text-accent: var(--text-themed);
+$color-text-negative: var(--text-negative);
+$color-icon-muted: var(--icon-tertiary);
 
-// Roles ----------------------------------------------------------------------------------------
+// Lines ----------------------------------------------------------------------------------------
 
-$color-ink: $slate-900;
-$color-muted: $slate-500;
-$color-line: $slate-100;
-$color-canvas: $slate-50;
-$color-surface: $white;
-$color-brand: $teal-700;
-$color-focus: $teal-300;
+$color-line: var(--divider-secondary);
+$color-line-strong: var(--divider-primary);
+
+// Accent and states ----------------------------------------------------------------------------
+
+$color-accent: var(--button-primary);
+$color-positive: var(--icon-positive);
+$color-negative: var(--text-negative);
+$color-negative-bg: var(--app-negative-bg);
+$color-warning-bg: var(--app-warning-bg);
+$color-warning-text: var(--app-warning-text);
+$color-focus: var(--button-primary);
+$color-focus-halo: var(--app-accent-tint-strong);
+
+// Domain ---------------------------------------------------------------------------------------
+
+$color-urgency-critical: var(--app-urgency-critical);
+$color-urgency-high: var(--app-urgency-high);
+$color-urgency-medium: var(--app-urgency-medium);
+$color-urgency-low: var(--app-urgency-low);
+$color-status-open: var(--app-status-open);
+$color-status-progress: var(--app-status-progress);
+$color-status-awaiting: var(--app-status-awaiting);
+$color-status-closed: var(--app-status-closed);
+$color-bubble-client: var(--app-bubble-client);
+$color-bubble-staff: var(--app-bubble-staff);
 
 // Effects --------------------------------------------------------------------------------------
 
-$shadow-modal: 0 20px 80px rgb(18 43 59 / 19%);
-$color-backdrop: rgb(16 42 61 / 40%);
+$shadow-popover: 0 8px 32px var(--app-shadow);
+
+// Radii (MAX UI's scale) -----------------------------------------------------------------------
+
+$radius-s: 8px;
+$radius-m: 10px;
+$radius-l: 14px;
+$radius-xl: 18px;
+
+// Layout ---------------------------------------------------------------------------------------
+
+$header-height: 52px;
+$tab-bar-height: 56px;
+$queue-pane-width: 380px;
 
 // Layers ---------------------------------------------------------------------------------------
 
+$z-index-sticky: 5;
+$z-index-header: 20;
 $z-index-tab-bar: 20;
+$z-index-popover: 30;

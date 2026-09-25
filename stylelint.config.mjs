@@ -17,7 +17,7 @@ export default {
     // Font family names keep their usual spelling.
     'value-keyword-case': [
       'lower',
-      { ignoreProperties: ['$font-family-inter', '$font-family-base'] },
+      { ignoreProperties: ['$font-family-base', '$font-family-mono'] },
     ],
     'declaration-no-important': true,
     'color-no-hex': true,

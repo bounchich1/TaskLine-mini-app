@@ -33,7 +33,11 @@ export default tseslint.config(
       globals: globals.browser,
       parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
     },
-    settings: { react: { version: 'detect' } },
+    settings: {
+      react: { version: 'detect' },
+      // Our own form controls, checked as the native elements they stand for.
+      'jsx-a11y': { components: { Select: 'select', DictionarySelect: 'select' } },
+    },
   },
   // Before the budget block: eslint-config-prettier turns off `curly` and `max-len`,
   // which are deliberately re-enabled below.

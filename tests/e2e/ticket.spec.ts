@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { openApp, openTicket, ticketCard } from './support/app';
+import { chooseOption, openApp, openTicket, ticketCard } from './support/app';
 import { MockApi } from './support/mock-api';
 
 let api: MockApi;
@@ -73,7 +73,7 @@ test('takes an open ticket into work', async ({ page }) => {
 
 test('changes a classification field', async ({ page }) => {
   await openTicket(page, '000001');
-  await ticketCard(page, '000001').getByLabel('Изменить срочность').selectOption('low');
+  await chooseOption(ticketCard(page, '000001').getByLabel('Изменить срочность'), 'Низкая');
   await expect.poll(() => api.callsTo('PATCH', '/v1/tickets/t1/classification').length).toBe(1);
   expect(api.callsTo('PATCH', '/v1/tickets/t1/classification')[0]?.body).toEqual({
     urgency: 'low',
@@ -81,12 +81,54 @@ test('changes a classification field', async ({ page }) => {
   });
 });
 
+test('picks a classification value with the keyboard', async ({ page }) => {
+  await openTicket(page, '000001');
+  const urgency = ticketCard(page, '000001').getByRole('combobox', {
+    name: 'Изменить срочность',
+  });
+  await urgency.focus();
+  await urgency.press('ArrowDown');
+  await expect(page.getByRole('option', { name: 'Критическая' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await urgency.press('Home');
+  await urgency.press('ArrowDown');
+  await urgency.press('Enter');
+  await expect(urgency).toHaveAttribute('aria-expanded', 'false');
+  await expect.poll(() => api.callsTo('PATCH', '/v1/tickets/t1/classification').length).toBe(1);
+  expect(api.callsTo('PATCH', '/v1/tickets/t1/classification')[0]?.body).toMatchObject({
+    urgency: 'medium',
+  });
+  // Typing only highlights; Escape closes the list without a change. (The fields are disabled
+  // while the change is saved, which drops focus. Playwright types Cyrillic without keydown.)
+  await expect(urgency).toBeEnabled();
+  await urgency.focus();
+  await urgency.dispatchEvent('keydown', { key: 'в', bubbles: true });
+  await expect(page.getByRole('option', { name: 'Высокая' })).toHaveClass(/select__option--active/);
+  await urgency.press('Escape');
+  await expect(urgency).toHaveAttribute('aria-expanded', 'false');
+  expect(api.callsTo('PATCH', '/v1/tickets/t1/classification')).toHaveLength(1);
+});
+
+test('closes an open select in a dialog with Escape, keeping the dialog', async ({ page }) => {
+  await openTicket(page, '000002');
+  await ticketCard(page, '000002').getByRole('button', { name: 'Передать сотруднику' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Передать обращение' });
+  const assignee = dialog.getByLabel('Новый исполнитель');
+  await assignee.click();
+  await expect(page.getByRole('option', { name: 'Борис Иванов' })).toBeVisible();
+  await assignee.press('Escape');
+  await expect(page.getByRole('listbox')).toHaveCount(0);
+  await expect(dialog).toBeVisible();
+});
+
 test('transfers a ticket to a colleague with a comment', async ({ page }) => {
   await openTicket(page, '000002');
   await ticketCard(page, '000002').getByRole('button', { name: 'Передать сотруднику' }).click();
   const dialog = page.getByRole('dialog', { name: 'Передать обращение' });
   await expect(dialog.getByRole('button', { name: 'Передать' })).toBeDisabled();
-  await dialog.getByLabel('Новый исполнитель').selectOption('e2');
+  await chooseOption(dialog.getByLabel('Новый исполнитель'), 'Борис Иванов');
   await dialog.getByLabel('Комментарий к передаче').fill('Вопрос по оплате');
   await dialog.getByRole('button', { name: 'Передать' }).click();
   await expect.poll(() => api.callsTo('POST', '/v1/tickets/t2/transfer').length).toBe(1);

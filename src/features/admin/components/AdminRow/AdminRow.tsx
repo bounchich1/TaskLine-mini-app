@@ -11,7 +11,7 @@ type AdminRowProps = {
 
 /**
  * A list row of the admin section. Children use the `admin-row__main` / `__title` / `__meta` /
- * `__status` / `__badge` / `__link` elements.
+ * `__status` / `__link` elements.
  */
 export function AdminRow({ wrap = false, children }: AdminRowProps) {
   return <div className={clsx('admin-row', wrap && 'admin-row--wrap')}>{children}</div>;

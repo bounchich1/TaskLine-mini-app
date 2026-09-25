@@ -1,92 +1,101 @@
 @use 'abstracts' as *;
 
 .composer {
-  margin-top: 17px;
-  background: $white;
-  border: 1px solid $teal-200;
-  border-radius: 8px;
-  padding: 15px;
+  display: grid;
+  flex-shrink: 0;
+  gap: 8px;
+  padding: 12px 24px 16px;
+  border-top: 1px solid $color-line;
+  background: $color-bg;
 
-  @include respond-to(phone) {
-    padding: 11px;
+  // Pinned to the bottom of the single scrolling column.
+  @include container-below(ticket, 760px) {
+    position: sticky;
+    bottom: 0;
+    z-index: $z-index-sticky;
+    padding: 8px 12px calc(10px + env(safe-area-inset-bottom));
   }
-}
-
-.composer__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.composer__title {
-  @include text(small);
-
-  font-weight: $font-weight-semibold;
-}
-
-.composer__sender {
-  @include text(tiny);
-
-  color: $sage-500;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.composer__online-dot {
-  @include online-dot;
 }
 
 .composer__notice {
-  @include text(caption);
-
-  background: $slate-50;
-  color: $slate-500;
-  padding: 8px;
-  border-radius: 4px;
+  @include muted(label);
 }
 
-// Font size and background are forced in base/_max-ui-overrides.scss.
-.composer__input {
-  min-height: 95px;
-  resize: vertical;
-}
+.composer__box {
+  display: grid;
+  border-radius: $radius-l;
+  background: $color-bg-muted;
+  transition: box-shadow 0.15s ease;
 
-.composer__footer {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-top: 12px;
+  &:focus-within {
+    @include field-focus($bordered: false);
+  }
 
-  @include respond-to(phone) {
-    flex-wrap: wrap;
-    gap: 8px;
+  &--locked {
+    color: $color-text-muted;
   }
 }
 
-.composer__attach {
-  @include text(caption);
+// Grows with the text (where the browser supports `field-sizing`) up to a limit, then scrolls.
+.composer__input {
+  @include text(body);
 
+  display: block;
+  width: 100%;
+  min-height: 68px;
+  max-height: 240px;
+  padding: 12px 14px 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  resize: none;
+  field-sizing: content;
+
+  &::placeholder {
+    color: $color-text-muted;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.composer__bar {
   display: flex;
+  gap: 12px;
   align-items: center;
-  gap: 6px;
-  background: none;
-  color: $slate-500;
-  padding: 0;
+  padding: 4px 8px 8px 10px;
+}
 
-  @include respond-to(phone) {
-    @include text(tiny);
+.composer__attach {
+  @include text-button(small);
+
+  color: $color-text-secondary;
+
+  &:hover:not(:disabled) {
+    color: $color-text;
+    text-decoration: none;
+  }
+}
+
+.composer__attach-label {
+  @include container-below(ticket, 520px) {
+    @include visually-hidden;
   }
 }
 
 .composer__count {
-  @include text(tiny);
+  @include muted(caption);
 
   margin-left: auto;
-  color: $slate-300;
+  font-variant-numeric: tabular-nums;
+}
 
-  @include respond-to(phone) {
-    @include text(micro);
-  }
+// The send button sits at the end of the bar.
+.composer__bar > :last-child {
+  margin-left: auto;
+}
+
+.composer__count + :last-child {
+  margin-left: 0;
 }

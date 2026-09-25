@@ -1,203 +1,138 @@
 @use 'abstracts' as *;
 
 .ticket-table {
-  overflow-x: auto;
-}
-
-.ticket-table__table {
-  @include text(small);
-
-  border-collapse: collapse;
   width: 100%;
-  text-align: left;
-  white-space: nowrap;
-
-  @include respond-above(wide) {
-    @include text(body);
-  }
-
-  @include respond-to(tablet) {
-    min-width: 650px;
-  }
-
-  @include respond-to(phone) {
-    min-width: 620px;
-  }
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .ticket-table__head-cell {
-  @include text(caption);
+  @include muted(label);
 
-  background: $slate-50;
-  color: $slate-400;
-  font-weight: $font-weight-regular;
-  padding: 13px 12px;
-  border-top: 1px solid $slate-100;
-  border-bottom: 1px solid $slate-100;
+  position: sticky;
+  top: 0;
+  z-index: $z-index-sticky;
+  padding: 8px 12px;
+  border-bottom: 1px solid $color-line-strong;
+  background: $color-bg;
+  font-weight: $font-weight-medium;
+  text-align: left;
+  white-space: nowrap;
 
-  @include respond-above(wide) {
-    @include text(small);
+  &:first-child {
+    padding-left: 24px;
   }
 
-  @include respond-to(laptop) {
-    padding-left: 9px;
-    padding-right: 9px;
-  }
-}
-
-.ticket-table__cell {
-  padding: 18px 12px;
-  border-bottom: 1px solid $slate-100;
-  vertical-align: middle;
-
-  @include respond-above(wide) {
-    padding-top: 22px;
-    padding-bottom: 22px;
+  &:last-child {
+    padding-right: 24px;
   }
 
-  @include respond-to(laptop) {
-    padding-left: 9px;
-    padding-right: 9px;
+  // Fixed widths for short values; the subject, tag and assignee share the rest.
+  &--number {
+    width: 28%;
   }
-}
 
-.ticket-table__head-cell:first-child,
-.ticket-table__cell:first-child {
-  padding-left: 23px;
+  &--urgency,
+  &--status {
+    width: 130px;
+  }
 
-  @include respond-to(laptop) {
-    padding-left: 15px;
+  &--complexity,
+  &--created {
+    width: 115px;
+  }
+
+  &--rating {
+    width: 90px;
   }
 }
 
 .ticket-table__row {
-  &:hover {
-    background: $teal-50;
-  }
+  cursor: pointer;
 
-  &--expanded,
-  &--expanded:hover {
-    background: $teal-100;
-  }
-}
+  @include row-hover;
 
-.ticket-table__detail-cell {
-  padding: 0;
-  border-bottom: 1px solid $slate-100;
-  vertical-align: middle;
-  white-space: normal;
-
-  // The card stays in view while the wide table scrolls sideways.
-  .ticket-card {
-    @include respond-to(phone) {
-      width: calc(100vw - 31px);
-      position: sticky;
-      left: 0;
-    }
+  // Keyboard focus sits on the number's button; the whole row shows it.
+  &:has(:focus-visible) {
+    background: $color-bg-hover;
   }
 }
 
-.ticket-table__link {
+.ticket-table__cell {
   @include text(body);
 
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  text-align: left;
-  background: none;
+  overflow: hidden;
+  padding: 10px 12px;
+  border-bottom: 1px solid $color-line;
+  vertical-align: middle;
+
+  // The number's button: room for its focus ring.
+  &:first-child {
+    overflow: visible;
+    padding-left: 24px;
+  }
+
+  &:last-child {
+    padding-right: 24px;
+  }
+}
+
+.ticket-table__subject {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ticket-table__number {
+  justify-self: start;
   padding: 0;
-  color: $slate-800;
+  border-radius: 4px;
+  background: none;
   font-weight: $font-weight-semibold;
-
-  @include respond-above(wide) {
-    @include text(lead);
-  }
+  font-variant-numeric: tabular-nums;
 }
 
-.ticket-table__link-meta {
-  @include text(tiny);
+.ticket-table__preview {
+  @include truncate;
+  @include text(small);
 
-  display: block;
-  color: $slate-500;
-  font-weight: $font-weight-regular;
-  margin-top: 6px;
+  color: $color-text-secondary;
 }
 
-.ticket-table__arrow {
-  color: $slate-400;
-  display: flex;
-  transition: transform 0.15s;
-
-  &--open {
-    transform: rotate(90deg);
-    color: $teal-700;
-  }
+.ticket-table__tag {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  align-items: center;
 }
 
-.ticket-table__urgency {
+.ticket-table__review {
   @include text(caption);
 
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: $slate-400;
-  }
-
-  &--critical {
-    color: $red-600;
-
-    &::before {
-      background: $red-600;
-    }
-  }
-
-  &--high {
-    color: $amber-600;
-
-    &::before {
-      background: $amber-400;
-    }
-  }
-
-  &--medium {
-    color: $blue-500;
-
-    &::before {
-      background: $blue-400;
-    }
-  }
-
-  &--low {
-    color: $sage-500;
-
-    &::before {
-      background: $sage-400;
-    }
-  }
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: $color-warning-bg;
+  color: $color-warning-text;
+  font-weight: $font-weight-medium;
 }
 
 .ticket-table__muted {
-  color: $color-muted;
+  color: $color-text-muted;
 }
 
 .ticket-table__date {
-  @include text(caption);
-
-  color: $slate-500;
+  color: $color-text-secondary;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .ticket-table__assignee {
-  @include text(caption);
-
   display: flex;
-  gap: 7px;
+  gap: 8px;
   align-items: center;
-  color: $slate-600;
+  min-width: 0;
+}
+
+.ticket-table__assignee-name {
+  @include truncate;
 }

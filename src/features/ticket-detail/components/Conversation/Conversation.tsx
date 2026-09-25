@@ -22,23 +22,21 @@ type ConversationProps = {
 /** The message history, oldest first, with a button to load earlier pages. */
 export function Conversation({ ticket, messages, history, ...messageProps }: ConversationProps) {
   return (
-    <>
-      <div className="conversation__header">
-        <h3 className="conversation__title">Переписка</h3>
-        <span className="conversation__count">{messages.length} сообщений загружено</span>
-      </div>
+    <div className="conversation">
+      <h3 className="conversation__title">Переписка</h3>
       <ErrorNotice error={history.error} />
-      <div className="conversation__list" aria-label="История переписки">
-        {history.hasNextPage ? (
-          <Button
-            variant="ghost"
-            size="small"
-            loading={history.isFetchingNextPage}
-            onClick={() => void history.fetchNextPage()}
-          >
-            Загрузить ранние сообщения
-          </Button>
-        ) : null}
+      {history.hasNextPage ? (
+        <Button
+          className="conversation__earlier"
+          variant="ghost"
+          size="xsmall"
+          loading={history.isFetchingNextPage}
+          onClick={() => void history.fetchNextPage()}
+        >
+          Загрузить ранние сообщения
+        </Button>
+      ) : null}
+      <ol className="conversation__list" aria-label="История переписки">
         {messages.map((message) => (
           <MessageItem
             key={message.id}
@@ -47,7 +45,7 @@ export function Conversation({ ticket, messages, history, ...messageProps }: Con
             {...messageProps}
           />
         ))}
-      </div>
-    </>
+      </ol>
+    </div>
   );
 }

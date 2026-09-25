@@ -1,40 +1,32 @@
 @use 'abstracts' as *;
 
 .admin-card {
-  @include card;
+  display: grid;
+  gap: 12px;
 
-  padding: 24px;
-  margin-bottom: 18px;
-
-  @include respond-to(phone) {
-    padding: 17px;
+  & + & {
+    margin-top: 28px;
   }
-}
-
-.admin-card__title {
-  @include text(title);
 }
 
 .admin-card__header {
   display: flex;
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 15px;
+  min-height: 32px;
 }
 
-.admin-card__heading {
-  @include text(title);
+.admin-card__title {
+  @include text(lead);
 
-  margin: 0;
-
-  @include respond-to(phone) {
-    @include text(lead);
-  }
+  font-weight: $font-weight-semibold;
 }
 
 .admin-card__help {
-  @include text(small);
+  @include muted(small);
+}
 
-  color: $slate-500;
+.admin-card__list {
+  border-top: 1px solid $color-line;
 }

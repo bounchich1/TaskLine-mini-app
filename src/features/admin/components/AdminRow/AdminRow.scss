@@ -2,58 +2,55 @@
 
 .admin-row {
   display: flex;
-  align-items: center;
   gap: 12px;
-  padding: 17px 0;
-  border-bottom: 1px solid $slate-100;
+  align-items: center;
+  min-height: 56px;
+  padding: 10px 0;
+  border-bottom: 1px solid $color-line;
 
-  &:last-child {
-    border: 0;
-  }
-
-  @include respond-to(phone) {
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
+  // Rows with several actions put them under the text when space runs out.
   &--wrap {
     @include respond-to(tablet) {
       flex-wrap: wrap;
     }
   }
+
+  @include respond-to(phone) {
+    gap: 10px;
+  }
 }
 
 .admin-row__main {
+  display: grid;
   flex: 1;
+  gap: 2px;
   min-width: 0;
 
-  @include respond-to(phone) {
-    min-width: 150px;
+  .admin-row--wrap & {
+    @include respond-to(phone) {
+      min-width: 160px;
+    }
   }
 }
 
 .admin-row__title {
-  @include text(body);
-
   font-weight: $font-weight-medium;
+  overflow-wrap: anywhere;
 }
 
 .admin-row__meta {
-  @include text(caption);
+  @include muted(label);
 
-  display: block;
-  color: $slate-400;
-  margin-top: 5px;
+  overflow-wrap: anywhere;
 }
 
 .admin-row__status {
-  color: $color-muted;
-}
+  @include muted(label);
 
-// Mixed with `.badge`, which is loaded earlier and so loses at equal specificity.
-.admin-row__badge {
-  @include respond-to(phone) {
-    @include text(micro);
+  white-space: nowrap;
+
+  &--negative {
+    color: $color-negative;
   }
 }
 

@@ -1,8 +1,8 @@
 import type { TicketFilters } from '@/features/ticket-queue/hooks/use-ticket-filters';
 import type { Filters } from '@/features/ticket-queue/model/filter-defaults';
-import { DIMENSION_LABELS, DIMENSIONS, STATUS_LABELS } from '@/shared/config/labels';
+import { DIMENSION_LABELS, DIMENSIONS, STATUS_LABELS, statusLabel } from '@/shared/config/labels';
 import type { Dictionary, Employee } from '@/shared/types/api';
-import { DictionarySelect } from '@/shared/ui';
+import { DictionarySelect, Select } from '@/shared/ui';
 
 import './QueueFilters.scss';
 
@@ -15,9 +15,17 @@ type QueueFiltersProps = {
 /** The expanded filter panel. */
 export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersProps) {
   const { filters, change } = queue;
-  const onChange = (name: keyof Filters) => (event: { target: { value: string } }) => {
-    change(name, event.target.value);
+  const onChange = (name: keyof Filters) => (value: string) => {
+    change(name, value);
   };
+  const statuses = [
+    { value: '', label: 'Все' },
+    ...Object.keys(STATUS_LABELS).map((value) => ({ value, label: statusLabel(value) })),
+  ];
+  const assignees = [
+    { value: '', label: 'Все' },
+    ...(employees ?? []).map((employee) => ({ value: employee.id, label: employee.name })),
+  ];
   return (
     <div className="queue-filters">
       {DIMENSIONS.map((dimension) => (
@@ -27,55 +35,41 @@ export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersPro
             items={dictionaries}
             dimension={dimension}
             value={filters[dimension]}
-            onChange={(value) => {
-              change(dimension, value);
-            }}
+            onChange={onChange(dimension)}
             emptyLabel="Все"
           />
         </label>
       ))}
       <label className="queue-filters__field">
         Статус
-        <select value={filters.status} onChange={onChange('status')}>
-          <option value="">Все</option>
-          {Object.entries(STATUS_LABELS).map(([code, label]) => (
-            <option key={code} value={code}>
-              {label}
-            </option>
-          ))}
-        </select>
+        <Select options={statuses} value={filters.status} onChange={onChange('status')} />
       </label>
       <label className="queue-filters__field">
         Исполнитель
-        <select value={filters.assignee} onChange={onChange('assignee')}>
-          <option value="">Все сотрудники</option>
-          {employees?.map((employee) => (
-            <option key={employee.id} value={employee.id}>
-              {employee.name}
-            </option>
-          ))}
-        </select>
+        <Select options={assignees} value={filters.assignee} onChange={onChange('assignee')} />
       </label>
       <label className="queue-filters__field">
         С даты
         <input
-          className="queue-filters__date"
           type="date"
           value={filters.from}
-          onChange={onChange('from')}
+          onChange={(event) => {
+            change('from', event.target.value);
+          }}
         />
       </label>
       <label className="queue-filters__field">
         По дату
         <input
-          className="queue-filters__date"
           type="date"
           value={filters.to}
-          onChange={onChange('to')}
+          onChange={(event) => {
+            change('to', event.target.value);
+          }}
         />
       </label>
       <button className="queue-filters__reset" onClick={queue.reset}>
-        Сбросить
+        Сбросить фильтры
       </button>
     </div>
   );

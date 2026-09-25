@@ -1,0 +1,20 @@
+@use 'abstracts' as *;
+
+.status-banner {
+  @include text(label);
+
+  flex-shrink: 0;
+  padding: 4px 16px;
+  background: $color-warning-bg;
+  color: $color-warning-text;
+  text-align: center;
+
+  // Wider screens show the connection state in the header.
+  &--offline {
+    display: none;
+
+    @include respond-to(phone) {
+      display: block;
+    }
+  }
+}

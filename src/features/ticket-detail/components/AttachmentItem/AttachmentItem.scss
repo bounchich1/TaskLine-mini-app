@@ -2,34 +2,52 @@
 
 .attachment {
   display: flex;
+  gap: 10px;
   align-items: center;
-  gap: 8px;
-  border: 1px solid $teal-200;
-  background: $teal-50;
-  border-radius: 6px;
-  padding: 9px;
-  margin-top: 7px;
-  white-space: normal;
+  width: 280px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid $color-line-strong;
+  border-radius: $radius-m;
+  background: $color-bg;
+  text-align: left;
+}
+
+.attachment__icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-s;
+  background: $color-bg-muted;
+  color: $color-text-secondary;
 }
 
 .attachment__info {
-  min-width: 0;
+  display: grid;
   flex: 1;
+  gap: 1px;
+  min-width: 0;
 }
 
 .attachment__name {
-  @include text(caption);
+  @include text(small);
+  @include truncate;
 
-  display: block;
-  overflow-wrap: anywhere;
+  font-weight: $font-weight-medium;
 }
 
 .attachment__status {
-  @include text(tiny);
-
-  color: $sage-400;
+  @include muted(caption);
 }
 
 .attachment__download {
-  @include text-button;
+  @include text-button(label);
+
+  flex-shrink: 0;
+}
+
+.attachment__error {
+  margin-top: 4px;
 }

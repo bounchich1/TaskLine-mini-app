@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 /** Opens the app (demo sign-in) and waits for the ticket queue. */
 export async function openApp(page: Page): Promise<void> {
@@ -15,6 +15,13 @@ export function ticketRow(page: Page, number: string) {
 export async function openTicket(page: Page, number: string): Promise<void> {
   await ticketRow(page, number).click();
   await expect(page.getByRole('region', { name: `Обращение №${number}` })).toBeVisible();
+}
+
+/** Picks an option of one of the app's selects: opens its list and clicks the option. */
+export async function chooseOption(select: Locator, option: string): Promise<void> {
+  await select.click();
+  await select.page().getByRole('option', { name: option, exact: true }).click();
+  await expect(select).toHaveAttribute('aria-expanded', 'false');
 }
 
 export function ticketCard(page: Page, number: string) {

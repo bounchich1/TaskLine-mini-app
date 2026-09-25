@@ -10,7 +10,7 @@ import {
   type AdminTab,
 } from '@/features/admin/model/types';
 import type { Session } from '@/shared/types/api';
-import { ErrorNotice, PageHeading } from '@/shared/ui';
+import { ErrorNotice, PageHeader } from '@/shared/ui';
 
 import { AdminDialogs } from '../AdminDialogs/AdminDialogs';
 import { AdminTabContent } from '../AdminTabContent/AdminTabContent';
@@ -36,12 +36,8 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
   const queries = useAdminQueries(tab, isAdmin);
   const queryError = Object.values(queries).find((query) => query.error)?.error;
   return (
-    <>
-      <PageHeading
-        eyebrow="КОМАНДА И НАСТРОЙКИ"
-        title="Управление"
-        description="Доступ, правила обработки и состояние отправок."
-      />
+    <div className="admin-panel">
+      <PageHeader title="Управление" />
       <div className="admin-tabs" role="tablist" aria-label="Управление">
         {(isAdmin ? ADMIN_TABS : OPERATOR_TABS).map(([value, label]) => (
           <button
@@ -58,7 +54,8 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
           </button>
         ))}
       </div>
-      <ErrorNotice error={error} />
+      {/* While a dialog is open, the dialog shows the save error. */}
+      {dialog ? null : <ErrorNotice error={error} />}
       <ErrorNotice error={queryError} />
       <AdminTabContent
         tab={tab}
@@ -80,6 +77,6 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
           }}
         />
       ) : null}
-    </>
+    </div>
   );
 }

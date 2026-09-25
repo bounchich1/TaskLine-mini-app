@@ -2,7 +2,7 @@ import { CANCELABLE_DELIVERIES } from '@/features/ticket-detail/model/messages';
 import { api } from '@/shared/api/http';
 import { deliveryLabel } from '@/shared/config/labels';
 import type { Message } from '@/shared/types/api';
-import { Icon } from '@/shared/ui';
+import { Icon, type IconName } from '@/shared/ui';
 
 import './DeliveryStatus.scss';
 
@@ -13,6 +13,13 @@ type DeliveryStatusProps = {
   onChanged: () => Promise<void>;
   onError: (error: unknown) => void;
 };
+
+function deliveryIcon(state: string): IconName {
+  if (state === 'delivered') {
+    return 'check';
+  }
+  return state === 'failed' || state === 'unknown' ? 'alert' : 'clock';
+}
 
 /** Delivery state of a staff message, with cancel and retry where allowed. */
 export function DeliveryStatus({
@@ -30,8 +37,10 @@ export function DeliveryStatus({
   };
   return (
     <div className={`delivery-status delivery-status--${state}`}>
-      <Icon name={state === 'delivered' ? 'check' : 'clock'} size={12} />
-      {deliveryLabel(state)}
+      <span className="delivery-status__state">
+        <Icon name={deliveryIcon(state)} size={12} />
+        {deliveryLabel(state)}
+      </span>
       {canAct && CANCELABLE_DELIVERIES.includes(state) ? (
         <button
           className="delivery-status__action"
@@ -52,7 +61,7 @@ export function DeliveryStatus({
           Повторить
         </button>
       ) : null}
-      {state === 'unknown' ? <span> · Требуется проверка руководителя</span> : null}
+      {state === 'unknown' ? <span>Нужна проверка руководителя</span> : null}
     </div>
   );
 }

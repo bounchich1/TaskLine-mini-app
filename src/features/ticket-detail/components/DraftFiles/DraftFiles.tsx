@@ -25,9 +25,9 @@ export function DraftFiles({ uploads, setDraft }: DraftFilesProps) {
       {uploads.map((file) => (
         <span className="draft-files__item" key={file.id}>
           <Icon name="clip" size={14} />
-          {file.filename}
+          <span className="draft-files__name">{file.filename}</span>
           <small className="draft-files__status">
-            {file.status === 'clean' ? 'Готов к отправке' : 'Проверка файла'}
+            {file.status === 'clean' ? 'готов' : 'проверяется…'}
           </small>
           <button
             className="draft-files__remove"

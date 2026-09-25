@@ -7,7 +7,7 @@ import {
 import type { Dictionary, Ticket } from '@/shared/types/api';
 import { DictionarySelect } from '@/shared/ui';
 
-import './ClassificationFields.scss';
+import { PropertyRow } from '../PropertyRow/PropertyRow';
 
 type ClassificationFieldsProps = {
   ticket: Ticket;
@@ -16,7 +16,10 @@ type ClassificationFieldsProps = {
   onChange: (field: Dimension, value: string) => void;
 };
 
-/** Tag, urgency and complexity of the ticket; archived values only if already selected. */
+/**
+ * Tag, urgency and complexity as property rows; archived values
+ * appear only if already selected.
+ */
 export function ClassificationFields({
   ticket,
   dictionaries,
@@ -24,10 +27,10 @@ export function ClassificationFields({
   onChange,
 }: ClassificationFieldsProps) {
   return DIMENSIONS.map((field) => (
-    <label className="classification__field" key={field}>
-      {DIMENSION_LABELS[field]}
+    <PropertyRow label={DIMENSION_LABELS[field]} key={field}>
       <DictionarySelect
-        className="classification__select"
+        className="property-row__select"
+        appearance="plain"
         aria-label={`Изменить ${DIMENSION_OBJECT_LABELS[field]}`}
         disabled={disabled}
         items={dictionaries}
@@ -38,6 +41,6 @@ export function ClassificationFields({
         }}
         activeOnly
       />
-    </label>
+    </PropertyRow>
   ));
 }

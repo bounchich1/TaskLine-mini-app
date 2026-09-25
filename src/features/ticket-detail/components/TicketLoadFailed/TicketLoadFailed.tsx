@@ -5,7 +5,7 @@ import { ErrorNotice } from '@/shared/ui';
 /** Shown in place of the card when the ticket could not be loaded. */
 export function TicketLoadFailed({ error, onRetry }: { error: unknown; onRetry: () => void }) {
   return (
-    <div className="ticket-card">
+    <div className="ticket-card ticket-card--failed">
       <ErrorNotice error={error} />
       <Button variant="secondary" onClick={onRetry}>
         Повторить

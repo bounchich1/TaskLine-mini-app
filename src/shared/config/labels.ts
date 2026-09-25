@@ -75,28 +75,17 @@ const NOTIFICATION_LABELS: Labels = {
 export const notificationLabel = (type: string) =>
   NOTIFICATION_LABELS[type] ?? 'Изменение обращения';
 
-const PROFILE_ROLE_LABELS: Labels = {
-  support: 'Специалист поддержки',
-  admin: 'Администратор',
-};
-
-/** The signed-in employee's role, under their name in the sidebar. */
-export const profileRoleLabel = (role: string) => PROFILE_ROLE_LABELS[role] ?? 'Руководитель';
-
-const EMPLOYEE_ROLE_LABELS: Labels = {
-  admin: 'Администратор',
-  supervisor: 'Руководитель',
-};
-
-/** A role in the admin employee list. */
-export const employeeRoleLabel = (role: string) => EMPLOYEE_ROLE_LABELS[role] ?? 'Поддержка';
-
-/** Roles offered in the employee form, in display order. */
+/** Roles in display order: the employee form lists them this way. */
 export const ROLE_OPTIONS = [
   ['support', 'Сотрудник поддержки'],
   ['supervisor', 'Руководитель'],
   ['admin', 'Администратор'],
 ] as const;
+
+const ROLE_LABELS: Labels = Object.fromEntries(ROLE_OPTIONS);
+
+/** An employee's role; one wording everywhere (header, employee list, form). */
+export const roleLabel = (role: string) => ROLE_LABELS[role] ?? role;
 
 const AUTHOR_LABELS: Labels = {
   client: 'Клиент',

@@ -1,7 +1,7 @@
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
 import { ROLE_OPTIONS } from '@/shared/config/labels';
 import type { Employee } from '@/shared/types/api';
-import { FormField, CheckboxField } from '@/shared/ui';
+import { FormField, CheckboxField, Select } from '@/shared/ui';
 
 import { FormDialog } from '../FormDialog/FormDialog';
 
@@ -50,13 +50,11 @@ export function EmployeeDialog({ employee, busy, error, save, onClose }: Employe
         <input name="name" required maxLength={120} defaultValue={employee?.name} />
       </FormField>
       <FormField label="Роль">
-        <select name="role" defaultValue={employee?.role ?? 'support'}>
-          {ROLE_OPTIONS.map(([role, label]) => (
-            <option key={role} value={role}>
-              {label}
-            </option>
-          ))}
-        </select>
+        <Select
+          name="role"
+          options={ROLE_OPTIONS.map(([value, label]) => ({ value, label }))}
+          defaultValue={employee?.role ?? 'support'}
+        />
       </FormField>
       <CheckboxField name="blocked" defaultChecked={employee?.blocked}>
         Заблокировать доступ
