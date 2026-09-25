@@ -109,7 +109,8 @@ export function Calendar({ id, value, range, anchor, label, onChoose, onClose }:
                                         day === now && 'calendar__day--today',
                                         day === selected && 'calendar__day--selected',
                                     )}
-                                    onClick={() => {
+                                    onClick={(event) => {
+                                        event.preventDefault();
                                         calendar.choose(day);
                                     }}
                                     onKeyDown={calendar.onKeyDown}
@@ -127,7 +128,8 @@ export function Calendar({ id, value, range, anchor, label, onChoose, onClose }:
                     type="button"
                     className="calendar__action"
                     disabled={!value}
-                    onClick={() => {
+                    onClick={(event) => {
+                        event.preventDefault();
                         onChoose('');
                     }}
                 >
@@ -138,7 +140,8 @@ export function Calendar({ id, value, range, anchor, label, onChoose, onClose }:
                     type="button"
                     className="calendar__action"
                     disabled={!inRange(now, range)}
-                    onClick={() => {
+                    onClick={(event) => {
+                        event.preventDefault();
                         calendar.choose(now);
                     }}
                 >
