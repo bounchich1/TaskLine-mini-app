@@ -13,4 +13,5 @@ export const queryKeys = {
   adminSettings: ['admin-settings'],
   diagnostics: ['diagnostics'],
   audit: ['audit'],
+  health: ['health'],
 } as const;

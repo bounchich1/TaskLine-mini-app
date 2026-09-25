@@ -57,6 +57,7 @@ export function AdminTabContent(props: AdminTabContentProps) {
       return (
         <DiagnosticsTab
           diagnostics={queries.diagnostics.data}
+          server={queries.health.data}
           busy={busy}
           onTicket={props.onTicket}
           onResolve={(resolution) => {

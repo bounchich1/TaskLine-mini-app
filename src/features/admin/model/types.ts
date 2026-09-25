@@ -15,6 +15,8 @@ export const OPERATOR_TABS: readonly (readonly [AdminTab, string])[] = [
   ['diagnostics', 'Состояние системы'],
 ];
 
+export type ServerHealth = { status: string; version: string };
+
 export type Template = { code: string; body: string; version: number };
 
 export type OrganizationSettings = { name: string; timezone: string; version: number };

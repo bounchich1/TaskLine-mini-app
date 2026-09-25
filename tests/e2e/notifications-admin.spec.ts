@@ -32,6 +32,7 @@ test('shows each admin tab', async ({ page }) => {
   await page.getByRole('tab', { name: 'Состояние системы' }).click();
   await expect(page.getByText('Требует проверки')).toBeVisible();
   await expect(page.getByText('Незавершённые отправки')).toBeVisible();
+  await expect(page.getByText('Приложение dev · сервер v9.9.9')).toBeVisible();
   await page.getByRole('tab', { name: 'Журнал' }).click();
   await expect(page.getByText('admin.settings')).toBeVisible();
 });

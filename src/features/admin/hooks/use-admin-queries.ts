@@ -10,6 +10,7 @@ import type {
   AuditEntry,
   Diagnostics,
   OrganizationSettings,
+  ServerHealth,
   Template,
 } from '../model/types';
 
@@ -38,12 +39,17 @@ export function useAdminQueries(tab: AdminTab, isAdmin: boolean) {
     enabled: tab === 'diagnostics',
     refetchInterval: DIAGNOSTICS_REFETCH_MS,
   });
+  const health = useQuery({
+    queryKey: queryKeys.health,
+    queryFn: () => api<ServerHealth>('/health/live'),
+    enabled: tab === 'diagnostics',
+  });
   const audit = useQuery({
     queryKey: queryKeys.audit,
     queryFn: () => api<{ items: AuditEntry[] }>('/v1/admin/audit'),
     enabled: isAdmin && tab === 'audit',
   });
-  return { employees, dictionaries, templates, settings, diagnostics, audit };
+  return { employees, dictionaries, templates, settings, diagnostics, health, audit };
 }
 
 export type AdminQueries = ReturnType<typeof useAdminQueries>;

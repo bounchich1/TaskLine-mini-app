@@ -79,6 +79,9 @@ export class MockApi {
     await page.route('https://st.max.ru/**', (route) =>
       route.fulfill({ contentType: 'text/javascript', body: '' }),
     );
+    await page.route('**/health/live', (route) =>
+      route.fulfill({ json: { status: 'ok', version: 'v9.9.9' } }),
+    );
     await page.route('**/v1/**', (route, request) => mock.handle(route, request));
     return mock;
   }

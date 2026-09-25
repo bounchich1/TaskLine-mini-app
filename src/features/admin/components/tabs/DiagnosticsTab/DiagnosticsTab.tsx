@@ -1,5 +1,11 @@
 import { AdminCard } from '@/features/admin/components/AdminCard/AdminCard';
-import type { Diagnostics, DiagnosticKind, Resolution } from '@/features/admin/model/types';
+import type {
+  Diagnostics,
+  DiagnosticKind,
+  Resolution,
+  ServerHealth,
+} from '@/features/admin/model/types';
+import { APP_VERSION } from '@/shared/config/env';
 import { permitLabel } from '@/shared/config/labels';
 
 import { DiagnosticRow } from '../DiagnosticRow/DiagnosticRow';
@@ -14,13 +20,14 @@ const SECTIONS: readonly (readonly [DiagnosticKind, string])[] = [
 
 type DiagnosticsTabProps = {
   diagnostics: Diagnostics | undefined;
+  server: ServerHealth | undefined;
   busy: boolean;
   onTicket: (id: string) => void;
   onResolve: (resolution: Resolution) => void;
   onRetryJob: (id: string) => void;
 };
 
-export function DiagnosticsTab({ diagnostics, ...rowProps }: DiagnosticsTabProps) {
+export function DiagnosticsTab({ diagnostics, server, ...rowProps }: DiagnosticsTabProps) {
   return (
     <>
       <AdminCard title="Вызовы ИИ">
@@ -52,6 +59,11 @@ export function DiagnosticsTab({ diagnostics, ...rowProps }: DiagnosticsTabProps
           )}
         </AdminCard>
       ))}
+      <AdminCard title="Версия">
+        <p className="admin-card__help">
+          Приложение {APP_VERSION} · сервер {server?.version ?? '—'}
+        </p>
+      </AdminCard>
     </>
   );
 }
