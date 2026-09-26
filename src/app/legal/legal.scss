@@ -1,0 +1,152 @@
+@use 'abstracts' as *;
+@use 'base/reset';
+@use 'base/typography';
+
+@mixin scheme($max-ui, $app, $canvas) {
+    @each $name, $value in $max-ui {
+        --#{$name}: #{$value};
+    }
+
+    @each $name, $value in $app {
+        --app-#{$name}: #{$value};
+    }
+
+    background: $canvas;
+}
+
+:root {
+    @include scheme($max-ui-light, $palette-light, $canvas-light);
+
+    color-scheme: light;
+    color: $color-text;
+    font-family: $font-family-base;
+
+    @media (prefers-color-scheme: dark) {
+        &:not([data-scheme='light']) {
+            @include scheme($max-ui-dark, $palette-dark, $canvas-dark);
+
+            color-scheme: dark;
+        }
+    }
+
+    &[data-scheme='dark'] {
+        @include scheme($max-ui-dark, $palette-dark, $canvas-dark);
+
+        color-scheme: dark;
+    }
+}
+
+.legal {
+    display: grid;
+    gap: 12px;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: max(24px, env(safe-area-inset-top)) 16px max(40px, env(safe-area-inset-bottom));
+}
+
+.legal__header {
+    display: grid;
+    gap: 6px;
+    padding: 8px 4px 12px;
+}
+
+.legal__brand {
+    @include text(small);
+
+    font-weight: $font-weight-semibold;
+    color: $color-text-accent;
+}
+
+.legal__title {
+    @include text(display);
+
+    @include respond-to(phone) {
+        @include text(heading);
+    }
+}
+
+.legal__meta {
+    @include muted(small);
+}
+
+.legal__notice {
+    @include text(small);
+
+    padding: 12px 16px;
+    border-radius: $radius-l;
+    background: $color-warning-bg;
+    color: $color-warning-text;
+}
+
+.legal-card {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    border-radius: $radius-l;
+    background: $color-bg-subtle;
+    scroll-margin-top: 16px;
+
+    a {
+        color: $color-text-accent;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.legal-card__title {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.legal-card__number {
+    @include text(small);
+
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: $color-bg-selected;
+    color: $color-text-accent;
+    font-weight: $font-weight-semibold;
+}
+
+.legal-card__list {
+    display: grid;
+    gap: 6px;
+    padding-left: 20px;
+
+    li::marker {
+        color: $color-text-muted;
+    }
+}
+
+.legal-card__details {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 8px 16px;
+    margin: 0;
+
+    dt {
+        color: $color-text-secondary;
+    }
+
+    dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    @include respond-to(phone) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2px;
+
+        dd + dt {
+            margin-top: 8px;
+        }
+    }
+}

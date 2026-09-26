@@ -23,6 +23,7 @@ src/
     types/          API types
     ui/             generic components (Modal, Select, FormField, …)
     styles/         abstracts (tokens, mixins, breakpoints — no CSS output) and base styles
+legal/index.html    Public privacy policy at /legal (second Vite page; script and styles in src/app/legal)
 ```
 
 Inside a feature: `components/<Name>/<Name>.tsx` (+ `<Name>.scss`), `hooks/`, `model/`, `api/`.
@@ -63,6 +64,9 @@ notifications and that ticket's card; `admin.changed` the dictionaries and emplo
   is kept per browser (`shared/lib/color-scheme.ts`). Surfaces, text, dividers and the accent
   are MAX UI's own theme variables; the app's extra tokens (urgency, status, bubbles, notices) are defined per
   scheme in `abstracts/_palette.scss` and published as `--app-*` by `base/_theme.scss`.
+- `/legal` is static HTML without React or MAX UI, so `src/app/legal/legal.scss` publishes copies of
+  MAX UI's theme values (`$max-ui-light` / `$max-ui-dark` in `abstracts/_palette.scss`) and follows the
+  scheme chosen in the app (`shared/lib/scheme-preference.ts`) or the device.
 - The font is the platform's system font (SF, Roboto, Segoe UI), as in MAX itself. MAX UI takes
   the font of its whole tree from `--family-base` on its root element, which carries our
   `app-root` class; `base/_theme.scss` sets it.

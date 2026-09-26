@@ -22,5 +22,13 @@ export default defineConfig({
             '/health': 'http://127.0.0.1:3000',
         },
     },
-    build: { sourcemap: false },
+    build: {
+        sourcemap: false,
+        rollupOptions: {
+            input: {
+                main: fileURLToPath(new URL('./index.html', import.meta.url)),
+                legal: fileURLToPath(new URL('./legal/index.html', import.meta.url)),
+            },
+        },
+    },
 });

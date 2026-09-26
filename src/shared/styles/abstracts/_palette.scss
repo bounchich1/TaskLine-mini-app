@@ -39,3 +39,25 @@ $palette-dark: (
 $canvas-light: #fff;
 $canvas-dark: #17181c;
 $backdrop: rgb(12 13 14 / 40%);
+$max-ui-light: (
+    background-primary: #fff,
+    background-secondary: #f5f7fa,
+    background-tertiary: rgb(9 9 9 / 5%),
+    text-primary: #060708,
+    text-secondary: rgb(6 7 8 / 68%),
+    text-tertiary: rgb(6 7 8 / 52%),
+    text-themed: #007aff,
+    divider-primary: rgb(12 13 14 / 16%),
+    divider-secondary: rgb(12 13 14 / 6%),
+);
+$max-ui-dark: (
+    background-primary: #17181c,
+    background-secondary: #25262d,
+    background-tertiary: rgb(255 255 255 / 9%),
+    text-primary: #fff,
+    text-secondary: rgb(255 255 255 / 80%),
+    text-tertiary: rgb(255 255 255 / 64%),
+    text-themed: #007aff,
+    divider-primary: rgb(255 255 255 / 12%),
+    divider-secondary: rgb(255 255 255 / 6%),
+);

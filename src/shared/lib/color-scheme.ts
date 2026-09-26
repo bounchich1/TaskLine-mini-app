@@ -1,33 +1,18 @@
 import { useSystemColorScheme } from '@maxhub/max-ui';
 import { useSyncExternalStore } from 'react';
 
-export type ColorScheme = 'light' | 'dark';
+import { readSchemePreference, SCHEME_STORAGE_KEY, type ColorScheme, type SchemePreference } from './scheme-preference';
 
-export type SchemePreference = ColorScheme | 'system';
-
-const STORAGE_KEY = 'color-scheme';
+export type { ColorScheme, SchemePreference } from './scheme-preference';
 
 const listeners = new Set<() => void>();
 
-const isPreference = (value: unknown): value is SchemePreference =>
-    value === 'light' || value === 'dark' || value === 'system';
-
-function readPreference(): SchemePreference {
-    try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-
-        return isPreference(stored) ? stored : 'system';
-    } catch {
-        return 'system';
-    }
-}
-
-let current = readPreference();
+let current = readSchemePreference();
 
 function subscribe(onChange: () => void) {
     const onStorage = (event: StorageEvent) => {
-        if (event.key === STORAGE_KEY) {
-            current = readPreference();
+        if (event.key === SCHEME_STORAGE_KEY) {
+            current = readSchemePreference();
             onChange();
         }
     };
@@ -44,9 +29,9 @@ function subscribe(onChange: () => void) {
 function persist(preference: SchemePreference): void {
     try {
         if (preference === 'system') {
-            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(SCHEME_STORAGE_KEY);
         } else {
-            localStorage.setItem(STORAGE_KEY, preference);
+            localStorage.setItem(SCHEME_STORAGE_KEY, preference);
         }
     } catch {
         return;
