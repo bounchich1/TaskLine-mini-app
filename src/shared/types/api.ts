@@ -45,13 +45,40 @@ export type Dictionary = {
     version: number;
 };
 
-export type Suggestion = {
+type SuggestionBase = {
     tags: { tag: string; urgency: string; complexity: string };
-    suggested_solution: string | null;
     needs_review: boolean;
     missing_information: string[];
     evidence_memory_ids: string[];
     confidence: number;
+};
+
+type TipStep = { text: string; case_refs: string[] };
+
+export type Tip = { summary: string; steps: TipStep[]; cautions: string[] };
+
+type LegacySuggestion = SuggestionBase & {
+    schema_version?: '1.0';
+    suggested_solution: string | null;
+};
+
+export type TerseSuggestion = SuggestionBase & {
+    schema_version: '1.1';
+    tip: Tip | null;
+    customer_reply: string | null;
+};
+
+export type Suggestion = LegacySuggestion | TerseSuggestion;
+
+type SourceState = 'ok' | 'reopened' | 'outdated' | 'gone';
+
+export type SuggestionSource = {
+    memory_id: string;
+    state: SourceState;
+    ticket_id: string | null;
+    number: string | null;
+    problem: string | null;
+    closed_at: string | null;
 };
 
 export type Attachment = {
@@ -105,6 +132,7 @@ export type Ticket = {
     ai_status: string;
     review_required: boolean;
     suggestion: Suggestion | null;
+    suggestion_sources?: SuggestionSource[];
     suggestion_stale: boolean;
     rating: number | null;
     rated_at: string | null;
@@ -122,6 +150,23 @@ export type Message = {
     delivery_state: string;
     deleted: boolean;
     revision: number;
+};
+
+export type SourceExcerpt = {
+    source: {
+        memory_id: string;
+        state: SourceState;
+        ticket_id: string;
+        number: string;
+        cycle_no: number;
+        closed_at: string;
+        problem: string | null;
+        solution: string | null;
+    };
+    messages: Message[];
+    attachments: Attachment[];
+    highlight: string[];
+    truncated: boolean;
 };
 
 export type TicketPage = {

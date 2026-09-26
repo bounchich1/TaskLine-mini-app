@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { useCallback, type Dispatch, type SetStateAction } from 'react';
 
-import { TicketCard, type Draft } from '@/features/ticket-detail';
+import { TicketCard, type Draft, type TicketNavigation } from '@/features/ticket-detail';
 import type { TicketFilters } from '@/features/ticket-queue/hooks/use-ticket-filters';
 import type { TicketList as TicketListData } from '@/features/ticket-queue/hooks/use-ticket-list';
 import type { Dictionary, Employee, Session } from '@/shared/types/api';
@@ -24,6 +24,7 @@ type TicketsPageProps = {
     employees: Employee[] | undefined;
     expanded: string | null;
     onExpand: Dispatch<SetStateAction<string | null>>;
+    navigation: TicketNavigation;
     split: boolean;
     changed: boolean;
     onRefresh: () => void;
@@ -31,7 +32,7 @@ type TicketsPageProps = {
 };
 
 export function TicketsPage(props: TicketsPageProps) {
-    const { session, queue, ticketList, expanded, onExpand, split } = props;
+    const { session, queue, ticketList, expanded, onExpand, navigation, split } = props;
     const { list, rows, counts } = ticketList;
     const timezone = session.organization.timezone;
     const tab = queue.filters.tab;
@@ -106,8 +107,13 @@ export function TicketsPage(props: TicketsPageProps) {
                         employees={props.employees ?? []}
                         dictionaries={props.dictionaries ?? []}
                         drafts={props.drafts}
+                        navigation={navigation}
                         onClose={() => {
-                            onExpand(null);
+                            if (navigation.returnTo) {
+                                navigation.goBack();
+                            } else {
+                                onExpand(null);
+                            }
                         }}
                     />
                 </div>

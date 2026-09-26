@@ -1,4 +1,5 @@
 import { Button } from '@maxhub/max-ui';
+import { clsx } from 'clsx';
 import { useEffect, useId, useRef, type ReactNode } from 'react';
 
 import { Icon } from '../Icon/Icon';
@@ -11,9 +12,12 @@ type ModalProps = {
     onClose: () => void;
     footer?: ReactNode;
     busy?: boolean;
+    cancelLabel?: string;
+    wide?: boolean;
 };
 
-export function Modal({ title, children, onClose, footer, busy = false }: ModalProps) {
+export function Modal(props: ModalProps) {
+    const { title, children, onClose, footer, busy = false, cancelLabel = 'Отмена', wide = false } = props;
     const ref = useRef<HTMLDialogElement>(null);
     const titleId = useId();
 
@@ -32,7 +36,7 @@ export function Modal({ title, children, onClose, footer, busy = false }: ModalP
     return (
         <dialog
             ref={ref}
-            className="modal"
+            className={clsx('modal', wide && 'modal--wide')}
             onCancel={(event) => {
                 event.preventDefault();
 
@@ -56,7 +60,7 @@ export function Modal({ title, children, onClose, footer, busy = false }: ModalP
 
             <div className="modal__footer">
                 <Button variant="secondary" size="small" disabled={busy} onClick={onClose}>
-                    Отмена
+                    {cancelLabel}
                 </Button>
 
                 {footer}

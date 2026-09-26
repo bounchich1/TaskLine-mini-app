@@ -62,7 +62,19 @@ function ticket(overrides: Record<string, unknown>) {
 }
 
 export const OPEN_TICKETS = [
-    ticket({ id: 't1', number: '000001', urgency: 'critical' }),
+    ticket({
+        id: 't1',
+        number: '000001',
+        urgency: 'critical',
+        suggestion: {
+            tags: { tag: 'network', urgency: 'critical', complexity: 'low' },
+            suggested_solution: 'Перезагрузите роутер и проверьте кабель.',
+            needs_review: false,
+            missing_information: [],
+            evidence_memory_ids: [],
+            confidence: 0.6,
+        },
+    }),
     ticket({
         id: 't2',
         number: '000002',
@@ -76,13 +88,33 @@ export const OPEN_TICKETS = [
         complexity: 'medium',
         review_required: true,
         suggestion: {
+            schema_version: '1.1',
             tags: { tag: 'billing', urgency: 'high', complexity: 'medium' },
-            suggested_solution: 'Проверьте историю платежей и оформите возврат второго списания.',
+            tip: {
+                summary: 'Двойное списание → вернуть второй платёж.',
+                steps: [
+                    { text: 'Сверить историю платежей за месяц.', case_refs: ['m1'] },
+                    { text: 'Оформить возврат второго списания.', case_refs: ['m1', 'm2'] },
+                ],
+                cautions: ['Не возвращать до подтверждения списания банком.'],
+            },
+            customer_reply: 'Здравствуйте! Проверяем историю платежей и вернём второе списание.',
             needs_review: false,
             missing_information: ['Дата второго списания', 'Последние 4 цифры карты'],
             evidence_memory_ids: ['m1', 'm2'],
             confidence: 0.8,
         },
+        suggestion_sources: [
+            {
+                memory_id: 'm1',
+                state: 'ok',
+                ticket_id: 't9',
+                number: '000009',
+                problem: 'Двойное списание за месяц',
+                closed_at: '2026-03-01T09:00:00Z',
+            },
+            { memory_id: 'm2', state: 'gone', ticket_id: null, number: null, problem: null, closed_at: null },
+        ],
         attachments: [
             {
                 id: 'a1',

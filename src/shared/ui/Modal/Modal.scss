@@ -20,6 +20,10 @@
         background: $backdrop;
     }
 
+    &--wide {
+        width: 640px;
+    }
+
     @include respond-to(phone) {
         width: 100%;
         max-width: 100%;

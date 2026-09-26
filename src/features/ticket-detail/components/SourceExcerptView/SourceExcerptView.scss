@@ -1,0 +1,28 @@
+@use 'abstracts' as *;
+
+.source-excerpt__facts {
+    @include text(small);
+
+    display: grid;
+    gap: 4px;
+}
+
+.source-excerpt__meta {
+    @include muted(caption);
+}
+
+.source-excerpt__warning {
+    color: $color-warning-text;
+}
+
+.source-excerpt__messages {
+    display: grid;
+    gap: 12px;
+    padding: 12px;
+    border-radius: $radius-l;
+    background: $color-bg-subtle;
+}
+
+.source-excerpt__note {
+    @include muted(caption);
+}

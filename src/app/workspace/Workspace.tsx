@@ -13,6 +13,7 @@ import type { Session } from '@/shared/types/api';
 import { AppHeader, type Section } from './AppHeader/AppHeader';
 import { StatusBanners } from './StatusBanners/StatusBanners';
 import { useLiveUpdates } from './use-live-updates';
+import { useTicketNavigation } from './use-ticket-navigation';
 
 import './Workspace.scss';
 
@@ -23,7 +24,7 @@ type WorkspaceProps = {
 
 export function Workspace({ session, drafts }: WorkspaceProps) {
     const timezone = session.organization.timezone;
-    const [expanded, setExpanded] = useState<string | null>(null);
+    const { expanded, expand, navigation } = useTicketNavigation();
     const [section, setSection] = useState<Section>('tickets');
 
     const desktop = useMediaQuery(MEDIA.desktop);
@@ -38,7 +39,7 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
 
     const openTicket = (id: string) => {
         setSection('tickets');
-        setExpanded(id);
+        expand(id);
     };
 
     const focused = section === 'tickets' && expanded !== null && !desktop;
@@ -66,7 +67,8 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
                         dictionaries={dictionaries.data?.items}
                         employees={employees.data?.items}
                         expanded={expanded}
-                        onExpand={setExpanded}
+                        onExpand={expand}
+                        navigation={navigation}
                         split={desktop}
                         changed={live.changed}
                         onRefresh={() => {

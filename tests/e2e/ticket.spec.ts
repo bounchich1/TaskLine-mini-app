@@ -19,9 +19,50 @@ test('shows the conversation, attachment and assistant suggestion', async ({ pag
     await expect(card.getByText('чек.pdf')).toBeVisible();
     await expect(card.getByText('20 КБ')).toBeVisible();
     await expect(card.getByText('Не доставлено')).toBeVisible();
-    await expect(card.getByText(/Проверьте историю платежей/)).toBeVisible();
+    await expect(card.getByText('Двойное списание → вернуть второй платёж.')).toBeVisible();
+    await expect(card.getByText('Сверить историю платежей за месяц.')).toBeVisible();
+    await expect(card.getByText('Не возвращать до подтверждения списания банком.')).toBeVisible();
     await expect(card.getByText('Дата второго списания')).toBeVisible();
-    await expect(card.getByText(/Источников: 2/)).toBeVisible();
+    await expect(card.getByRole('button', { name: /№000009/ })).toHaveCount(3);
+    await expect(card.getByText('источник недоступен')).toHaveCount(2);
+    await expect(card.getByText(/Проверяем историю платежей/)).toBeHidden();
+    await card.getByText('Черновик ответа клиенту').click();
+    await expect(card.getByText(/Проверяем историю платежей/)).toBeVisible();
+});
+
+test('keeps rendering a legacy free-text suggestion', async ({ page }) => {
+    await openTicket(page, '000001');
+    const card = ticketCard(page, '000001');
+
+    await expect(card.getByText('Перезагрузите роутер и проверьте кабель.')).toBeVisible();
+    await expect(card.getByText('Без похожих обращений')).toBeVisible();
+});
+
+test('opens the source solution beside the ticket and returns with the draft intact', async ({ page }) => {
+    await openTicket(page, '000002');
+    const card = ticketCard(page, '000002');
+
+    await card.getByLabel('Текст ответа клиенту').fill('Черновик до перехода');
+
+    await card
+        .getByRole('button', { name: /№000009/ })
+        .first()
+        .click();
+
+    const peek = page.getByRole('dialog', { name: 'Решение из №000009' });
+
+    await expect(peek.getByText('Оформили возврат второго платежа, деньги вернутся за 3 дня.')).toBeVisible();
+    await expect(peek.locator('.message--highlighted')).toHaveCount(1);
+    await expect(peek.getByText(/Показаны ключевые сообщения/)).toBeVisible();
+    expect(api.callsTo('GET', '/v1/tickets/t2/sources/m1')).toHaveLength(1);
+
+    await peek.getByRole('button', { name: 'Открыть обращение' }).click();
+    const source = ticketCard(page, '000009');
+
+    await expect(source.getByText('Сохранено в памяти')).toBeVisible();
+    await source.getByRole('button', { name: 'к №000002' }).click();
+
+    await expect(ticketCard(page, '000002').getByLabel('Текст ответа клиенту')).toHaveValue('Черновик до перехода');
 });
 
 test('keeps an unsent draft across collapsing the card', async ({ page }) => {
@@ -31,14 +72,14 @@ test('keeps an unsent draft across collapsing the card', async ({ page }) => {
     await card.getByRole('button', { name: 'Вставить в черновик' }).click();
     const reply = card.getByLabel('Текст ответа клиенту');
 
-    await expect(reply).toHaveValue(/Проверьте историю платежей/);
+    await expect(reply).toHaveValue(/Проверяем историю платежей/);
     await card.getByRole('button', { name: 'Свернуть обращение' }).click();
     await page.getByRole('button', { name: 'Сохранить и свернуть' }).click();
     await expect(card).toHaveCount(0);
     await openTicket(page, '000002');
 
     await expect(ticketCard(page, '000002').getByLabel('Текст ответа клиенту')).toHaveValue(
-        /Проверьте историю платежей/,
+        /Проверяем историю платежей/,
     );
 });
 

@@ -1,0 +1,40 @@
+@use 'abstracts' as *;
+
+.tip {
+    @include text(small);
+
+    display: grid;
+    gap: 8px;
+    overflow-wrap: anywhere;
+}
+
+.tip__summary {
+    font-weight: $font-weight-medium;
+}
+
+.tip__steps {
+    display: grid;
+    gap: 4px;
+    padding-left: 18px;
+}
+
+.tip__step .source-chip {
+    margin-left: 6px;
+}
+
+.tip__cautions {
+    display: grid;
+    gap: 4px;
+}
+
+.tip__caution {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    color: $color-warning-text;
+
+    svg {
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+}

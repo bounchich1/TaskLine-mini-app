@@ -18,6 +18,10 @@
         max-width: 90%;
         text-align: center;
     }
+
+    &--highlighted .message__bubble {
+        box-shadow: 0 0 0 2px $color-focus-halo;
+    }
 }
 
 .message__meta {

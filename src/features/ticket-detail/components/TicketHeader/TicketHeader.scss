@@ -15,6 +15,12 @@
     }
 }
 
+.ticket-header__return {
+    @include text-button(small);
+
+    font-variant-numeric: tabular-nums;
+}
+
 .ticket-header__title {
     font-variant-numeric: tabular-nums;
 }

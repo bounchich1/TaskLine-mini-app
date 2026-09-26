@@ -1,3 +1,5 @@
+import { clsx } from 'clsx';
+
 import { authorLabel } from '@/shared/config/labels';
 import { formatDate } from '@/shared/lib/format-date';
 import type { Attachment, Message } from '@/shared/types/api';
@@ -15,14 +17,15 @@ type MessageItemProps = {
     canSend: boolean;
     onChanged: () => Promise<void>;
     onError: (error: unknown) => void;
+    highlighted?: boolean;
 };
 
-export function MessageItem({ message, attachments, timezone, ...delivery }: MessageItemProps) {
+export function MessageItem({ message, attachments, timezone, highlighted = false, ...delivery }: MessageItemProps) {
     const files = attachments?.filter((file) => file.message_id === message.id) ?? [];
     const hasBody = message.deleted || message.text.length > 0;
 
     return (
-        <li className={`message message--${message.author_type}`}>
+        <li className={clsx('message', `message--${message.author_type}`, highlighted && 'message--highlighted')}>
             <div className="message__meta">
                 <strong className="message__author">{authorLabel(message.author_type, message.author_name)}</strong>
                 <time dateTime={message.created_at}>{formatDate(message.created_at, timezone)}</time>

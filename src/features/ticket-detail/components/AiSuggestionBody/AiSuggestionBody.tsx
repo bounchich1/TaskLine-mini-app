@@ -1,21 +1,17 @@
-import { Button } from '@maxhub/max-ui';
+import { hasAdvice } from '@/features/ticket-detail/model/suggestion';
+import type { Ticket } from '@/shared/types/api';
 
-import type { Suggestion, Ticket } from '@/shared/types/api';
+import { SuggestionAdvice } from '../SuggestionAdvice/SuggestionAdvice';
 
 type AiSuggestionBodyProps = {
     ticket: Ticket;
     canInsert: boolean;
     onInsert: (text: string) => void;
+    onSource: (memoryId: string) => void;
 };
 
-const sourcesNote = (suggestion: Suggestion) =>
-    suggestion.evidence_memory_ids.length
-        ? `Источников: ${suggestion.evidence_memory_ids.length}`
-        : 'Без похожих обращений';
-
-export function AiSuggestionBody({ ticket, canInsert, onInsert }: AiSuggestionBodyProps) {
+export function AiSuggestionBody({ ticket, canInsert, onInsert, onSource }: AiSuggestionBodyProps) {
     const { suggestion } = ticket;
-    const solution = suggestion?.suggested_solution;
 
     if (ticket.ai_status === 'pending') {
         return <p className="ai-panel__status">Разбирает первое сообщение. Отвечать можно не дожидаясь.</p>;
@@ -25,7 +21,7 @@ export function AiSuggestionBody({ ticket, canInsert, onInsert }: AiSuggestionBo
         return <p className="ai-panel__status">Подсказка устарела после изменений в обращении.</p>;
     }
 
-    if (!suggestion || !solution) {
+    if (!hasAdvice(suggestion)) {
         return (
             <p className="ai-panel__status ai-panel__status--review">
                 {ticket.ai_status === 'failed'
@@ -36,35 +32,12 @@ export function AiSuggestionBody({ ticket, canInsert, onInsert }: AiSuggestionBo
     }
 
     return (
-        <>
-            <p className="ai-panel__text">{solution}</p>
-
-            {suggestion.missing_information.length > 0 ? (
-                <div className="ai-panel__missing">
-                    <span className="ai-panel__missing-title">Уточнить у клиента</span>
-
-                    <ul className="ai-panel__missing-list">
-                        {suggestion.missing_information.map((item) => (
-                            <li key={item}>{item}</li>
-                        ))}
-                    </ul>
-                </div>
-            ) : null}
-
-            <div className="ai-panel__footer">
-                <Button
-                    variant="secondary"
-                    size="xsmall"
-                    disabled={!canInsert}
-                    onClick={() => {
-                        onInsert(solution);
-                    }}
-                >
-                    Вставить в черновик
-                </Button>
-
-                <small className="ai-panel__sources">{sourcesNote(suggestion)}</small>
-            </div>
-        </>
+        <SuggestionAdvice
+            suggestion={suggestion}
+            sources={ticket.suggestion_sources ?? []}
+            canInsert={canInsert}
+            onInsert={onInsert}
+            onSource={onSource}
+        />
     );
 }

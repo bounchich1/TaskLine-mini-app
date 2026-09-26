@@ -16,6 +16,7 @@ type TicketAsideProps = {
     canInsert: boolean;
     onClassify: (field: Dimension, value: string) => void;
     onInsertSuggestion: (text: string) => void;
+    onOpenSource: (sourceId: string) => void;
 };
 
 export function TicketAside(props: TicketAsideProps) {
@@ -35,7 +36,13 @@ export function TicketAside(props: TicketAsideProps) {
             </section>
 
             <section className="ticket-aside__section">
-                <AiSuggestionPanel ticket={ticket} canInsert={props.canInsert} onInsert={props.onInsertSuggestion} />
+                <AiSuggestionPanel
+                    ticket={ticket}
+                    timezone={timezone}
+                    canInsert={props.canInsert}
+                    onInsert={props.onInsertSuggestion}
+                    onOpenSource={props.onOpenSource}
+                />
             </section>
 
             {ticket.closures?.length ? (

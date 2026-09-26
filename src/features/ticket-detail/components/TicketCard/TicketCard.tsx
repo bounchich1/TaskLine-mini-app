@@ -2,6 +2,7 @@ import { useTicketCard } from '@/features/ticket-detail/hooks/use-ticket-card';
 import { appendToDraft, draftMessage, type Draft } from '@/features/ticket-detail/model/draft';
 import { MAX_REPLY_LENGTH } from '@/features/ticket-detail/model/limits';
 import { hasUnresolvedDelivery, sortMessages } from '@/features/ticket-detail/model/messages';
+import type { TicketNavigation } from '@/features/ticket-detail/model/navigation';
 import { canOnTicket } from '@/shared/lib/access';
 import type { Dictionary, Employee, Session } from '@/shared/types/api';
 import { ErrorNotice } from '@/shared/ui';
@@ -23,10 +24,12 @@ type TicketCardProps = {
     employees: Employee[];
     dictionaries: Dictionary[];
     drafts: Map<string, Draft>;
+    navigation: TicketNavigation;
     onClose: () => void;
 };
 
-export function TicketCard({ id, session, employees, dictionaries, drafts, onClose }: TicketCardProps) {
+export function TicketCard(props: TicketCardProps) {
+    const { id, session, employees, dictionaries, drafts, navigation, onClose } = props;
     const card = useTicketCard(id, drafts, onClose);
     const { detail, history, draft, setDraft, uploads, dialog, setDialog, command, operate } = card;
     const ticket = detail.data;
@@ -58,7 +61,12 @@ export function TicketCard({ id, session, employees, dictionaries, drafts, onClo
 
     return (
         <section className="ticket-card" aria-label={`Обращение №${ticket.number}`}>
-            <TicketHeader ticket={ticket} onClose={card.requestClose}>
+            <TicketHeader
+                ticket={ticket}
+                returnTo={navigation.returnTo}
+                onReturn={navigation.goBack}
+                onClose={card.requestClose}
+            >
                 <TicketActions
                     ticket={ticket}
                     active={active}
@@ -116,6 +124,9 @@ export function TicketCard({ id, session, employees, dictionaries, drafts, onClo
                     }}
                     onInsertSuggestion={(text) => {
                         setDraft(appendToDraft(text, MAX_REPLY_LENGTH));
+                    }}
+                    onOpenSource={(sourceId) => {
+                        navigation.openSource(sourceId, { id: ticket.id, number: ticket.number });
                     }}
                 />
             </div>
