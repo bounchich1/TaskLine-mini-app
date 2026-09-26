@@ -9,11 +9,11 @@ import type { AdminTab, AuditEntry, Diagnostics, OrganizationSettings, ServerHea
 
 const DIAGNOSTICS_REFETCH_MS = 15000;
 
-export function useAdminQueries(tab: AdminTab, isAdmin: boolean) {
+export function useAdminQueries(tab: AdminTab) {
     const employees = useQuery({
         queryKey: queryKeys.adminEmployees,
         queryFn: () => api<{ items: Employee[] }>('/v1/admin/employees'),
-        enabled: isAdmin && tab === 'employees',
+        enabled: tab === 'employees',
     });
 
     const dictionaries = useQuery({ ...dictionariesQuery, enabled: tab === 'dictionaries' });
@@ -21,13 +21,13 @@ export function useAdminQueries(tab: AdminTab, isAdmin: boolean) {
     const templates = useQuery({
         queryKey: queryKeys.adminTemplates,
         queryFn: () => api<{ items: Template[] }>('/v1/admin/templates'),
-        enabled: isAdmin && tab === 'templates',
+        enabled: tab === 'templates',
     });
 
     const settings = useQuery({
         queryKey: queryKeys.adminSettings,
         queryFn: () => api<OrganizationSettings>('/v1/admin/settings'),
-        enabled: isAdmin && tab === 'settings',
+        enabled: tab === 'settings',
     });
 
     const diagnostics = useQuery({
@@ -46,7 +46,7 @@ export function useAdminQueries(tab: AdminTab, isAdmin: boolean) {
     const audit = useQuery({
         queryKey: queryKeys.audit,
         queryFn: () => api<{ items: AuditEntry[] }>('/v1/admin/audit'),
-        enabled: isAdmin && tab === 'audit',
+        enabled: tab === 'audit',
     });
 
     return { employees, dictionaries, templates, settings, diagnostics, health, audit };

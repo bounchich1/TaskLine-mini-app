@@ -1,17 +1,22 @@
-import type { Dictionary, Employee } from '@/shared/types/api';
+import { can } from '@/shared/lib/access';
+import type { Dictionary, Employee, Permission, Session } from '@/shared/types/api';
 
 export type AdminTab = 'employees' | 'dictionaries' | 'templates' | 'settings' | 'diagnostics' | 'audit';
 
-export const ADMIN_TABS: readonly (readonly [AdminTab, string])[] = [
-    ['employees', 'Сотрудники'],
-    ['dictionaries', 'Справочники'],
-    ['templates', 'Шаблоны бота'],
-    ['settings', 'Организация'],
-    ['diagnostics', 'Состояние системы'],
-    ['audit', 'Журнал'],
+type AdminTabDefinition = { tab: AdminTab; label: string; permission: Permission };
+
+const ADMIN_TABS: readonly AdminTabDefinition[] = [
+    { tab: 'employees', label: 'Сотрудники', permission: 'employees.manage' },
+    { tab: 'dictionaries', label: 'Справочники', permission: 'organization.configure' },
+    { tab: 'templates', label: 'Шаблоны бота', permission: 'organization.configure' },
+    { tab: 'settings', label: 'Организация', permission: 'organization.configure' },
+    { tab: 'diagnostics', label: 'Состояние системы', permission: 'operations.view' },
+    { tab: 'audit', label: 'Журнал', permission: 'audit.view' },
 ];
 
-export const OPERATOR_TABS: readonly (readonly [AdminTab, string])[] = [['diagnostics', 'Состояние системы']];
+export function adminTabsFor(session: Pick<Session, 'permissions'>): readonly AdminTabDefinition[] {
+    return ADMIN_TABS.filter(({ permission }) => can(session, permission));
+}
 
 export type ServerHealth = { status: string; version: string };
 
@@ -42,6 +47,7 @@ export type Resolution = { item: Diagnostic; action: 'cancel' | 'retry' };
 
 export type AdminDialog =
     | { kind: 'employee'; employee: Employee | null }
+    | { kind: 'block'; employee: Employee }
     | { kind: 'dictionary'; value: Dictionary | null }
     | { kind: 'template'; template: Template }
     | { kind: 'resolution'; resolution: Resolution };

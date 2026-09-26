@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { useAdminQueries } from '@/features/admin/hooks/use-admin-queries';
 import { useAdminSave } from '@/features/admin/hooks/use-admin-save';
-import { ADMIN_TABS, OPERATOR_TABS, type AdminDialog, type AdminTab } from '@/features/admin/model/types';
+import { adminTabsFor, type AdminDialog, type AdminTab } from '@/features/admin/model/types';
 import type { Session } from '@/shared/types/api';
 import { ErrorNotice, PageHeader } from '@/shared/ui';
 
@@ -18,15 +18,15 @@ type AdminPanelProps = {
 };
 
 export function AdminPanel({ session, onTicket }: AdminPanelProps) {
-    const isAdmin = session.capabilities.admin;
-    const [tab, setTab] = useState<AdminTab>(isAdmin ? 'employees' : 'diagnostics');
+    const tabs = adminTabsFor(session);
+    const [tab, setTab] = useState<AdminTab>(tabs[0]?.tab ?? 'diagnostics');
     const [dialog, setDialog] = useState<AdminDialog | null>(null);
 
     const { save, busy, error, setError } = useAdminSave(() => {
         setDialog(null);
     });
 
-    const queries = useAdminQueries(tab, isAdmin);
+    const queries = useAdminQueries(tab);
     const queryError = Object.values(queries).find((query) => query.error)?.error;
 
     return (
@@ -34,7 +34,7 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
             <PageHeader title="Управление" />
 
             <div className="admin-tabs" role="tablist" aria-label="Управление">
-                {(isAdmin ? ADMIN_TABS : OPERATOR_TABS).map(([value, label]) => (
+                {tabs.map(({ tab: value, label }) => (
                     <button
                         role="tab"
                         aria-selected={tab === value}
@@ -55,6 +55,7 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
 
             <AdminTabContent
                 tab={tab}
+                session={session}
                 queries={queries}
                 busy={busy}
                 save={save}
@@ -66,6 +67,7 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
             {dialog ? (
                 <AdminDialogs
                     dialog={dialog}
+                    session={session}
                     busy={busy}
                     error={error}
                     save={save}

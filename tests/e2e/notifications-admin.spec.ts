@@ -22,7 +22,7 @@ test('lists notifications and opens the ticket of one', async ({ page }) => {
 test('shows each admin tab', async ({ page }) => {
     await page.getByRole('button', { name: /Управление/ }).click();
     await expect(page.getByText('Борис Иванов')).toBeVisible();
-    await expect(page.getByText('Заблокирован')).toBeVisible();
+    await expect(page.getByText('Заблокирован', { exact: true })).toBeVisible();
     await page.getByRole('tab', { name: 'Справочники' }).click();
     await expect(page.getByText('В архиве')).toBeVisible();
     await page.getByRole('tab', { name: 'Шаблоны бота' }).click();
@@ -49,12 +49,7 @@ test('adds an employee', async ({ page }) => {
     await expect.poll(() => api.callsTo('POST', '/v1/admin/employees').length).toBe(1);
     const [call] = api.callsTo('POST', '/v1/admin/employees');
 
-    expect(call.body).toEqual({
-        max_user_id: '2001',
-        name: 'Галина',
-        role: 'supervisor',
-        blocked: false,
-    });
+    expect(call.body).toEqual({ max_user_id: '2001', name: 'Галина', role: 'supervisor' });
 
     expect(call.headers['if-match']).toBe('0');
 });

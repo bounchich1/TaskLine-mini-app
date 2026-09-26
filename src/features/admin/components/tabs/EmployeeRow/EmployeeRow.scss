@@ -1,0 +1,83 @@
+@use 'abstracts' as *;
+
+.employee-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    min-height: 56px;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-line;
+
+    @include respond-to(phone) {
+        flex-wrap: wrap;
+        gap: 8px 10px;
+    }
+}
+
+.employee-row__main {
+    display: grid;
+    flex: 1;
+    gap: 2px;
+    min-width: 0;
+}
+
+.employee-row__name {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-weight: $font-weight-medium;
+    overflow-wrap: anywhere;
+
+    .employee-row--blocked & {
+        color: $color-text-secondary;
+    }
+}
+
+.employee-row__you {
+    @include count;
+}
+
+.employee-row__meta {
+    @include muted(label);
+
+    overflow-wrap: anywhere;
+}
+
+.employee-row__status {
+    @include text(label);
+
+    color: $color-text-accent;
+
+    .employee-row--blocked & {
+        color: $color-negative;
+    }
+}
+
+.employee-row__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 8px;
+    align-items: center;
+
+    &:empty {
+        display: none;
+    }
+
+    @include respond-to(phone) {
+        flex-basis: 100%;
+        padding-left: 42px;
+    }
+}
+
+.employee-row__block {
+    @include icon-button(28px);
+
+    &:hover:not(:disabled) {
+        background: $color-negative-bg;
+        color: $color-negative;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}

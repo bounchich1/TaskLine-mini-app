@@ -1,0 +1,57 @@
+@use 'abstracts' as *;
+
+.employees-toolbar {
+    display: grid;
+    gap: 8px;
+}
+
+.employees-filter {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    border-bottom: 1px solid $color-line-strong;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    @include respond-to(phone) {
+        gap: 16px;
+    }
+}
+
+.employees-filter__tab {
+    display: flex;
+    flex-shrink: 0;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: -1px;
+    padding: 8px 0 9px;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+    white-space: nowrap;
+
+    &:hover {
+        color: $color-text;
+    }
+
+    &:focus-visible {
+        @include focus-ring-inset;
+    }
+
+    &--selected {
+        border-bottom-color: $color-text;
+        color: $color-text;
+    }
+}
+
+.employees-filter__count {
+    @include count;
+}
+
+.employees-toolbar + .admin-card__list {
+    border-top: 0;
+}

@@ -102,7 +102,8 @@
         @include field-focus;
     }
 
-    &:disabled {
+    &:disabled,
+    &:read-only {
         color: $color-text-muted;
         background: $color-bg-subtle;
     }

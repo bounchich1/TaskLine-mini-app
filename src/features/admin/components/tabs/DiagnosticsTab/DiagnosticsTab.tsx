@@ -18,8 +18,8 @@ type DiagnosticsTabProps = {
     server: ServerHealth | undefined;
     busy: boolean;
     onTicket: (id: string) => void;
-    onResolve: (resolution: Resolution) => void;
-    onRetryJob: (id: string) => void;
+    onResolve?: (resolution: Resolution) => void;
+    onRetryJob?: (id: string) => void;
 };
 
 export function DiagnosticsTab({ diagnostics, server, ...rowProps }: DiagnosticsTabProps) {

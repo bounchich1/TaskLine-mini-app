@@ -4,6 +4,8 @@ import { AdminRow } from '@/features/admin/components/AdminRow/AdminRow';
 import type { Diagnostic, DiagnosticKind, Resolution } from '@/features/admin/model/types';
 import { Icon } from '@/shared/ui';
 
+import { ResolveButtons } from '../ResolveButtons/ResolveButtons';
+
 const RETRYABLE_JOBS = ['file', 'scan', 'memory_delete', 'message_revision'];
 
 type DiagnosticRowProps = {
@@ -11,14 +13,20 @@ type DiagnosticRowProps = {
     item: Diagnostic;
     busy: boolean;
     onTicket: (id: string) => void;
-    onResolve: (resolution: Resolution) => void;
-    onRetryJob: (id: string) => void;
+    onResolve?: (resolution: Resolution) => void;
+    onRetryJob?: (id: string) => void;
 };
+
+const isUncertainDelivery = (kind: DiagnosticKind, item: Diagnostic) =>
+    kind === 'deliveries' && !!item.message_id && item.state === 'unknown';
+
+const isRetryableJob = (kind: DiagnosticKind, item: Diagnostic) =>
+    kind === 'jobs' && item.state === 'failed' && RETRYABLE_JOBS.includes(item.kind ?? '');
 
 export function DiagnosticRow({ kind, item, busy, onTicket, onResolve, onRetryJob }: DiagnosticRowProps) {
     const ticketId = item.ticket_id;
-    const uncertainDelivery = kind === 'deliveries' && !!item.message_id && item.state === 'unknown';
-    const retryableJob = kind === 'jobs' && item.state === 'failed' && RETRYABLE_JOBS.includes(item.kind ?? '');
+    const uncertainDelivery = isUncertainDelivery(kind, item);
+    const retryableJob = isRetryableJob(kind, item);
 
     return (
         <AdminRow wrap>
@@ -42,31 +50,9 @@ export function DiagnosticRow({ kind, item, busy, onTicket, onResolve, onRetryJo
                 </button>
             ) : null}
 
-            {uncertainDelivery ? (
-                <>
-                    <Button
-                        size="xsmall"
-                        variant="secondary"
-                        onClick={() => {
-                            onResolve({ item, action: 'cancel' });
-                        }}
-                    >
-                        Не повторять
-                    </Button>
+            {uncertainDelivery && onResolve ? <ResolveButtons item={item} onResolve={onResolve} /> : null}
 
-                    <Button
-                        size="xsmall"
-                        variant="secondary"
-                        onClick={() => {
-                            onResolve({ item, action: 'retry' });
-                        }}
-                    >
-                        Повторить
-                    </Button>
-                </>
-            ) : null}
-
-            {retryableJob ? (
+            {retryableJob && onRetryJob ? (
                 <Button
                     variant="secondary"
                     size="xsmall"

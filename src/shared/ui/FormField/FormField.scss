@@ -16,3 +16,7 @@
     color: $color-text-secondary;
     font-weight: $font-weight-medium;
 }
+
+.form-field__hint {
+    @include muted(label);
+}

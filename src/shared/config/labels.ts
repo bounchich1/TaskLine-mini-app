@@ -79,6 +79,20 @@ const ROLE_LABELS: Labels = Object.fromEntries(ROLE_OPTIONS);
 
 export const roleLabel = (role: string) => ROLE_LABELS[role] ?? role;
 
+export const EMPLOYEE_STATUS_OPTIONS = [
+    ['active', 'Активные'],
+    ['pending', 'Ожидают входа'],
+    ['blocked', 'Заблокированные'],
+] as const;
+
+const EMPLOYEE_STATUS_LABELS: Labels = {
+    active: 'Активен',
+    pending: 'Ожидает первого входа',
+    blocked: 'Заблокирован',
+};
+
+export const employeeStatusLabel = (status: string) => EMPLOYEE_STATUS_LABELS[status] ?? status;
+
 const AUTHOR_LABELS: Labels = {
     client: 'Клиент',
     staff: 'Сотрудник',

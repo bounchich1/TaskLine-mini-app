@@ -1,10 +1,30 @@
+export type Role = 'support' | 'supervisor' | 'admin';
+
+export type EmployeeStatus = 'pending' | 'active' | 'blocked';
+
+export type Permission =
+    | 'tickets.view'
+    | 'tickets.work'
+    | 'tickets.classify_any'
+    | 'tickets.reply_any'
+    | 'tickets.transfer_any'
+    | 'tickets.close_any'
+    | 'tickets.reopen_any'
+    | 'deliveries.resolve_unknown'
+    | 'operations.view'
+    | 'operations.retry'
+    | 'employees.manage'
+    | 'organization.configure'
+    | 'audit.view';
+
 export type Employee = {
     id: string;
     name: string;
-    role: 'support' | 'supervisor' | 'admin';
-    blocked: boolean;
+    role: Role;
+    status: EmployeeStatus;
     version: number;
     max_user_id?: string;
+    activated_at?: string | null;
 };
 
 export type Session = {
@@ -12,7 +32,7 @@ export type Session = {
     csrf: string;
     employee: Employee;
     organization: { name: string; timezone: string };
-    capabilities: { support: boolean; admin: boolean; act_on_others: boolean; operations: boolean };
+    permissions: Permission[];
     start_param?: string | null;
 };
 

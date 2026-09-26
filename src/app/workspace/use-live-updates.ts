@@ -19,7 +19,7 @@ const isAdminEvent = (event: LiveEvent) => event.type === 'admin.changed';
 
 function affectedQueries(event: LiveEvent): QueryKey[] {
     if (isAdminEvent(event)) {
-        return [queryKeys.dictionaries, queryKeys.employees];
+        return [queryKeys.dictionaries, queryKeys.employees, queryKeys.adminEmployees];
     }
 
     const id = event.ticket_id;

@@ -1,41 +1,4 @@
-const ORG = { name: 'ООО «Линия»', timezone: 'Asia/Krasnoyarsk' };
-
-const ME = {
-    id: 'e1',
-    name: 'Анна Смирнова',
-    role: 'admin',
-    blocked: false,
-    version: 3,
-    max_user_id: '1001',
-};
-
-export const EMPLOYEES = [
-    ME,
-    {
-        id: 'e2',
-        name: 'Борис Иванов',
-        role: 'support',
-        blocked: false,
-        version: 1,
-        max_user_id: '1002',
-    },
-    {
-        id: 'e3',
-        name: 'Вера Петрова',
-        role: 'supervisor',
-        blocked: true,
-        version: 2,
-        max_user_id: '1003',
-    },
-];
-
-export const SESSION = {
-    token: 'token',
-    csrf: 'csrf',
-    employee: ME,
-    organization: ORG,
-    capabilities: { support: true, admin: true, act_on_others: true, operations: true },
-};
+import { ORG } from './staff';
 
 export const DICTIONARIES = [
     { dimension: 'tag', code: 'undefined', label: 'Не определён', rank: 0, active: true, version: 1 },

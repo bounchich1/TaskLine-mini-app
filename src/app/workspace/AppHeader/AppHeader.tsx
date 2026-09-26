@@ -1,6 +1,7 @@
 import { clsx } from 'clsx';
 import type { CSSProperties } from 'react';
 
+import { adminTabsFor } from '@/features/admin';
 import type { ConnectionState } from '@/shared/api/events-stream';
 import type { Session } from '@/shared/types/api';
 import { Icon, type IconName } from '@/shared/ui';
@@ -36,7 +37,7 @@ export function AppHeader(props: AppHeaderProps) {
         },
     ];
 
-    if (session.capabilities.admin || session.capabilities.operations) {
+    if (adminTabsFor(session).length > 0) {
         items.push({ section: 'admin', icon: 'settings', label: 'Управление' });
     }
 

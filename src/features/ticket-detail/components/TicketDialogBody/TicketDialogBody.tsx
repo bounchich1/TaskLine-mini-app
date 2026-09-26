@@ -41,7 +41,7 @@ export function TicketDialogBody(props: TicketDialogBodyProps) {
                     <Select
                         placeholder="Выберите сотрудника"
                         options={employees
-                            .filter((employee) => !employee.blocked && employee.id !== ticket.assignee_id)
+                            .filter((employee) => employee.status === 'active' && employee.id !== ticket.assignee_id)
                             .map((employee) => ({ value: employee.id, label: employee.name }))}
                         value={target}
                         onChange={onTarget}

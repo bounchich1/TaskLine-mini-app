@@ -1,66 +1,71 @@
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
-import { ROLE_OPTIONS } from '@/shared/config/labels';
-import type { Employee } from '@/shared/types/api';
-import { FormField, CheckboxField, Select } from '@/shared/ui';
+import { assignableRoles } from '@/features/admin/model/employee-access';
+import { employeeForm, type EmployeeForm } from '@/features/admin/model/employee-form';
+import { roleLabel } from '@/shared/config/labels';
+import type { Employee, Session } from '@/shared/types/api';
+import { FormField, Select } from '@/shared/ui';
 
 import { FormDialog } from '../FormDialog/FormDialog';
 
 type EmployeeDialogProps = {
     employee: Employee | null;
+    session: Session;
     busy: boolean;
     error: unknown;
     save: AdminSave;
     onClose: () => void;
 };
 
-export function EmployeeDialog({ employee, busy, error, save, onClose }: EmployeeDialogProps) {
-    const submit = (form: FormData) => {
-        void save(`/v1/admin/employees${employee ? `/${employee.id}` : ''}`, {
-            method: employee ? 'PATCH' : 'POST',
-            body: {
-                max_user_id: employee?.max_user_id ?? form.get('max_user_id'),
-                name: form.get('name'),
-                role: form.get('role'),
-                blocked: form.get('blocked') === 'on',
-            },
-            version: employee?.version ?? 0,
-        });
-    };
+function submitEmployee(
+    form: EmployeeForm,
+    data: FormData,
+    { save, onClose }: Pick<EmployeeDialogProps, 'save' | 'onClose'>,
+) {
+    const request = form.request(data);
+
+    if (request) {
+        void save(request.path, request.options);
+    } else {
+        onClose();
+    }
+}
+
+export function EmployeeDialog({ employee, session, busy, error, save, onClose }: EmployeeDialogProps) {
+    const form = employeeForm(session, employee);
 
     return (
         <FormDialog
-            title={employee ? 'Изменить сотрудника' : 'Добавить сотрудника'}
+            title={form.title}
             formId="employee-form"
             busy={busy}
             error={error}
             onClose={onClose}
-            onSubmit={submit}
+            onSubmit={(data) => {
+                submitEmployee(form, data, { save, onClose });
+            }}
         >
-            <FormField label="MAX ID">
+            <FormField label="MAX ID" hint={form.maxIdHint}>
                 <input
                     name="max_user_id"
                     pattern="[0-9]+"
+                    inputMode="numeric"
                     required
                     defaultValue={employee?.max_user_id}
-                    readOnly={!!employee}
+                    readOnly={!form.editMaxId}
                 />
             </FormField>
 
-            <FormField label="Имя">
+            <FormField label="Имя" hint={form.nameHint}>
                 <input name="name" required maxLength={120} defaultValue={employee?.name} />
             </FormField>
 
             <FormField label="Роль">
-                <Select
-                    name="role"
-                    options={ROLE_OPTIONS.map(([value, label]) => ({ value, label }))}
-                    defaultValue={employee?.role ?? 'support'}
-                />
+                {form.editRole ? (
+                    <Select name="role" options={assignableRoles(session)} defaultValue={form.role} />
+                ) : (
+                    <input value={roleLabel(form.role)} readOnly />
+                )}
             </FormField>
-
-            <CheckboxField name="blocked" defaultChecked={employee?.blocked}>
-                Заблокировать доступ
-            </CheckboxField>
         </FormDialog>
     );
 }

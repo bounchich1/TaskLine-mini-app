@@ -5,14 +5,13 @@ import {
     CLOSED_TICKETS,
     DICTIONARIES,
     DIAGNOSTICS,
-    EMPLOYEES,
     MESSAGES,
     NOTIFICATIONS,
     OPEN_TICKETS,
-    SESSION,
     SETTINGS,
     TEMPLATES,
 } from './fixtures';
+import { EMPLOYEES, SESSION } from './staff';
 
 export interface RecordedCall {
     method: string;
@@ -59,9 +58,9 @@ const GET_ROUTES: [RegExp, Handler][] = [
     [/^\/v1\/admin\/audit$/, () => ({ items: AUDIT })],
 ];
 
-function mutationResult(call: RecordedCall): unknown {
+function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
     if (call.path === '/v1/auth/dev') {
-        return SESSION;
+        return session;
     }
 
     const command = /^\/v1\/tickets\/([^/]+)\/(\w+)$/.exec(call.path);
@@ -77,8 +76,10 @@ export class MockApi {
     readonly calls: RecordedCall[] = [];
     private readonly overrides: { method: string; path: RegExp; status: number }[] = [];
 
-    static async install(page: Page): Promise<MockApi> {
-        const mock = new MockApi();
+    private constructor(private readonly session: typeof SESSION) {}
+
+    static async install(page: Page, session: typeof SESSION = SESSION): Promise<MockApi> {
+        const mock = new MockApi(session);
 
         await page.route('https://st.max.ru/**', (route) =>
             route.fulfill({ contentType: 'text/javascript', body: '' }),
@@ -128,7 +129,7 @@ export class MockApi {
             return;
         }
 
-        const body = call.method === 'GET' ? this.read(call) : mutationResult(call);
+        const body = call.method === 'GET' ? this.read(call) : mutationResult(call, this.session);
 
         await route.fulfill({ status: body === undefined ? 404 : 200, json: body ?? {} });
     }
