@@ -3,7 +3,7 @@ name: max-support
 x-server: &server
   image: max-support-server:local
   build:
-    context: ${SERVER_SOURCE:-https://github.com/bounchich1/TaskLine-server.git#134fb364e7078f3571bd5c86ab52e2bb41660183}
+    context: ${SERVER_SOURCE:-https://github.com/bounchich1/TaskLine-server.git#c28f97d200d88648988e4f99848542e67fc4a3b4}
     args:
       APP_VERSION: local
   restart: unless-stopped
