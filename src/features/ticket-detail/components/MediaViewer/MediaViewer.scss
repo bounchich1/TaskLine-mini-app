@@ -1,0 +1,96 @@
+@use 'abstracts' as *;
+
+.media-viewer {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    border: 0;
+    background: $viewer-background;
+    color: $color-text-inverse;
+
+    &[open] {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &::backdrop {
+        background: $viewer-background;
+    }
+}
+
+.media-viewer__bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 8px 8px 16px;
+}
+
+.media-viewer__name {
+    @include text(small);
+    @include truncate;
+
+    flex: 1;
+    min-width: 0;
+    font-weight: $font-weight-medium;
+}
+
+.media-viewer__action {
+    @include text(label);
+
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    flex-shrink: 0;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: $radius-s;
+    background: $viewer-control;
+    color: inherit;
+    font-weight: $font-weight-medium;
+
+    &:disabled {
+        opacity: 0.6;
+    }
+}
+
+.media-viewer__close {
+    @include icon-button(36px);
+
+    color: inherit;
+
+    &:hover:not(:disabled) {
+        background: $viewer-control;
+        color: inherit;
+    }
+}
+
+.media-viewer__error {
+    margin: 0 16px;
+}
+
+.media-viewer__stage {
+    position: relative;
+    display: grid;
+    flex: 1;
+    place-items: center;
+    min-height: 0;
+}
+
+.media-viewer__media {
+    position: absolute;
+    inset: 8px;
+    max-width: calc(100% - 16px);
+    max-height: calc(100% - 16px);
+    margin: auto;
+}
+
+.media-viewer__message {
+    @include text(body);
+
+    max-width: 320px;
+    text-align: center;
+    opacity: 0.8;
+}

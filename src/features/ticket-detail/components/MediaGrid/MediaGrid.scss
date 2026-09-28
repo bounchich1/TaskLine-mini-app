@@ -1,0 +1,10 @@
+.media-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    max-width: 100%;
+
+    .message--staff & {
+        justify-content: flex-end;
+    }
+}

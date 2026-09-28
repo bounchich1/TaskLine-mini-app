@@ -4,7 +4,7 @@ import { ApiError, authHeaders } from './http';
 
 const OBJECT_URL_LIFETIME_MS = 60000;
 
-export async function downloadBrowser(id: string, filename: string): Promise<void> {
+export async function fetchAttachment(id: string): Promise<Blob> {
     const response = await fetch(`${API_BASE}/v1/attachments/${id}/download`, {
         headers: authHeaders(),
         credentials: 'include',
@@ -14,7 +14,11 @@ export async function downloadBrowser(id: string, filename: string): Promise<voi
         throw new ApiError('download_failed', 'Не удалось скачать файл.', response.status);
     }
 
-    const url = URL.createObjectURL(await response.blob());
+    return response.blob();
+}
+
+export async function downloadBrowser(id: string, filename: string): Promise<void> {
+    const url = URL.createObjectURL(await fetchAttachment(id));
     const anchor = document.createElement('a');
 
     anchor.href = url;

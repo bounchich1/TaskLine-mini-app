@@ -1,11 +1,13 @@
 import { clsx } from 'clsx';
 
+import { isMedia } from '@/features/ticket-detail/model/media';
 import { authorLabel } from '@/shared/config/labels';
 import { formatDate } from '@/shared/lib/format-date';
 import type { Attachment, Message } from '@/shared/types/api';
 
 import { AttachmentItem } from '../AttachmentItem/AttachmentItem';
 import { DeliveryStatus } from '../DeliveryStatus/DeliveryStatus';
+import { MediaGrid } from '../MediaGrid/MediaGrid';
 
 import './MessageItem.scss';
 
@@ -21,7 +23,8 @@ type MessageItemProps = {
 };
 
 export function MessageItem({ message, attachments, timezone, highlighted = false, ...delivery }: MessageItemProps) {
-    const files = attachments?.filter((file) => file.message_id === message.id) ?? [];
+    const own = attachments?.filter((file) => file.message_id === message.id) ?? [];
+    const files = own.filter((file) => !isMedia(file));
     const hasBody = message.deleted || message.text.length > 0;
 
     return (
@@ -37,6 +40,8 @@ export function MessageItem({ message, attachments, timezone, highlighted = fals
                     {message.deleted ? <em className="message__deleted">Сообщение удалено клиентом</em> : message.text}
                 </div>
             ) : null}
+
+            <MediaGrid files={own.filter(isMedia)} />
 
             {files.map((file) => (
                 <AttachmentItem file={file} key={file.id} />

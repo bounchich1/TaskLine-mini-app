@@ -11,8 +11,14 @@ import {
     SETTINGS,
     TEMPLATES,
 } from './fixtures';
+import { solidPng } from './media';
 import { SOURCE_EXCERPT } from './source-fixtures';
 import { EMPLOYEES, SESSION } from './staff';
+
+export const MEDIA_WIDTH = 240;
+
+const MEDIA_BYTES = solidPng(MEDIA_WIDTH, 160, [0, 122, 255]);
+const DOWNLOAD_PATH = /^\/v1\/attachments\/[^/]+\/download$/;
 
 export interface RecordedCall {
     method: string;
@@ -127,6 +133,12 @@ export class MockApi {
             const [{ status }] = this.overrides.splice(index, 1);
 
             await route.fulfill({ status, json: { code: 'test_failure', message: `HTTP ${status}` } });
+
+            return;
+        }
+
+        if (DOWNLOAD_PATH.test(call.path)) {
+            await route.fulfill({ contentType: 'application/octet-stream', body: MEDIA_BYTES });
 
             return;
         }

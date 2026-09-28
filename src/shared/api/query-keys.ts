@@ -6,6 +6,7 @@ export const queryKeys = {
     messages: ['messages'],
     ticketMessages: (id: string) => ['messages', id],
     suggestionSource: (ticketId: string, memoryId: string) => ['suggestion-source', ticketId, memoryId],
+    attachmentMedia: (id: string) => ['attachment-media', id],
     notifications: ['notifications'],
     dictionaries: ['dictionaries'],
     employees: ['employees'],

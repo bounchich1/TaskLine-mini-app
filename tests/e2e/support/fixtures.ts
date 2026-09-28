@@ -1,3 +1,4 @@
+import { MEDIA_ATTACHMENTS } from './media';
 import { ORG } from './staff';
 
 export const DICTIONARIES = [
@@ -126,6 +127,7 @@ export const OPEN_TICKETS = [
                 kind: 'file',
                 extraction_status: 'complete',
             },
+            ...MEDIA_ATTACHMENTS,
         ],
     }),
     ticket({

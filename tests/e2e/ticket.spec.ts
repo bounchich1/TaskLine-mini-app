@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import { chooseOption, openApp, openTicket, ticketCard } from './support/app';
-import { MockApi } from './support/mock-api';
+import { MEDIA_WIDTH, MockApi } from './support/mock-api';
 
 let api: MockApi;
 
@@ -28,6 +28,29 @@ test('shows the conversation, attachment and assistant suggestion', async ({ pag
     await expect(card.getByText(/Проверяем историю платежей/)).toBeHidden();
     await card.getByText('Черновик ответа клиенту').click();
     await expect(card.getByText(/Проверяем историю платежей/)).toBeVisible();
+});
+
+test('previews client photos inline and opens media full screen', async ({ page }) => {
+    await openTicket(page, '000002');
+    const card = ticketCard(page, '000002');
+    const photo = card.getByRole('button', { name: 'Фото image, открыть' });
+
+    await expect(photo.locator('img')).toHaveJSProperty('naturalWidth', MEDIA_WIDTH);
+    await photo.click();
+    const viewer = page.getByRole('dialog', { name: 'image' });
+
+    await expect(viewer.getByRole('img', { name: 'image' })).toBeVisible();
+    await expect(viewer.getByRole('button', { name: 'Скачать' })).toBeVisible();
+    await viewer.getByRole('button', { name: 'Закрыть просмотр' }).click();
+    await expect(viewer).toBeHidden();
+    expect(api.callsTo('GET', '/v1/attachments/a2/download')).toHaveLength(1);
+
+    const video = card.getByRole('button', { name: 'Видео video.mp4, открыть' });
+
+    await expect(video).toContainText('Видео · 12 МБ');
+    expect(api.callsTo('GET', '/v1/attachments/a3/download')).toHaveLength(0);
+    await video.click();
+    await expect(page.getByText('Видео не воспроизводится в приложении. Скачайте файл.')).toBeVisible();
 });
 
 test('keeps rendering a legacy free-text suggestion', async ({ page }) => {
