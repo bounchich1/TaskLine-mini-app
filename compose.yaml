@@ -3,7 +3,7 @@ name: max-support
 x-server: &server
   image: max-support-server:local
   build:
-    context: ${SERVER_SOURCE:-https://github.com/bounchich1/TaskLine-server.git#6701b4e098fac1f147b7e24aa37739ffc20b8c55}
+    context: ${SERVER_SOURCE:-https://github.com/bounchich1/TaskLine-server.git#f227fba66735f6a5b0d52b8eaa5df46b05ef0ebd}
     args:
       APP_VERSION: local
   restart: unless-stopped
@@ -111,7 +111,10 @@ services:
   worker:
     <<: *server
     command: ['node', 'dist/main.js', 'worker']
-    depends_on: *server-deps
+    depends_on:
+      <<: *server-deps
+      gateway:
+        condition: service_healthy
 
   gateway:
     <<: *server
