@@ -68,12 +68,27 @@
 .composer__attach {
     @include text-button(small);
 
+    position: relative;
     color: $color-text-secondary;
+    cursor: pointer;
 
-    &:hover:not(:disabled) {
+    &:hover:not(.composer__attach--disabled) {
         color: $color-text;
         text-decoration: none;
     }
+
+    &:has(.composer__file:focus-visible) {
+        @include focus-ring;
+    }
+}
+
+.composer__attach--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.composer__file {
+    @include visually-hidden;
 }
 
 .composer__attach-label {

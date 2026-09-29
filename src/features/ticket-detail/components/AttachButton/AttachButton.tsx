@@ -1,5 +1,6 @@
+import { clsx } from 'clsx';
+
 import type { useAttachmentUpload } from '@/features/ticket-detail/hooks/use-attachment-upload';
-import { ACCEPTED_FILES } from '@/features/ticket-detail/model/limits';
 import { Icon } from '@/shared/ui';
 
 type AttachButtonProps = {
@@ -9,13 +10,15 @@ type AttachButtonProps = {
 
 export function AttachButton({ uploads, disabled }: AttachButtonProps) {
     const { uploading, fileRef, upload } = uploads;
+    const blocked = disabled || uploading;
 
     return (
-        <>
+        <label className={clsx('composer__attach', blocked && 'composer__attach--disabled')}>
             <input
                 type="file"
-                hidden
+                className="composer__file"
                 ref={fileRef}
+                disabled={blocked}
                 onChange={(event) => {
                     const file = event.target.files?.[0];
 
@@ -23,18 +26,10 @@ export function AttachButton({ uploads, disabled }: AttachButtonProps) {
                         void upload(file);
                     }
                 }}
-                accept={ACCEPTED_FILES}
             />
 
-            <button
-                type="button"
-                className="composer__attach"
-                disabled={disabled || uploading}
-                onClick={() => fileRef.current?.click()}
-            >
-                <Icon name="clip" size={18} />
-                <span className="composer__attach-label">{uploading ? 'Проверяем файл…' : 'Прикрепить файл'}</span>
-            </button>
-        </>
+            <Icon name="clip" size={18} />
+            <span className="composer__attach-label">{uploading ? 'Проверяем файл…' : 'Прикрепить файл'}</span>
+        </label>
     );
 }
