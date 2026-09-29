@@ -15,8 +15,9 @@ test('serves the privacy policy without signing in', async ({ page }) => {
         'Политика конфиденциальности и обработки персональных данных бота технической поддержки TaskLine',
     );
 
-    await expect(page.locator('#consent')).toContainText('Нажимая «Согласен», я даю TaskLineInternet согласие');
-    await expect(page.getByRole('heading', { level: 2 })).toHaveCount(8);
+    await expect(page.locator('#consent')).toContainText('я даю Макалшевскому Виктору Игоревичу');
+    await expect(page.locator('#withdrawal')).toContainText('/withdraw');
+    await expect(page.getByRole('heading', { level: 2 })).toHaveCount(9);
     await expect(page.getByRole('link', { name: '+79130416810' }).first()).toHaveAttribute('href', 'tel:+79130416810');
     expect(apiCalls).toEqual([]);
 });
