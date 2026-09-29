@@ -118,3 +118,27 @@ const PERMIT_LABELS: Labels = {
 };
 
 export const permitLabel = (state: string) => PERMIT_LABELS[state] ?? 'Требует проверки';
+
+const DIAGNOSTIC_REASON_LABELS: Labels = {
+    ai_failed: 'ИИ не дал ответа',
+    ai_timeout: 'ИИ не ответил вовремя',
+    ai_tool_budget: 'ИИ превысил лимит поиска решений',
+    ai_uncertain: 'Исход вызова ИИ неизвестен',
+    ai_rejected: 'Вызов ИИ отклонён',
+    invalid_ai_schema: 'ИИ ответил в неверном формате',
+    invalid_dictionary_version: 'Справочники изменились во время разбора',
+    dictionary_value_retired: 'ИИ выбрал значение, которого уже нет в справочнике',
+    provider_busy: 'Провайдер ИИ перегружен, повтор позже',
+    provider_unavailable: 'Провайдер ИИ недоступен, повтор позже',
+    provider_rejected: 'Провайдер ИИ отклонил запрос',
+    provider_bad_reply: 'Провайдер ИИ вернул некорректный ответ',
+    triage_deadline: 'Не хватило времени на разбор',
+    result_ignored: 'Ответ ИИ опоздал или обращение изменилось',
+    message_revised: 'Клиент изменил сообщение во время разбора',
+    stale_memory: 'Найденные решения устарели',
+    job_ineligible: 'Больше не требуется',
+    worker_recovery: 'Перезапущено после сбоя',
+    worker_error: 'Внутренняя ошибка',
+};
+
+export const diagnosticReasonLabel = (reason: string) => DIAGNOSTIC_REASON_LABELS[reason] ?? reason;

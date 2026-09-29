@@ -2,11 +2,13 @@ import { Button } from '@maxhub/max-ui';
 
 import { AdminRow } from '@/features/admin/components/AdminRow/AdminRow';
 import type { Diagnostic, DiagnosticKind, Resolution } from '@/features/admin/model/types';
+import { diagnosticReasonLabel } from '@/shared/config/labels';
 import { Icon } from '@/shared/ui';
 
 import { ResolveButtons } from '../ResolveButtons/ResolveButtons';
 
 const RETRYABLE_JOBS = ['file', 'scan', 'memory_delete', 'message_revision'];
+const FINISHED_STATES = ['done', 'failed', 'canceled'];
 
 type DiagnosticRowProps = {
     kind: DiagnosticKind;
@@ -23,10 +25,19 @@ const isUncertainDelivery = (kind: DiagnosticKind, item: Diagnostic) =>
 const isRetryableJob = (kind: DiagnosticKind, item: Diagnostic) =>
     kind === 'jobs' && item.state === 'failed' && RETRYABLE_JOBS.includes(item.kind ?? '');
 
+function diagnosticDetail(item: Diagnostic): string | null {
+    if (item.reason) {
+        return diagnosticReasonLabel(item.reason);
+    }
+
+    return FINISHED_STATES.includes(item.state) ? null : 'Обрабатывается по расписанию';
+}
+
 export function DiagnosticRow({ kind, item, busy, onTicket, onResolve, onRetryJob }: DiagnosticRowProps) {
     const ticketId = item.ticket_id;
     const uncertainDelivery = isUncertainDelivery(kind, item);
     const retryableJob = isRetryableJob(kind, item);
+    const detail = diagnosticDetail(item);
 
     return (
         <AdminRow wrap>
@@ -35,7 +46,7 @@ export function DiagnosticRow({ kind, item, busy, onTicket, onResolve, onRetryJo
                     {item.kind ?? 'Запись памяти'} · {item.state}
                 </strong>
 
-                <small className="admin-row__meta">{item.reason ?? 'Обрабатывается по расписанию'}</small>
+                {detail ? <small className="admin-row__meta">{detail}</small> : null}
             </div>
 
             {ticketId ? (

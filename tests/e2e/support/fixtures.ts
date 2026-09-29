@@ -252,7 +252,10 @@ export const DIAGNOSTICS = {
             reason: 'worker_lost',
         },
     ],
-    jobs: [{ id: 'j1', kind: 'scan', state: 'failed', reason: 'worker_error' }],
+    jobs: [
+        { id: 'j1', kind: 'scan', state: 'failed', reason: 'worker_error' },
+        { id: 'j2', kind: 'triage', ticket_id: 't1', state: 'failed', reason: 'ai_timeout' },
+    ],
     memory: [],
 };
 
