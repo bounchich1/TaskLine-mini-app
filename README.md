@@ -1,3 +1,13 @@
+<p align="center">
+  <a href="https://max.ru/t706_hakaton_max_bot">
+    <img src="images/taskline-hero.gif" alt="TaskLine — техподдержка, которая живёт внутри MAX" width="100%">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://max.ru/t706_hakaton_max_bot"><img src="https://img.shields.io/badge/MAX-Открыть_бота-0A7CFF?style=for-the-badge" alt="Открыть бота в MAX"></a>
+  <a href="https://github.com/bounchich1/TaskLine-server#readme"><img src="https://img.shields.io/badge/README-сервер_и_запуск-16181D?style=for-the-badge&logo=github" alt="Главный README решения"></a>
+</p>
 # TaskLine — мини-приложение сотрудников поддержки для MAX
 
 Интерфейс сотрудников службы поддержки, который открывается внутри мессенджера MAX из чата
