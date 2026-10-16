@@ -3,6 +3,7 @@ import type { Dictionary, Ticket } from '@/shared/types/api';
 
 import { AiSuggestionPanel } from '../AiSuggestionPanel/AiSuggestionPanel';
 import { ClassificationFields } from '../ClassificationFields/ClassificationFields';
+import { ClientPrivacy } from '../ClientPrivacy/ClientPrivacy';
 import { ClosureHistory } from '../ClosureHistory/ClosureHistory';
 import { TicketProperties } from '../TicketProperties/TicketProperties';
 
@@ -14,6 +15,7 @@ type TicketAsideProps = {
     timezone: string;
     disabled: boolean;
     canInsert: boolean;
+    canManagePrivacy: boolean;
     onClassify: (field: Dimension, value: string) => void;
     onInsertSuggestion: (text: string) => void;
     onOpenSource: (sourceId: string) => void;
@@ -48,6 +50,12 @@ export function TicketAside(props: TicketAsideProps) {
             {ticket.closures?.length ? (
                 <section className="ticket-aside__section">
                     <ClosureHistory closures={ticket.closures} timezone={timezone} />
+                </section>
+            ) : null}
+
+            {props.canManagePrivacy ? (
+                <section className="ticket-aside__section">
+                    <ClientPrivacy key={ticket.client_id} ticket={ticket} />
                 </section>
             ) : null}
         </aside>

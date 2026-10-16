@@ -240,3 +240,20 @@ test('shows the closure history of a closed ticket', async ({ page }) => {
     await expect(card.getByText(/6 сообщений/)).toBeVisible();
     await expect(card.getByRole('button', { name: 'Переоткрыть' })).toBeVisible();
 });
+
+test('erases client data only after the admin confirms it is irreversible', async ({ page }) => {
+    await openTicket(page, '000001');
+    const card = ticketCard(page, '000001');
+
+    await expect(card.getByText('Персональные данные клиента')).toBeVisible();
+    await card.getByRole('button', { name: 'Удалить данные' }).click();
+    const dialog = page.getByRole('dialog', { name: 'Удалить данные клиента?' });
+    const confirm = dialog.getByRole('button', { name: 'Удалить безвозвратно' });
+
+    await expect(confirm).toBeDisabled();
+    await dialog.getByLabel('Понимаю, что восстановить данные нельзя').check();
+    await confirm.click();
+    await expect.poll(() => api.callsTo('POST', '/v1/admin/clients/client-t1/erase').length).toBe(1);
+    expect(api.callsTo('POST', '/v1/admin/clients/client-t1/erase')[0].body).toEqual({ confirm: true });
+    await expect(card.getByText('Данные клиента удалены, обращений: 2.')).toBeVisible();
+});

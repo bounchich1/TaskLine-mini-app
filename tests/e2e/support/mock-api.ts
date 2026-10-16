@@ -30,7 +30,13 @@ export interface RecordedCall {
 
 type Handler = (call: RecordedCall) => unknown;
 
-const byId = (id: string) => [...OPEN_TICKETS, ...CLOSED_TICKETS].find((item) => item.id === id);
+const NO_RETENTION = { closed_ticket_days: null, audit_days: null };
+
+const byId = (id: string) => {
+    const found = [...OPEN_TICKETS, ...CLOSED_TICKETS].find((item) => item.id === id);
+
+    return found && { client_id: `client-${id}`, ...found };
+};
 
 function ticketPage(search: URLSearchParams) {
     const counts = { open: OPEN_TICKETS.length, closed: CLOSED_TICKETS.length };
@@ -61,7 +67,7 @@ const GET_ROUTES: [RegExp, Handler][] = [
     [/^\/v1\/tickets\/[^/]+$/, (call) => byId(call.path.split('/')[3] ?? '')],
     [/^\/v1\/admin\/employees$/, () => ({ items: EMPLOYEES })],
     [/^\/v1\/admin\/templates$/, () => ({ items: TEMPLATES })],
-    [/^\/v1\/admin\/settings$/, () => SETTINGS],
+    [/^\/v1\/admin\/settings$/, () => ({ ...SETTINGS, retention: NO_RETENTION })],
     [/^\/v1\/admin\/diagnostics$/, () => DIAGNOSTICS],
     [/^\/v1\/admin\/audit$/, () => ({ items: AUDIT })],
 ];
@@ -69,6 +75,10 @@ const GET_ROUTES: [RegExp, Handler][] = [
 function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
     if (call.path === '/v1/auth/dev') {
         return session;
+    }
+
+    if (/^\/v1\/admin\/clients\/[^/]+\/erase$/.test(call.path)) {
+        return { client_id: call.path.split('/')[4], tickets: 2, already_erased: false };
     }
 
     const command = /^\/v1\/tickets\/([^/]+)\/(\w+)$/.exec(call.path);

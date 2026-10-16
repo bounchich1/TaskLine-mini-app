@@ -64,7 +64,24 @@ test('saves organization settings with their version', async ({ page }) => {
     const [call] = api.callsTo('PUT', '/v1/admin/settings');
 
     expect(call.headers['if-match']).toBe('5');
-    expect(call.body).toEqual({ name: 'ООО «Линия 2»', timezone: 'Asia/Krasnoyarsk' });
+
+    expect(call.body).toEqual({
+        name: 'ООО «Линия 2»',
+        timezone: 'Asia/Krasnoyarsk',
+        retention: { closed_ticket_days: null, audit_days: null },
+    });
+});
+
+test('saves data retention periods', async ({ page }) => {
+    await page.getByRole('button', { name: /Управление/ }).click();
+    await page.getByRole('tab', { name: 'Организация' }).click();
+    await page.getByLabel('Хранить закрытые обращения, дней').fill('1095');
+    await page.getByLabel('Хранить журнал аудита, дней').fill('1825');
+    await page.getByRole('button', { name: 'Сохранить' }).click();
+    await expect.poll(() => api.callsTo('PUT', '/v1/admin/settings').length).toBe(1);
+    const [call] = api.callsTo('PUT', '/v1/admin/settings');
+
+    expect((call.body as { retention: unknown }).retention).toEqual({ closed_ticket_days: 1095, audit_days: 1825 });
 });
 
 test('requires evidence before resolving an uncertain delivery', async ({ page }) => {

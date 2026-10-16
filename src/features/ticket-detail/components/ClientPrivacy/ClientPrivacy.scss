@@ -1,0 +1,25 @@
+@use 'abstracts' as *;
+
+.client-privacy {
+    display: grid;
+    gap: 10px;
+}
+
+.client-privacy__help {
+    @include muted(caption);
+
+    margin: 0;
+}
+
+.client-privacy__done {
+    @include text(small);
+
+    margin: 0;
+    color: $color-text-secondary;
+}
+
+.client-privacy__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}

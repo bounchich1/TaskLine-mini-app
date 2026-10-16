@@ -71,7 +71,13 @@ export const SESSION = {
     csrf: 'csrf',
     employee: ME,
     organization: ORG,
-    permissions: [...SUPERVISOR_PERMISSIONS, 'employees.manage', 'organization.configure', 'audit.view'],
+    permissions: [
+        ...SUPERVISOR_PERMISSIONS,
+        'employees.manage',
+        'organization.configure',
+        'audit.view',
+        'clients.privacy',
+    ],
 };
 
 export const SUPPORT_SESSION = { ...SESSION, employee: BORIS, permissions: SUPPORT_PERMISSIONS };

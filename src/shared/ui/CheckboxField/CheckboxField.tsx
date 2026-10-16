@@ -4,14 +4,26 @@ import './CheckboxField.scss';
 
 type CheckboxFieldProps = {
     name: string;
-    defaultChecked: boolean | undefined;
+    defaultChecked?: boolean;
+    checked?: boolean;
+    onChange?: (checked: boolean) => void;
     children: ReactNode;
 };
 
-export function CheckboxField({ name, defaultChecked, children }: CheckboxFieldProps) {
+export function CheckboxField({ name, defaultChecked, checked, onChange, children }: CheckboxFieldProps) {
     return (
         <label className="checkbox-field">
-            <input className="checkbox-field__input" type="checkbox" name={name} defaultChecked={defaultChecked} />
+            <input
+                className="checkbox-field__input"
+                type="checkbox"
+                name={name}
+                defaultChecked={defaultChecked}
+                checked={checked}
+                onChange={(event) => {
+                    onChange?.(event.currentTarget.checked);
+                }}
+            />
+
             {children}
         </label>
     );

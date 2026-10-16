@@ -13,6 +13,15 @@ type SettingsTabProps = {
     save: AdminSave;
 };
 
+const TICKET_RETENTION_HINT =
+    'От 30 до 3650. Пусто — бессрочно. Потом переписка и файлы стираются, остаются номер, тема и оценка.';
+
+function days(value: FormDataEntryValue | null): number | null {
+    const text = typeof value === 'string' ? value.trim() : '';
+
+    return text ? Number(text) : null;
+}
+
 export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
     return (
         <AdminCard title="Организация">
@@ -25,7 +34,14 @@ export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
 
                     void save('/v1/admin/settings', {
                         method: 'PUT',
-                        body: { name: form.get('name'), timezone: form.get('timezone') },
+                        body: {
+                            name: form.get('name'),
+                            timezone: form.get('timezone'),
+                            retention: {
+                                closed_ticket_days: days(form.get('closed_ticket_days')),
+                                audit_days: days(form.get('audit_days')),
+                            },
+                        },
                         version: settings.version,
                     });
                 }}
@@ -36,6 +52,28 @@ export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
 
                 <FormField label="Часовой пояс">
                     <input name="timezone" defaultValue={settings.timezone} required />
+                </FormField>
+
+                <FormField label="Хранить закрытые обращения, дней" hint={TICKET_RETENTION_HINT}>
+                    <input
+                        name="closed_ticket_days"
+                        type="number"
+                        inputMode="numeric"
+                        min={30}
+                        max={3650}
+                        defaultValue={settings.retention.closed_ticket_days ?? ''}
+                    />
+                </FormField>
+
+                <FormField label="Хранить журнал аудита, дней" hint="От 365 до 3650. Пусто — бессрочно.">
+                    <input
+                        name="audit_days"
+                        type="number"
+                        inputMode="numeric"
+                        min={365}
+                        max={3650}
+                        defaultValue={settings.retention.audit_days ?? ''}
+                    />
                 </FormField>
 
                 <p className="admin-card__help">

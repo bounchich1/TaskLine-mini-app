@@ -7,7 +7,7 @@ import { Icon } from '@/shared/ui';
 
 import { ResolveButtons } from '../ResolveButtons/ResolveButtons';
 
-const RETRYABLE_JOBS = ['file', 'scan', 'memory_delete', 'message_revision'];
+const RETRYABLE_JOBS = ['file', 'scan', 'memory_delete', 'message_revision', 'attachment_purge'];
 const FINISHED_STATES = ['done', 'failed', 'canceled'];
 
 type DiagnosticRowProps = {

@@ -22,7 +22,9 @@ export type ServerHealth = { status: string; version: string };
 
 export type Template = { code: string; body: string; version: number };
 
-export type OrganizationSettings = { name: string; timezone: string; version: number };
+type Retention = { closed_ticket_days: number | null; audit_days: number | null };
+
+export type OrganizationSettings = { name: string; timezone: string; version: number; retention: Retention };
 
 export type Diagnostic = {
     id: string;

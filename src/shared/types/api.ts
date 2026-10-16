@@ -15,7 +15,8 @@ export type Permission =
     | 'operations.retry'
     | 'employees.manage'
     | 'organization.configure'
-    | 'audit.view';
+    | 'audit.view'
+    | 'clients.privacy';
 
 export type Employee = {
     id: string;
@@ -110,6 +111,7 @@ export type Closure = {
 
 export type Ticket = {
     id: string;
+    client_id: string;
     number: string;
     ticket_number: number;
     description: string;
@@ -138,6 +140,7 @@ export type Ticket = {
     rated_at: string | null;
     closures?: Closure[];
     attachments?: Attachment[];
+    purged_at?: string | null;
 };
 
 export type Message = {

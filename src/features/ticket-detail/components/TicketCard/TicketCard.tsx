@@ -3,7 +3,7 @@ import { appendToDraft, draftMessage, type Draft } from '@/features/ticket-detai
 import { MAX_REPLY_LENGTH } from '@/features/ticket-detail/model/limits';
 import { hasUnresolvedDelivery, sortMessages } from '@/features/ticket-detail/model/messages';
 import type { TicketNavigation } from '@/features/ticket-detail/model/navigation';
-import { canOnTicket } from '@/shared/lib/access';
+import { can, canOnTicket } from '@/shared/lib/access';
 import type { Dictionary, Employee, Session } from '@/shared/types/api';
 import { ErrorNotice } from '@/shared/ui';
 
@@ -116,6 +116,7 @@ export function TicketCard(props: TicketCardProps) {
                     timezone={timezone}
                     disabled={!active || pending || !canClassify}
                     canInsert={canInsert}
+                    canManagePrivacy={can(session, 'clients.privacy')}
                     onClassify={(field, value) => {
                         operate('classification', {
                             [field]: value,

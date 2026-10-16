@@ -16,6 +16,7 @@ test('support staff cannot act on a colleague ticket or open administration', as
     await expect(card.getByRole('button', { name: 'Передать сотруднику' })).toHaveCount(0);
     await expect(card.getByRole('button', { name: 'Закрыть обращение' })).toHaveCount(0);
     await expect(card.getByRole('combobox', { name: 'Изменить срочность' })).toBeDisabled();
+    await expect(card.getByText('Персональные данные клиента')).toHaveCount(0);
 });
 
 test('supervisors see only system health in administration', async ({ page }) => {
