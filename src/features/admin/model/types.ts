@@ -1,7 +1,7 @@
 import { can } from '@/shared/lib/access';
 import type { Dictionary, Employee, Permission, Session } from '@/shared/types/api';
 
-export type AdminTab = 'employees' | 'dictionaries' | 'templates' | 'settings' | 'diagnostics' | 'audit';
+export type AdminTab = 'employees' | 'dictionaries' | 'templates' | 'sla' | 'settings' | 'diagnostics' | 'audit';
 
 type AdminTabDefinition = { tab: AdminTab; label: string; permission: Permission };
 
@@ -9,6 +9,7 @@ const ADMIN_TABS: readonly AdminTabDefinition[] = [
     { tab: 'employees', label: 'Сотрудники', permission: 'employees.manage' },
     { tab: 'dictionaries', label: 'Справочники', permission: 'organization.configure' },
     { tab: 'templates', label: 'Шаблоны бота', permission: 'organization.configure' },
+    { tab: 'sla', label: 'SLA', permission: 'organization.configure' },
     { tab: 'settings', label: 'Организация', permission: 'organization.configure' },
     { tab: 'diagnostics', label: 'Состояние системы', permission: 'operations.view' },
     { tab: 'audit', label: 'Журнал', permission: 'audit.view' },

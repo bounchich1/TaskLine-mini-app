@@ -9,6 +9,7 @@ import { DiagnosticsTab } from '../tabs/DiagnosticsTab/DiagnosticsTab';
 import { DictionariesTab } from '../tabs/DictionariesTab/DictionariesTab';
 import { EmployeesTab } from '../tabs/EmployeesTab/EmployeesTab';
 import { SettingsTab } from '../tabs/SettingsTab/SettingsTab';
+import { SlaTab } from '../tabs/SlaTab/SlaTab';
 import { TemplatesTab } from '../tabs/TemplatesTab/TemplatesTab';
 
 type AdminTabContentProps = {
@@ -35,6 +36,19 @@ function diagnosticActions({ session, save, onOpen }: AdminTabContentProps) {
         onResolve: can(session, 'deliveries.resolve_unknown') ? onResolve : undefined,
         onRetryJob: can(session, 'operations.retry') ? onRetryJob : undefined,
     };
+}
+
+function settingsTab({ queries, busy, save }: AdminTabContentProps) {
+    return queries.settings.data ? <SettingsTab settings={queries.settings.data} busy={busy} save={save} /> : null;
+}
+
+function slaTab({ queries, busy, save }: AdminTabContentProps) {
+    const config = queries.sla.data;
+    const dictionaries = queries.dictionaries.data?.items;
+
+    return config && dictionaries ? (
+        <SlaTab key={config.version} config={config} dictionaries={dictionaries} busy={busy} save={save} />
+    ) : null;
 }
 
 export function AdminTabContent(props: AdminTabContentProps) {
@@ -80,10 +94,10 @@ export function AdminTabContent(props: AdminTabContentProps) {
                     }}
                 />
             );
+        case 'sla':
+            return slaTab(props);
         case 'settings':
-            return queries.settings.data ? (
-                <SettingsTab settings={queries.settings.data} busy={busy} save={save} />
-            ) : null;
+            return settingsTab(props);
         case 'diagnostics':
             return (
                 <DiagnosticsTab

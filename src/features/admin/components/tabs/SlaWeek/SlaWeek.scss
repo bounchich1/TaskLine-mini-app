@@ -1,0 +1,23 @@
+@use 'abstracts' as *;
+
+.sla-week {
+    display: grid;
+    gap: 6px;
+    max-width: 560px;
+}
+
+.sla-week__row {
+    display: grid;
+    grid-template-columns: 72px repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    align-items: center;
+
+    &--head {
+        @include muted(label);
+    }
+
+    @include respond-to(phone) {
+        grid-template-columns: 64px repeat(4, minmax(0, 1fr));
+        gap: 6px;
+    }
+}

@@ -24,6 +24,11 @@ export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersPro
         ...Object.keys(STATUS_LABELS).map((value) => ({ value, label: statusLabel(value) })),
     ];
 
+    const slaOptions = [
+        { value: '', label: 'Все' },
+        { value: 'at_risk', label: 'Под угрозой' },
+    ];
+
     const assignees = [
         { value: '', label: 'Все' },
         ...(employees ?? []).map((employee) => ({ value: employee.id, label: employee.name })),
@@ -53,6 +58,11 @@ export function QueueFilters({ queue, dictionaries, employees }: QueueFiltersPro
             <label className="queue-filters__field">
                 Исполнитель
                 <Select options={assignees} value={filters.assignee} onChange={onChange('assignee')} />
+            </label>
+
+            <label className="queue-filters__field">
+                Срок SLA
+                <Select options={slaOptions} value={filters.sla} onChange={onChange('sla')} />
             </label>
 
             <label className="queue-filters__field">

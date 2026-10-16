@@ -5,6 +5,7 @@ import type { Ticket } from '@/shared/types/api';
 import { Avatar } from '@/shared/ui';
 
 import { PropertyRow } from '../PropertyRow/PropertyRow';
+import { SlaClocks } from '../SlaClocks/SlaClocks';
 
 import './TicketProperties.scss';
 
@@ -35,6 +36,7 @@ export function TicketProperties({ ticket, timezone, children }: TicketPropertie
                 <PropertyRow label="Закрыто">{formatDate(ticket.closed_at, timezone)}</PropertyRow>
             ) : null}
 
+            <SlaClocks ticket={ticket} timezone={timezone} />
             {children}
         </dl>
     );

@@ -37,6 +37,32 @@
     @include count;
 }
 
+.queue-tabs__risk {
+    @include text(label);
+
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    padding: 2px 8px;
+    border: 1px solid transparent;
+    border-radius: $radius-s;
+    background: $color-warning-bg;
+    color: $color-warning-text;
+    font-weight: $font-weight-medium;
+
+    &--active {
+        border-color: currentcolor;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}
+
+.queue-tabs__risk-count {
+    font-variant-numeric: tabular-nums;
+}
+
 .queue-tabs__notice {
     @include text-button(label);
 

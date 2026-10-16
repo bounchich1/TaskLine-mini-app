@@ -65,6 +65,13 @@ const NOTIFICATION_LABELS: Labels = {
     'message.from_client': 'Новое сообщение клиента',
     'ticket.transferred': 'Вам передано обращение',
     'rating.received': 'Клиент оставил оценку',
+    'ticket.auto_closed': 'Обращение закрыто: клиент не ответил',
+    'sla.response_warning': 'Первый ответ под угрозой',
+    'sla.response_breached': 'Первый ответ просрочен',
+    'sla.response_escalated': 'Первый ответ просрочен вдвое',
+    'sla.resolution_warning': 'Решение под угрозой',
+    'sla.resolution_breached': 'Решение просрочено',
+    'sla.resolution_escalated': 'Решение просрочено вдвое',
 };
 
 export const notificationLabel = (type: string) => NOTIFICATION_LABELS[type] ?? 'Изменение обращения';

@@ -10,6 +10,7 @@ export type Filters = {
     complexity: string;
     status: string;
     assignee: string;
+    sla: string;
     from: string;
     to: string;
     sort: string;
@@ -21,6 +22,7 @@ export const FILTER_FIELDS = [
     'complexity',
     'status',
     'assignee',
+    'sla',
     'from',
     'to',
 ] as const satisfies readonly (keyof Filters)[];
@@ -33,9 +35,10 @@ export const DEFAULT_FILTERS: Filters = {
     complexity: '',
     status: '',
     assignee: '',
+    sla: '',
     from: '',
     to: '',
-    sort: 'urgency',
+    sort: 'sla_risk',
 };
 
 export function filtersQuery(filters: Filters, timezone: string): string {

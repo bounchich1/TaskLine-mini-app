@@ -47,6 +47,7 @@ export function TicketCard(props: TicketCardProps) {
 
     const allowed: TicketPermissions = {
         take: canOnTicket(session, ticket, 'take'),
+        wait: canOnTicket(session, ticket, 'reply'),
         transfer: canOnTicket(session, ticket, 'transfer'),
         close: canOnTicket(session, ticket, 'close'),
         reopen: canOnTicket(session, ticket, 'reopen'),
@@ -63,6 +64,7 @@ export function TicketCard(props: TicketCardProps) {
         <section className="ticket-card" aria-label={`Обращение №${ticket.number}`}>
             <TicketHeader
                 ticket={ticket}
+                timezone={timezone}
                 returnTo={navigation.returnTo}
                 onReturn={navigation.goBack}
                 onClose={card.requestClose}
@@ -72,9 +74,7 @@ export function TicketCard(props: TicketCardProps) {
                     active={active}
                     allowed={allowed}
                     pending={pending}
-                    onAssign={() => {
-                        operate('assign');
-                    }}
+                    onOperate={operate}
                     onOpenDialog={setDialog}
                 />
             </TicketHeader>

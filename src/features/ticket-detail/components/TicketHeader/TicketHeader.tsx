@@ -3,19 +3,20 @@ import type { ReactNode } from 'react';
 import type { TicketRef } from '@/features/ticket-detail/model/navigation';
 import { MEDIA, useMediaQuery } from '@/shared/lib/use-media-query';
 import type { Ticket } from '@/shared/types/api';
-import { Icon, Status } from '@/shared/ui';
+import { Icon, SlaChip, Status } from '@/shared/ui';
 
 import './TicketHeader.scss';
 
 type TicketHeaderProps = {
     ticket: Ticket;
+    timezone: string;
     returnTo: TicketRef | null;
     onReturn: () => void;
     onClose: () => void;
     children: ReactNode;
 };
 
-export function TicketHeader({ ticket, returnTo, onReturn, onClose, children }: TicketHeaderProps) {
+export function TicketHeader({ ticket, timezone, returnTo, onReturn, onClose, children }: TicketHeaderProps) {
     const split = useMediaQuery(MEDIA.desktop);
 
     const close = (
@@ -36,6 +37,7 @@ export function TicketHeader({ ticket, returnTo, onReturn, onClose, children }: 
 
             <h2 className="ticket-header__title">№{ticket.number}</h2>
             <Status className="ticket-header__status" status={ticket.status} />
+            <SlaChip ticket={ticket} timezone={timezone} />
             <div className="ticket-header__actions">{children}</div>
             {split ? close : null}
         </div>

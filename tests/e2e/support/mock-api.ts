@@ -1,17 +1,9 @@
 import type { Page, Request, Route } from '@playwright/test';
 
-import {
-    AUDIT,
-    CLOSED_TICKETS,
-    DICTIONARIES,
-    DIAGNOSTICS,
-    MESSAGES,
-    NOTIFICATIONS,
-    OPEN_TICKETS,
-    SETTINGS,
-    TEMPLATES,
-} from './fixtures';
+import { AUDIT, DIAGNOSTICS, SETTINGS, TEMPLATES } from './admin-fixtures';
+import { CLOSED_TICKETS, DICTIONARIES, MESSAGES, NOTIFICATIONS, OPEN_TICKETS } from './fixtures';
 import { solidPng } from './media';
+import { SLA_CONFIG, SLA_NOW } from './sla-fixtures';
 import { SOURCE_EXCERPT } from './source-fixtures';
 import { EMPLOYEES, SESSION } from './staff';
 
@@ -38,15 +30,26 @@ const byId = (id: string) => {
     return found && { client_id: `client-${id}`, ...found };
 };
 
+const atRisk = (item: Record<string, unknown>) =>
+    typeof item.sla_warn_at === 'string' && Date.parse(item.sla_warn_at) <= SLA_NOW;
+
 function ticketPage(search: URLSearchParams) {
-    const counts = { open: OPEN_TICKETS.length, closed: CLOSED_TICKETS.length };
+    const counts = {
+        open: OPEN_TICKETS.length,
+        closed: CLOSED_TICKETS.length,
+        at_risk: OPEN_TICKETS.filter(atRisk).length,
+    };
 
     if (search.get('tab') === 'closed') {
         return { items: CLOSED_TICKETS, counts, next_cursor: null, cursor: '1' };
     }
 
     const query = search.get('q') ?? '';
-    const matching = OPEN_TICKETS.filter((item) => item.number.includes(query) || item.description.includes(query));
+    const riskOnly = search.get('sla') === 'at_risk';
+
+    const matching = OPEN_TICKETS.filter(
+        (item) => (item.number.includes(query) || item.description.includes(query)) && (!riskOnly || atRisk(item)),
+    );
 
     if (search.get('cursor') === 'page-2') {
         return { items: matching.slice(2), counts, next_cursor: null, cursor: '1' };
@@ -68,6 +71,7 @@ const GET_ROUTES: [RegExp, Handler][] = [
     [/^\/v1\/admin\/employees$/, () => ({ items: EMPLOYEES })],
     [/^\/v1\/admin\/templates$/, () => ({ items: TEMPLATES })],
     [/^\/v1\/admin\/settings$/, () => ({ ...SETTINGS, retention: NO_RETENTION })],
+    [/^\/v1\/admin\/sla$/, () => SLA_CONFIG],
     [/^\/v1\/admin\/diagnostics$/, () => DIAGNOSTICS],
     [/^\/v1\/admin\/audit$/, () => ({ items: AUDIT })],
 ];

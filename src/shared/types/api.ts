@@ -141,6 +141,44 @@ export type Ticket = {
     closures?: Closure[];
     attachments?: Attachment[];
     purged_at?: string | null;
+} & SlaFields;
+
+export type SlaClock = 'first_response' | 'resolution';
+
+export type SlaFields = {
+    sla_first_response_minutes?: number | null;
+    sla_resolution_minutes?: number | null;
+    first_response_due_at?: string | null;
+    first_responded_at?: string | null;
+    resolution_due_at?: string | null;
+    waiting_since?: string | null;
+    sla_paused_seconds?: number;
+    sla_breached?: SlaClock[];
+    sla_due_at?: string | null;
+    sla_warn_at?: string | null;
+};
+
+export type WorkHours = [string, string][];
+
+export type SlaPolicy = {
+    urgency: string;
+    tag: string;
+    first_response_minutes: number;
+    resolution_minutes: number;
+};
+
+export type SlaConfig = {
+    enabled: boolean;
+    timezone: string;
+    week: Record<'1' | '2' | '3' | '4' | '5' | '6' | '7', WorkHours>;
+    holidays: string[];
+    workdays: string[];
+    notify_max: boolean;
+    client_eta: boolean;
+    waiting_reminder_hours: number;
+    waiting_close_hours: number;
+    policies: SlaPolicy[];
+    version: number;
 };
 
 export type Message = {
@@ -174,7 +212,7 @@ export type SourceExcerpt = {
 
 export type TicketPage = {
     items: Ticket[];
-    counts: { open: number; closed: number };
+    counts: { open: number; closed: number; at_risk?: number };
     next_cursor: string | null;
     cursor: string;
 };

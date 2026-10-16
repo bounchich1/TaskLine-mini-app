@@ -14,8 +14,8 @@ export function TemplatesTab({ templates, onEdit }: TemplatesTabProps) {
     return (
         <AdminCard title="Сообщения бота">
             <p className="admin-card__help">
-                Подстановки: {'{ticket_number}'}, {'{policy_url}'}, {'{alternative_contact}'}. Личные данные сотрудников
-                клиентам не передаются.
+                Подстановки: {'{ticket_number}'}, {'{policy_url}'}, {'{alternative_contact}'}; {'{eta}'} — срок ответа,
+                только в ticket_created_eta и outside_hours. Личные данные сотрудников клиентам не передаются.
             </p>
 
             <div className="admin-card__list">

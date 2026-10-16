@@ -1,5 +1,5 @@
 import { MEDIA_ATTACHMENTS } from './media';
-import { ORG } from './staff';
+import { LATE_RESPONSE, RESOLUTION_ON_TRACK } from './sla-fixtures';
 
 export const DICTIONARIES = [
     { dimension: 'tag', code: 'undefined', label: 'Не определён', rank: 0, active: true, version: 1 },
@@ -67,6 +67,7 @@ export const OPEN_TICKETS = [
         id: 't1',
         number: '000001',
         urgency: 'critical',
+        ...LATE_RESPONSE,
         suggestion: {
             tags: { tag: 'network', urgency: 'critical', complexity: 'low' },
             suggested_solution: 'Перезагрузите роутер и проверьте кабель.',
@@ -83,6 +84,7 @@ export const OPEN_TICKETS = [
         assignee_id: 'e1',
         assignee_name: 'Анна Смирнова',
         taken_at: '2026-03-02T03:00:00Z',
+        ...RESOLUTION_ON_TRACK,
         description: 'Списали оплату дважды за один месяц.',
         tag: 'billing',
         urgency: 'high',
@@ -228,35 +230,3 @@ export const NOTIFICATIONS = [
         created_at: '2026-03-01T10:00:00Z',
     },
 ];
-
-export const TEMPLATES = [
-    { code: 'ticket_created', body: 'Обращение №{ticket_number} зарегистрировано.', version: 2 },
-    { code: 'consent_request', body: 'Согласны на обработку данных? {policy_url}', version: 1 },
-];
-
-export const SETTINGS = { name: ORG.name, timezone: ORG.timezone, version: 5 };
-
-export const DIAGNOSTICS = {
-    permits: [
-        { slot: 1, state: 'free' },
-        { slot: 2, state: 'running' },
-        { slot: 3, state: 'uncertain' },
-    ],
-    deliveries: [
-        {
-            id: 'd1',
-            ticket_id: 't2',
-            message_id: 'msg4',
-            kind: 'staff',
-            state: 'unknown',
-            reason: 'worker_lost',
-        },
-    ],
-    jobs: [
-        { id: 'j1', kind: 'scan', state: 'failed', reason: 'worker_error' },
-        { id: 'j2', kind: 'triage', ticket_id: 't1', state: 'failed', reason: 'ai_timeout' },
-    ],
-    memory: [],
-};
-
-export const AUDIT = [{ id: 'au1', action: 'admin.settings', object_id: 'org', created_at: '2026-03-01T08:00:00Z' }];

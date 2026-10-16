@@ -9,5 +9,6 @@ export { Icon, type IconName } from './Icon/Icon';
 export { Modal } from './Modal/Modal';
 export { PageHeader } from './PageHeader/PageHeader';
 export { Select } from './Select/Select';
+export { SlaChip } from './SlaChip/SlaChip';
 export { Status } from './Status/Status';
 export { Urgency } from './Urgency/Urgency';

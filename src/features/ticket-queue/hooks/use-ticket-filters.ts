@@ -35,7 +35,7 @@ export function useTicketFilters(timezone: string) {
             setFilters((current) => ({ ...current, [name]: value }));
         },
         selectTab: (tab: QueueTab) => {
-            setFilters((current) => ({ ...current, tab, status: '' }));
+            setFilters((current) => ({ ...current, tab, status: '', sla: tab === 'open' ? current.sla : '' }));
         },
         reset: () => {
             setFilters({ ...DEFAULT_FILTERS, tab: filters.tab });

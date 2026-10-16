@@ -1,0 +1,35 @@
+@use 'abstracts' as *;
+
+.sla-chip {
+    @include text(label);
+    @include truncate;
+
+    display: inline-block;
+    max-width: 100%;
+    padding: 0 6px;
+    vertical-align: middle;
+    border-radius: 4px;
+    color: $color-text-secondary;
+    font-variant-numeric: tabular-nums;
+
+    &--calm {
+        background: $color-bg-muted;
+    }
+
+    &--warning {
+        background: $color-warning-bg;
+        color: $color-warning-text;
+        font-weight: $font-weight-medium;
+    }
+
+    &--breached {
+        background: $color-negative-bg;
+        color: $color-negative;
+        font-weight: $font-weight-medium;
+    }
+
+    &--paused {
+        background: $color-bg-muted;
+        color: $color-text-muted;
+    }
+}

@@ -1,0 +1,56 @@
+@use 'abstracts' as *;
+
+.sla-policies {
+    display: grid;
+    gap: 10px;
+    max-width: 640px;
+}
+
+.sla-policies__grid {
+    display: grid;
+    gap: 6px;
+}
+
+.sla-policies__row {
+    display: grid;
+    grid-template-columns: minmax(96px, 1fr) repeat(2, minmax(0, 140px));
+    gap: 8px;
+    align-items: center;
+
+    &--head {
+        @include muted(label);
+    }
+}
+
+.sla-policies__title {
+    @include section-title;
+
+    margin-top: 8px;
+}
+
+.sla-policies__override {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) repeat(2, minmax(0, 96px)) 32px;
+    gap: 8px;
+    align-items: center;
+
+    @include respond-to(phone) {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) 32px;
+
+        > :not(:last-child) {
+            grid-column: span 2;
+        }
+    }
+}
+
+.sla-policies__remove {
+    @include icon-button(32px);
+
+    color: $color-text-secondary;
+}
+
+.sla-policies__add {
+    @include text-button(small);
+
+    justify-self: start;
+}

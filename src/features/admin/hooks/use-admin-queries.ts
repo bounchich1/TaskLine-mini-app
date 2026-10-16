@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/shared/api/http';
 import { queryKeys } from '@/shared/api/query-keys';
 import { dictionariesQuery } from '@/shared/api/reference-data';
-import type { Employee } from '@/shared/types/api';
+import type { Employee, SlaConfig } from '@/shared/types/api';
 
 import type { AdminTab, AuditEntry, Diagnostics, OrganizationSettings, ServerHealth, Template } from '../model/types';
 
@@ -16,7 +16,7 @@ export function useAdminQueries(tab: AdminTab) {
         enabled: tab === 'employees',
     });
 
-    const dictionaries = useQuery({ ...dictionariesQuery, enabled: tab === 'dictionaries' });
+    const dictionaries = useQuery({ ...dictionariesQuery, enabled: tab === 'dictionaries' || tab === 'sla' });
 
     const templates = useQuery({
         queryKey: queryKeys.adminTemplates,
@@ -28,6 +28,12 @@ export function useAdminQueries(tab: AdminTab) {
         queryKey: queryKeys.adminSettings,
         queryFn: () => api<OrganizationSettings>('/v1/admin/settings'),
         enabled: tab === 'settings',
+    });
+
+    const sla = useQuery({
+        queryKey: queryKeys.adminSla,
+        queryFn: () => api<SlaConfig>('/v1/admin/sla'),
+        enabled: tab === 'sla',
     });
 
     const diagnostics = useQuery({
@@ -49,7 +55,7 @@ export function useAdminQueries(tab: AdminTab) {
         enabled: tab === 'audit',
     });
 
-    return { employees, dictionaries, templates, settings, diagnostics, health, audit };
+    return { employees, dictionaries, templates, sla, settings, diagnostics, health, audit };
 }
 
 export type AdminQueries = ReturnType<typeof useAdminQueries>;

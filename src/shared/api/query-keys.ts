@@ -13,6 +13,7 @@ export const queryKeys = {
     adminEmployees: ['admin-employees'],
     adminTemplates: ['admin-templates'],
     adminSettings: ['admin-settings'],
+    adminSla: ['admin-sla'],
     diagnostics: ['diagnostics'],
     audit: ['audit'],
     health: ['health'],

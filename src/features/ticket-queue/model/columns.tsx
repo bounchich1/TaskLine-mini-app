@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 
 import { formatDate } from '@/shared/lib/format-date';
 import type { Ticket } from '@/shared/types/api';
-import { Avatar, Status, Urgency } from '@/shared/ui';
+import { Avatar, SlaChip, Status, Urgency } from '@/shared/ui';
 
 import type { QueueTab } from './filter-defaults';
 import { complexityText, isClassifying, ratingText, tagText, urgencyText } from './ticket-fields';
@@ -24,6 +24,12 @@ const ratingColumn: ColumnDef<Ticket> = {
         <span className={clsx(!ticket.rating && 'ticket-table__muted')}>{ratingText(ticket)}</span>
     ),
 };
+
+const slaColumn = (timezone: string): ColumnDef<Ticket> => ({
+    id: 'sla',
+    header: 'До нарушения',
+    cell: ({ row: { original: ticket } }) => <SlaChip ticket={ticket} timezone={timezone} />,
+});
 
 export function buildTicketColumns({ expanded, onToggle, tab, timezone }: ColumnOptions) {
     const columns: ColumnDef<Ticket>[] = [
@@ -95,5 +101,7 @@ export function buildTicketColumns({ expanded, onToggle, tab, timezone }: Column
         },
     ];
 
-    return tab === 'closed' ? [...columns, ratingColumn] : columns;
+    return tab === 'closed'
+        ? [...columns, ratingColumn]
+        : [...columns.slice(0, 4), slaColumn(timezone), ...columns.slice(4)];
 }

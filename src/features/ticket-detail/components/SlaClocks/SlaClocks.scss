@@ -1,0 +1,8 @@
+@use 'abstracts' as *;
+
+.sla-clock {
+    &--late {
+        color: $color-negative;
+        font-weight: $font-weight-medium;
+    }
+}

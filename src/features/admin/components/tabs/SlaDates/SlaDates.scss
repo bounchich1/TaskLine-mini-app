@@ -1,0 +1,37 @@
+@use 'abstracts' as *;
+
+.sla-dates {
+    display: grid;
+    gap: 8px;
+}
+
+.sla-dates__picker {
+    max-width: 220px;
+}
+
+.sla-dates__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sla-dates__item {
+    @include text(label);
+
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    padding: 2px 4px 2px 8px;
+    border-radius: $radius-s;
+    background: $color-bg-muted;
+    font-variant-numeric: tabular-nums;
+}
+
+.sla-dates__remove {
+    @include icon-button(20px);
+
+    color: $color-text-secondary;
+}

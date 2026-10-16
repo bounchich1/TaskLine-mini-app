@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 import { openApp, openSection, openTicket } from './support/app';
 import { MockApi } from './support/mock-api';
+import { SLA_NOW } from './support/sla-fixtures';
 
 test.skip(!!process.env.CI, 'Visual baselines are local');
 
@@ -13,6 +14,7 @@ for (const width of WIDTHS) {
 
         test.beforeEach(async ({ page }) => {
             await MockApi.install(page);
+            await page.clock.setFixedTime(SLA_NOW);
             await openApp(page);
         });
 

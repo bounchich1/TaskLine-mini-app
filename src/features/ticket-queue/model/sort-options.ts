@@ -1,4 +1,5 @@
 export const SORT_OPTIONS = [
+    { value: 'sla_risk', label: 'По сроку SLA' },
     { value: 'urgency', label: 'По срочности' },
     { value: 'newest', label: 'Сначала новые' },
     { value: 'oldest', label: 'Сначала старые' },

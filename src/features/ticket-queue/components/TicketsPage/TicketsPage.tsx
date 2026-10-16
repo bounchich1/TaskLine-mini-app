@@ -69,6 +69,10 @@ export function TicketsPage(props: TicketsPageProps) {
                         tab={tab}
                         counts={counts}
                         onSelect={queue.selectTab}
+                        riskOnly={queue.filters.sla === 'at_risk'}
+                        onToggleRisk={() => {
+                            queue.change('sla', queue.filters.sla === 'at_risk' ? '' : 'at_risk');
+                        }}
                         changed={props.changed}
                         onAcknowledge={props.onAcknowledge}
                     />

@@ -26,7 +26,9 @@ test('shows each admin tab', async ({ page }) => {
     await page.getByRole('tab', { name: 'Справочники' }).click();
     await expect(page.getByText('В архиве')).toBeVisible();
     await page.getByRole('tab', { name: 'Шаблоны бота' }).click();
-    await expect(page.getByText('ticket_created')).toBeVisible();
+    await expect(page.getByText('ticket_created', { exact: true })).toBeVisible();
+    await page.getByRole('tab', { name: 'SLA' }).click();
+    await expect(page.getByLabel('Критическая: первый ответ, минут')).toHaveValue('15');
     await page.getByRole('tab', { name: 'Организация' }).click();
     await expect(page.getByLabel('Название')).toHaveValue('ООО «Линия»');
     await page.getByRole('tab', { name: 'Состояние системы' }).click();

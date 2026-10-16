@@ -1,0 +1,21 @@
+@use 'abstracts' as *;
+
+.sla-tab {
+    display: grid;
+}
+
+.sla-tab__options {
+    display: grid;
+    gap: 8px;
+}
+
+.sla-tab__timers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 200px));
+    gap: 14px;
+}
+
+.sla-tab__submit {
+    justify-self: start;
+    margin-top: 24px;
+}

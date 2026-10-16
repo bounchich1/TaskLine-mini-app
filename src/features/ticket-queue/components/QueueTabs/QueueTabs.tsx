@@ -15,11 +15,17 @@ type QueueTabsProps = {
     tab: QueueTab;
     counts: TicketPage['counts'] | undefined;
     onSelect: (tab: QueueTab) => void;
+    riskOnly: boolean;
+    onToggleRisk: () => void;
     changed: boolean;
     onAcknowledge: () => void;
 };
 
-export function QueueTabs({ tab, counts, onSelect, changed, onAcknowledge }: QueueTabsProps) {
+export function QueueTabs(props: QueueTabsProps) {
+    const { tab, counts, onSelect, riskOnly, changed, onAcknowledge } = props;
+    const atRisk = counts?.at_risk ?? 0;
+    const showRisk = tab === 'open' && (riskOnly || atRisk > 0);
+
     return (
         <div className="queue-tabs">
             <div className="queue-tabs__list" role="tablist" aria-label="Статус обращений">
@@ -38,6 +44,17 @@ export function QueueTabs({ tab, counts, onSelect, changed, onAcknowledge }: Que
                     </button>
                 ))}
             </div>
+
+            {showRisk ? (
+                <button
+                    className={clsx('queue-tabs__risk', riskOnly && 'queue-tabs__risk--active')}
+                    aria-pressed={riskOnly}
+                    onClick={props.onToggleRisk}
+                >
+                    Под угрозой
+                    <span className="queue-tabs__risk-count">{atRisk}</span>
+                </button>
+            ) : null}
 
             {changed ? (
                 <button className="queue-tabs__notice" onClick={onAcknowledge}>

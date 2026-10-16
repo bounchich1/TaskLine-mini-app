@@ -9,7 +9,7 @@ import {
 } from '@/features/ticket-queue/model/ticket-fields';
 import { formatDate } from '@/shared/lib/format-date';
 import type { Ticket } from '@/shared/types/api';
-import { Status, Urgency } from '@/shared/ui';
+import { SlaChip, Status, Urgency } from '@/shared/ui';
 
 import './TicketListItem.scss';
 
@@ -34,6 +34,7 @@ export function TicketListItem({ ticket, selected, withRating, timezone, onToggl
                 <span className="ticket-item__line">
                     <span className="ticket-item__number">№{ticket.number}</span>
                     <Status className="ticket-item__status" status={ticket.status} />
+                    <SlaChip ticket={ticket} timezone={timezone} />
 
                     <time className="ticket-item__date" dateTime={ticket.created_at}>
                         {formatDate(ticket.created_at, timezone)}
