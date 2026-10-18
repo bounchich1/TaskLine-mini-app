@@ -2,14 +2,11 @@
 
 .checkbox-field {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     align-items: center;
     cursor: pointer;
 }
 
 .checkbox-field__input {
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    accent-color: $color-accent;
+    @include checkbox-control;
 }

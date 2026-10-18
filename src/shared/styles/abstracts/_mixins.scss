@@ -109,6 +109,62 @@
     }
 }
 
+@mixin checkbox-control($size: 18px) {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: $size;
+    height: $size;
+    margin: 0;
+    border: 1.5px solid $color-icon-muted;
+    border-radius: 5px;
+    background: $color-bg;
+    cursor: pointer;
+    appearance: none;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+
+    &::before {
+        width: 100%;
+        height: 100%;
+        background: $color-text-inverse;
+        content: '';
+        transform: scale(0.4);
+        opacity: 0;
+        transition:
+            transform 0.15s ease,
+            opacity 0.15s ease;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+            center / 75% no-repeat;
+    }
+
+    @media (hover: hover) {
+        &:hover:not(:disabled) {
+            border-color: $color-accent;
+        }
+    }
+
+    &:checked {
+        border-color: $color-accent;
+        background: $color-accent;
+
+        &::before {
+            transform: none;
+            opacity: 1;
+        }
+    }
+
+    &:focus-visible {
+        @include field-focus;
+    }
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.5;
+    }
+}
+
 @mixin popover-surface {
     position: absolute;
     z-index: $z-index-popover;

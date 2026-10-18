@@ -40,11 +40,9 @@
 }
 
 .setup-topic__toggle {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
+    @include checkbox-control;
+
     margin-top: 9px;
-    accent-color: $color-accent;
 }
 
 .setup-topic__fields {
