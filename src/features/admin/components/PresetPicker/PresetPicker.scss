@@ -1,0 +1,25 @@
+@use 'abstracts' as *;
+
+.preset-picker {
+    display: grid;
+    gap: 12px;
+}
+
+.preset-picker__preview {
+    display: grid;
+    gap: 6px;
+    padding: 10px 12px;
+    border-radius: $radius-m;
+    background: $color-bg-subtle;
+}
+
+.preset-picker__change {
+    @include text(small);
+
+    color: $color-text-secondary;
+}
+
+.preset-picker__change-title {
+    color: $color-text;
+    font-weight: $font-weight-medium;
+}

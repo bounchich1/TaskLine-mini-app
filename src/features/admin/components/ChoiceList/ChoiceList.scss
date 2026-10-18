@@ -1,0 +1,67 @@
+@use 'abstracts' as *;
+
+.choice-list {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    &--columns {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+.choice-list__legend {
+    @include text(label);
+
+    margin-bottom: 6px;
+    padding: 0;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+}
+
+.choice-list__item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 12px;
+    border: 1px solid $color-line-strong;
+    border-radius: $radius-m;
+    cursor: pointer;
+
+    @include row-hover;
+
+    &:has(:focus-visible) {
+        @include focus-ring-inset;
+    }
+
+    &--selected {
+        border-color: $color-accent;
+        background: $color-bg-selected;
+    }
+}
+
+.choice-list__text {
+    display: grid;
+    flex: 1;
+    gap: 2px;
+    min-width: 0;
+}
+
+.choice-list__title {
+    @include text(body);
+
+    font-weight: $font-weight-medium;
+}
+
+.choice-list__note {
+    @include muted(label);
+}
+
+.choice-list__check {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: $color-text-accent;
+}

@@ -23,10 +23,13 @@ test('shows each admin tab', async ({ page }) => {
     await page.getByRole('button', { name: /Управление/ }).click();
     await expect(page.getByText('Борис Иванов')).toBeVisible();
     await expect(page.getByText('Заблокирован', { exact: true })).toBeVisible();
-    await page.getByRole('tab', { name: 'Справочники' }).click();
+    await page.getByRole('tab', { name: 'ИИ-помощник' }).click();
+    await expect(page.getByText('Другая сфера')).toBeVisible();
+    await page.getByRole('tab', { name: 'Темы и уровни' }).click();
     await expect(page.getByText('В архиве')).toBeVisible();
-    await page.getByRole('tab', { name: 'Шаблоны бота' }).click();
-    await expect(page.getByText('ticket_created', { exact: true })).toBeVisible();
+    await page.getByRole('tab', { name: 'Диалог с клиентом' }).click();
+    await expect(page.getByText('Обращение создано', { exact: true })).toBeVisible();
+    await expect(page.getByText('изменено')).toBeVisible();
     await page.getByRole('tab', { name: 'SLA' }).click();
     await expect(page.getByLabel('Критическая: первый ответ, минут')).toHaveValue('15');
     await page.getByRole('tab', { name: 'Организация' }).click();
@@ -61,7 +64,7 @@ test('saves organization settings with their version', async ({ page }) => {
     await page.getByRole('button', { name: /Управление/ }).click();
     await page.getByRole('tab', { name: 'Организация' }).click();
     await page.getByLabel('Название').fill('ООО «Линия 2»');
-    await page.getByRole('button', { name: 'Сохранить' }).click();
+    await page.getByRole('region', { name: 'Организация' }).getByRole('button', { name: 'Сохранить' }).click();
     await expect.poll(() => api.callsTo('PUT', '/v1/admin/settings').length).toBe(1);
     const [call] = api.callsTo('PUT', '/v1/admin/settings');
 
@@ -79,7 +82,7 @@ test('saves data retention periods', async ({ page }) => {
     await page.getByRole('tab', { name: 'Организация' }).click();
     await page.getByLabel('Хранить закрытые обращения, дней').fill('1095');
     await page.getByLabel('Хранить журнал аудита, дней').fill('1825');
-    await page.getByRole('button', { name: 'Сохранить' }).click();
+    await page.getByRole('region', { name: 'Организация' }).getByRole('button', { name: 'Сохранить' }).click();
     await expect.poll(() => api.callsTo('PUT', '/v1/admin/settings').length).toBe(1);
     const [call] = api.callsTo('PUT', '/v1/admin/settings');
 

@@ -1,0 +1,72 @@
+@use 'abstracts' as *;
+
+.template-editor__when {
+    @include muted(small);
+
+    code {
+        margin-left: 4px;
+        color: $color-text-muted;
+    }
+}
+
+.template-editor__variables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.template-editor__chip {
+    @include text(label);
+
+    min-height: 28px;
+    padding: 4px 10px;
+    border: 1px solid $color-line-strong;
+    border-radius: $radius-xl;
+    background: $color-bg;
+    color: $color-text;
+
+    @include row-hover;
+}
+
+.template-editor__reset {
+    @include text-button(label);
+
+    margin-left: auto;
+}
+
+.template-preview {
+    display: grid;
+    gap: 6px;
+    justify-items: start;
+    padding: 12px;
+    border-radius: $radius-l;
+    background: $color-bg-subtle;
+}
+
+.template-preview__bubble {
+    @include text(body);
+
+    max-width: 420px;
+    padding: 8px 12px;
+    border-radius: $radius-l $radius-l $radius-l $radius-s;
+    background: $color-bubble-client;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.template-preview__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-width: 420px;
+
+    span {
+        @include text(label);
+
+        padding: 6px 10px;
+        border-radius: $radius-m;
+        background: $color-bg;
+        color: $color-text-accent;
+        font-weight: $font-weight-medium;
+    }
+}

@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { useAdminQueries } from '@/features/admin/hooks/use-admin-queries';
 import { useAdminSave } from '@/features/admin/hooks/use-admin-save';
 import { adminTabsFor, type AdminDialog, type AdminTab } from '@/features/admin/model/types';
+import { can } from '@/shared/lib/access';
 import type { Session } from '@/shared/types/api';
 import { ErrorNotice, PageHeader } from '@/shared/ui';
 
 import { AdminDialogs } from '../AdminDialogs/AdminDialogs';
 import { AdminTabContent } from '../AdminTabContent/AdminTabContent';
+import { SetupCard } from '../SetupCard/SetupCard';
 
 import './AdminPanel.scss';
 
@@ -26,12 +28,21 @@ export function AdminPanel({ session, onTicket }: AdminPanelProps) {
         setDialog(null);
     });
 
-    const queries = useAdminQueries(tab);
+    const queries = useAdminQueries(tab, can(session, 'organization.configure'));
+    const profile = queries.profile.data;
     const queryError = Object.values(queries).find((query) => query.error)?.error;
 
     return (
         <div className="admin-panel">
             <PageHeader title="Управление" />
+
+            {profile && !profile.configured ? (
+                <SetupCard
+                    onStart={() => {
+                        setDialog({ kind: 'setup', profile });
+                    }}
+                />
+            ) : null}
 
             <div className="admin-tabs" role="tablist" aria-label="Управление">
                 {tabs.map(({ tab: value, label }) => (

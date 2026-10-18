@@ -14,7 +14,7 @@ src/
     ticket-queue/   filters, the paged list, the queue table
     ticket-detail/  the ticket card: conversation, composer, uploads, commands, dialogs
     notifications/  the notification list
-    admin/          employees, dictionaries, templates, settings, diagnostics, audit
+    admin/          employees, setup wizard and AI assistant profile, topics, client dialog, SLA, settings, diagnostics, audit
   shared/           Used everywhere; imports only shared/.
     api/            http (api, ApiError, session headers), event stream, downloads, query keys
     config/         typed env, labels for API codes

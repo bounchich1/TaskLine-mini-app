@@ -4,10 +4,13 @@ import type { AdminDialog, AdminTab, Resolution } from '@/features/admin/model/t
 import { can } from '@/shared/lib/access';
 import type { Session } from '@/shared/types/api';
 
+import { AssistantTab } from '../tabs/AssistantTab/AssistantTab';
 import { AuditTab } from '../tabs/AuditTab/AuditTab';
+import { BotPolicyCard } from '../tabs/BotPolicyCard/BotPolicyCard';
 import { DiagnosticsTab } from '../tabs/DiagnosticsTab/DiagnosticsTab';
 import { DictionariesTab } from '../tabs/DictionariesTab/DictionariesTab';
 import { EmployeesTab } from '../tabs/EmployeesTab/EmployeesTab';
+import { MenuLabelsCard } from '../tabs/MenuLabelsCard/MenuLabelsCard';
 import { SettingsTab } from '../tabs/SettingsTab/SettingsTab';
 import { SlaTab } from '../tabs/SlaTab/SlaTab';
 import { TemplatesTab } from '../tabs/TemplatesTab/TemplatesTab';
@@ -39,7 +42,47 @@ function diagnosticActions({ session, save, onOpen }: AdminTabContentProps) {
 }
 
 function settingsTab({ queries, busy, save }: AdminTabContentProps) {
-    return queries.settings.data ? <SettingsTab settings={queries.settings.data} busy={busy} save={save} /> : null;
+    return (
+        <>
+            {queries.settings.data ? <SettingsTab settings={queries.settings.data} busy={busy} save={save} /> : null}
+            {queries.bot.data ? <BotPolicyCard bot={queries.bot.data} busy={busy} save={save} /> : null}
+        </>
+    );
+}
+
+function templatesTab({ queries, busy, save, onOpen }: AdminTabContentProps) {
+    return (
+        <>
+            <TemplatesTab
+                templates={queries.templates.data?.items}
+                onEdit={(template) => {
+                    onOpen({ kind: 'template', template });
+                }}
+            />
+
+            {queries.bot.data ? <MenuLabelsCard bot={queries.bot.data} busy={busy} save={save} /> : null}
+        </>
+    );
+}
+
+function assistantTab({ queries, busy, save, onOpen }: AdminTabContentProps) {
+    const profile = queries.profile.data;
+
+    return profile ? (
+        <AssistantTab
+            profile={profile}
+            presets={queries.presets.data?.items}
+            dictionaries={queries.dictionaries.data?.items}
+            busy={busy}
+            save={save}
+            onPreset={() => {
+                onOpen({ kind: 'preset', profile });
+            }}
+            onSetup={() => {
+                onOpen({ kind: 'setup', profile });
+            }}
+        />
+    ) : null;
 }
 
 function slaTab({ queries, busy, save }: AdminTabContentProps) {
@@ -85,15 +128,10 @@ export function AdminTabContent(props: AdminTabContentProps) {
                     }}
                 />
             );
+        case 'assistant':
+            return assistantTab(props);
         case 'templates':
-            return (
-                <TemplatesTab
-                    templates={queries.templates.data?.items}
-                    onEdit={(template) => {
-                        onOpen({ kind: 'template', template });
-                    }}
-                />
-            );
+            return templatesTab(props);
         case 'sla':
             return slaTab(props);
         case 'settings':

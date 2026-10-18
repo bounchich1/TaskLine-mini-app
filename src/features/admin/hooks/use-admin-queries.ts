@@ -5,18 +5,31 @@ import { queryKeys } from '@/shared/api/query-keys';
 import { dictionariesQuery } from '@/shared/api/reference-data';
 import type { Employee, SlaConfig } from '@/shared/types/api';
 
-import type { AdminTab, AuditEntry, Diagnostics, OrganizationSettings, ServerHealth, Template } from '../model/types';
+import type {
+    AdminTab,
+    AuditEntry,
+    BotSettings,
+    BusinessProfile,
+    Diagnostics,
+    OrganizationSettings,
+    Preset,
+    ServerHealth,
+    Template,
+} from '../model/types';
 
 const DIAGNOSTICS_REFETCH_MS = 15000;
 
-export function useAdminQueries(tab: AdminTab) {
+export function useAdminQueries(tab: AdminTab, configure: boolean) {
     const employees = useQuery({
         queryKey: queryKeys.adminEmployees,
         queryFn: () => api<{ items: Employee[] }>('/v1/admin/employees'),
         enabled: tab === 'employees',
     });
 
-    const dictionaries = useQuery({ ...dictionariesQuery, enabled: tab === 'dictionaries' || tab === 'sla' });
+    const dictionaries = useQuery({
+        ...dictionariesQuery,
+        enabled: tab === 'dictionaries' || tab === 'sla' || tab === 'assistant',
+    });
 
     const templates = useQuery({
         queryKey: queryKeys.adminTemplates,
@@ -28,6 +41,24 @@ export function useAdminQueries(tab: AdminTab) {
         queryKey: queryKeys.adminSettings,
         queryFn: () => api<OrganizationSettings>('/v1/admin/settings'),
         enabled: tab === 'settings',
+    });
+
+    const profile = useQuery({
+        queryKey: queryKeys.adminProfile,
+        queryFn: () => api<BusinessProfile>('/v1/admin/profile'),
+        enabled: configure,
+    });
+
+    const bot = useQuery({
+        queryKey: queryKeys.adminBot,
+        queryFn: () => api<BotSettings>('/v1/admin/bot'),
+        enabled: tab === 'settings' || tab === 'templates',
+    });
+
+    const presets = useQuery({
+        queryKey: queryKeys.adminPresets,
+        queryFn: () => api<{ items: Preset[]; current: string | null }>('/v1/admin/presets'),
+        enabled: tab === 'assistant',
     });
 
     const sla = useQuery({
@@ -55,7 +86,7 @@ export function useAdminQueries(tab: AdminTab) {
         enabled: tab === 'audit',
     });
 
-    return { employees, dictionaries, templates, sla, settings, diagnostics, health, audit };
+    return { employees, dictionaries, templates, profile, bot, presets, sla, settings, diagnostics, health, audit };
 }
 
 export type AdminQueries = ReturnType<typeof useAdminQueries>;

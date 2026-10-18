@@ -9,3 +9,9 @@
 .dictionaries-tab__group-title {
     @include section-title;
 }
+
+.dictionaries-tab__description {
+    @include text(small);
+
+    color: $color-text-secondary;
+}

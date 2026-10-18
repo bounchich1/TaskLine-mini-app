@@ -1,0 +1,29 @@
+@use 'abstracts' as *;
+
+.assistant-tab__preset {
+    @include text(body);
+
+    strong {
+        font-weight: $font-weight-semibold;
+    }
+}
+
+.assistant-tab__preset-note {
+    color: $color-text-secondary;
+}
+
+.assistant-tab__link {
+    @include text-button;
+
+    justify-self: start;
+}
+
+.assistant-tab__form {
+    display: grid;
+    gap: 14px;
+    max-width: 640px;
+}
+
+.assistant-tab__submit {
+    justify-self: start;
+}

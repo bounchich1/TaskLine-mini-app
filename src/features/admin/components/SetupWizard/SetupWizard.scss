@@ -1,0 +1,88 @@
+@use 'abstracts' as *;
+
+.setup-wizard__progress {
+    @include muted(small);
+
+    strong {
+        color: $color-text;
+        font-weight: $font-weight-medium;
+    }
+}
+
+.setup-step {
+    display: grid;
+    gap: 14px;
+}
+
+.setup-step__lead {
+    @include text(body);
+
+    color: $color-text-secondary;
+}
+
+.setup-topics {
+    display: grid;
+    border-top: 1px solid $color-line;
+}
+
+.setup-topic {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-line;
+
+    &--off {
+        .setup-topic__fields {
+            opacity: 0.6;
+        }
+    }
+}
+
+.setup-topic__toggle {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 9px;
+    accent-color: $color-accent;
+}
+
+.setup-topic__fields {
+    display: grid;
+    flex: 1;
+    gap: 6px;
+    min-width: 0;
+
+    > input {
+        width: 100%;
+    }
+}
+
+.setup-topics__add {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    > input {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+.setup-summary {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 6px 16px;
+    margin: 0;
+
+    dt {
+        @include muted(small);
+    }
+
+    dd {
+        @include text(small);
+
+        margin: 0;
+        font-weight: $font-weight-medium;
+    }
+}

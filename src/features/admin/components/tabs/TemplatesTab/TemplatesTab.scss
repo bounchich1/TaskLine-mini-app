@@ -1,33 +1,60 @@
 @use 'abstracts' as *;
 
+.templates-tab__group {
+    display: grid;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.templates-tab__group-title {
+    @include section-title;
+}
+
 .template-row {
     display: flex;
     gap: 16px;
     align-items: flex-start;
-    padding: 14px 0;
+    padding: 12px 0;
     border-bottom: 1px solid $color-line;
 }
 
 .template-row__main {
     display: grid;
     flex: 1;
-    gap: 4px;
+    gap: 2px;
     min-width: 0;
 }
 
-.template-row__code {
-    @include text(small);
+.template-row__title {
+    @include text(body);
 
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: baseline;
     font-weight: $font-weight-medium;
 }
 
-.template-row__version {
-    @include muted(caption);
+.template-row__badge {
+    @include text(caption);
+
+    padding: 1px 6px;
+    border-radius: $radius-s;
+    background: $color-bg-selected;
+    color: $color-text-accent;
+    font-weight: $font-weight-medium;
+}
+
+.template-row__when {
+    @include muted(label);
 }
 
 .template-row__body {
     @include text(small);
 
+    max-height: 36px;
+    margin-top: 4px;
+    overflow: hidden;
     color: $color-text-secondary;
     white-space: pre-wrap;
     overflow-wrap: anywhere;

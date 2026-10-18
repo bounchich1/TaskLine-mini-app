@@ -43,6 +43,8 @@ export type Dictionary = {
     label: string;
     rank: number;
     active: boolean;
+    description?: string;
+    examples?: string[];
     version: number;
 };
 

@@ -15,7 +15,7 @@ type DictionariesTabProps = {
 export function DictionariesTab({ items, onEdit }: DictionariesTabProps) {
     return (
         <AdminCard
-            title="Справочники классификации"
+            title="Темы обращений и уровни"
             action={
                 <Button
                     size="xsmall"
@@ -28,7 +28,8 @@ export function DictionariesTab({ items, onEdit }: DictionariesTabProps) {
             }
         >
             <p className="admin-card__help">
-                Коды остаются неизменными. Архивные значения сохраняются в истории обращений.
+                Названия видят сотрудники, описания и примеры — ИИ, когда определяет тему, срочность и сложность. Коды
+                не меняются; архивные значения сохраняются в истории обращений.
             </p>
 
             {DIMENSIONS.map((dimension) => (
@@ -42,6 +43,10 @@ export function DictionariesTab({ items, onEdit }: DictionariesTabProps) {
                                 <AdminRow key={value.code}>
                                     <div className="admin-row__main">
                                         <strong className="admin-row__title">{value.label}</strong>
+
+                                        {value.description ? (
+                                            <span className="dictionaries-tab__description">{value.description}</span>
+                                        ) : null}
 
                                         <small className="admin-row__meta">
                                             <code>{value.code}</code> · приоритет {value.rank} · версия {value.version}

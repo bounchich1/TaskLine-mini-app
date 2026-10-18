@@ -1,8 +1,18 @@
 import { ORG } from './staff';
 
 export const TEMPLATES = [
-    { code: 'ticket_created', body: 'Обращение №{ticket_number} зарегистрировано.', version: 2 },
-    { code: 'consent_request', body: 'Согласны на обработку данных? {policy_url}', version: 1 },
+    {
+        code: 'ticket_created',
+        body: 'Обращение №{ticket_number} зарегистрировано.',
+        default_body: 'Обращение №{ticket_number} создано. Сотрудник поддержки скоро ответит.',
+        version: 2,
+    },
+    {
+        code: 'consent_request',
+        body: 'Согласны на обработку данных? {policy_url}',
+        default_body: 'Согласны на обработку данных? {policy_url}',
+        version: 1,
+    },
 ];
 
 export const SETTINGS = { name: ORG.name, timezone: ORG.timezone, version: 5 };

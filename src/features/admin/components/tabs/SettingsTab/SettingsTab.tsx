@@ -2,8 +2,9 @@ import { Button } from '@maxhub/max-ui';
 
 import { AdminCard } from '@/features/admin/components/AdminCard/AdminCard';
 import type { AdminSave } from '@/features/admin/hooks/use-admin-save';
+import { timezoneOptions } from '@/features/admin/model/timezones';
 import type { OrganizationSettings } from '@/features/admin/model/types';
-import { FormField } from '@/shared/ui';
+import { FormField, Select } from '@/shared/ui';
 
 import './SettingsTab.scss';
 
@@ -50,8 +51,13 @@ export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
                     <input name="name" defaultValue={settings.name} maxLength={120} required />
                 </FormField>
 
-                <FormField label="Часовой пояс">
-                    <input name="timezone" defaultValue={settings.timezone} required />
+                <FormField label="Часовой пояс" hint="По нему считаются рабочие часы и сроки ответа.">
+                    <Select
+                        name="timezone"
+                        options={timezoneOptions(settings.timezone)}
+                        defaultValue={settings.timezone}
+                        aria-label="Часовой пояс"
+                    />
                 </FormField>
 
                 <FormField label="Хранить закрытые обращения, дней" hint={TICKET_RETENTION_HINT}>
@@ -77,7 +83,7 @@ export function SettingsTab({ settings, busy, save }: SettingsTabProps) {
                 </FormField>
 
                 <p className="admin-card__help">
-                    Политика согласия, ключи сервисов и ограничения ИИ настраиваются при развёртывании сервера.
+                    Ключи сервисов и ограничения ИИ настраиваются при развёртывании сервера.
                 </p>
 
                 <Button className="settings-form__submit" type="submit" size="small" loading={busy}>

@@ -10,17 +10,19 @@ type FormDialogProps = {
     error: unknown;
     onClose: () => void;
     onSubmit: (form: FormData) => void;
+    wide?: boolean;
     children: ReactNode;
 };
 
 export function FormDialog(props: FormDialogProps) {
-    const { title, formId, busy, error, onClose, onSubmit, children } = props;
+    const { title, formId, busy, error, onClose, onSubmit, wide, children } = props;
 
     return (
         <Modal
             title={title}
             onClose={onClose}
             busy={busy}
+            wide={wide}
             footer={
                 <Button form={formId} type="submit" size="small" loading={busy}>
                     Сохранить

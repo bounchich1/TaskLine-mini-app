@@ -1,14 +1,16 @@
 import { can } from '@/shared/lib/access';
 import type { Dictionary, Employee, Permission, Session } from '@/shared/types/api';
 
-export type AdminTab = 'employees' | 'dictionaries' | 'templates' | 'sla' | 'settings' | 'diagnostics' | 'audit';
+export type AdminTab =
+    'employees' | 'assistant' | 'dictionaries' | 'templates' | 'sla' | 'settings' | 'diagnostics' | 'audit';
 
 type AdminTabDefinition = { tab: AdminTab; label: string; permission: Permission };
 
 const ADMIN_TABS: readonly AdminTabDefinition[] = [
     { tab: 'employees', label: 'Сотрудники', permission: 'employees.manage' },
-    { tab: 'dictionaries', label: 'Справочники', permission: 'organization.configure' },
-    { tab: 'templates', label: 'Шаблоны бота', permission: 'organization.configure' },
+    { tab: 'assistant', label: 'ИИ-помощник', permission: 'organization.configure' },
+    { tab: 'dictionaries', label: 'Темы и уровни', permission: 'organization.configure' },
+    { tab: 'templates', label: 'Диалог с клиентом', permission: 'organization.configure' },
     { tab: 'sla', label: 'SLA', permission: 'organization.configure' },
     { tab: 'settings', label: 'Организация', permission: 'organization.configure' },
     { tab: 'diagnostics', label: 'Состояние системы', permission: 'operations.view' },
@@ -21,7 +23,45 @@ export function adminTabsFor(session: Pick<Session, 'permissions'>): readonly Ad
 
 export type ServerHealth = { status: string; version: string };
 
-export type Template = { code: string; body: string; version: number };
+export type Template = { code: string; body: string; default_body: string | null; version: number };
+
+export type Tone = 'formal' | 'friendly';
+
+export type GlossaryEntry = { term: string; meaning: string };
+
+export type BusinessProfile = {
+    preset: string | null;
+    description: string;
+    offerings: string;
+    tone: Tone;
+    rules: string[];
+    glossary: GlossaryEntry[];
+    configured: boolean;
+    version: number;
+};
+
+export type MenuLabels = { tickets: string; help: string; withdraw: string };
+
+export type BotSettings = {
+    policy_url: string;
+    policy_version: string;
+    policy_version_source: 'deployment' | 'organization';
+    alternative_contact: string;
+    menu: MenuLabels;
+    default_menu: MenuLabels;
+    version: number;
+};
+
+export type Preset = { id: string; title: string; summary: string; topics: string[] };
+
+export type PresetPreview = {
+    id: string;
+    title: string;
+    add: string[];
+    update: string[];
+    deactivate: string[];
+    levels_described: boolean;
+};
 
 type Retention = { closed_ticket_days: number | null; audit_days: number | null };
 
@@ -53,4 +93,6 @@ export type AdminDialog =
     | { kind: 'block'; employee: Employee }
     | { kind: 'dictionary'; value: Dictionary | null }
     | { kind: 'template'; template: Template }
+    | { kind: 'preset'; profile: BusinessProfile }
+    | { kind: 'setup'; profile: BusinessProfile }
     | { kind: 'resolution'; resolution: Resolution };

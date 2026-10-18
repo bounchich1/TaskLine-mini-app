@@ -1,6 +1,7 @@
 import type { Page, Request, Route } from '@playwright/test';
 
 import { AUDIT, DIAGNOSTICS, SETTINGS, TEMPLATES } from './admin-fixtures';
+import { BOT, PRESETS, presetPreview, PROFILE } from './business-fixtures';
 import { CLOSED_TICKETS, DICTIONARIES, MESSAGES, NOTIFICATIONS, OPEN_TICKETS } from './fixtures';
 import { solidPng } from './media';
 import { SLA_CONFIG, SLA_NOW } from './sla-fixtures';
@@ -72,6 +73,10 @@ const GET_ROUTES: [RegExp, Handler][] = [
     [/^\/v1\/admin\/templates$/, () => ({ items: TEMPLATES })],
     [/^\/v1\/admin\/settings$/, () => ({ ...SETTINGS, retention: NO_RETENTION })],
     [/^\/v1\/admin\/sla$/, () => SLA_CONFIG],
+    [/^\/v1\/admin\/profile$/, () => PROFILE],
+    [/^\/v1\/admin\/bot$/, () => BOT],
+    [/^\/v1\/admin\/presets$/, () => PRESETS],
+    [/^\/v1\/admin\/presets\/[^/]+\/preview$/, (call) => presetPreview(call.path.split('/')[4] ?? '')],
     [/^\/v1\/admin\/diagnostics$/, () => DIAGNOSTICS],
     [/^\/v1\/admin\/audit$/, () => ({ items: AUDIT })],
 ];
@@ -79,6 +84,16 @@ const GET_ROUTES: [RegExp, Handler][] = [
 function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
     if (call.path === '/v1/auth/dev') {
         return session;
+    }
+
+    if (call.path === '/v1/admin/profile') {
+        return { ...PROFILE, ...(call.body as object), version: PROFILE.version + 1 };
+    }
+
+    const preset = /^\/v1\/admin\/presets\/([^/]+)\/apply$/.exec(call.path);
+
+    if (preset) {
+        return { profile: { ...PROFILE, preset: preset[1], version: PROFILE.version + 1 } };
     }
 
     if (/^\/v1\/admin\/clients\/[^/]+\/erase$/.test(call.path)) {
@@ -97,6 +112,7 @@ function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
 export class MockApi {
     readonly calls: RecordedCall[] = [];
     private readonly overrides: { method: string; path: RegExp; status: number }[] = [];
+    private readonly replies = new Map<string, unknown>();
 
     private constructor(private readonly session: typeof SESSION) {}
 
@@ -111,6 +127,10 @@ export class MockApi {
         await page.route('**/v1/**', (route, request) => mock.handle(route, request));
 
         return mock;
+    }
+
+    reply(path: string, body: unknown): void {
+        this.replies.set(path, body);
     }
 
     failNext(method: string, path: RegExp, status: number): void {
@@ -163,6 +183,10 @@ export class MockApi {
     }
 
     private read(call: RecordedCall): unknown {
+        if (this.replies.has(call.path)) {
+            return this.replies.get(call.path);
+        }
+
         const handler = GET_ROUTES.find(([pattern]) => pattern.test(call.path))?.[1];
 
         return handler?.(call);
