@@ -8,6 +8,7 @@ export const queryKeys = {
     suggestionSource: (ticketId: string, memoryId: string) => ['suggestion-source', ticketId, memoryId],
     attachmentMedia: (id: string) => ['attachment-media', id],
     notifications: ['notifications'],
+    notificationSettings: ['notification-settings'],
     dictionaries: ['dictionaries'],
     employees: ['employees'],
     adminEmployees: ['admin-employees'],

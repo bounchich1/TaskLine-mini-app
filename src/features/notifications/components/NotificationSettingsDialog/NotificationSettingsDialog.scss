@@ -1,0 +1,41 @@
+@use 'abstracts' as *;
+
+.notification-settings {
+    display: grid;
+    gap: 20px;
+}
+
+.notification-settings__topics {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px 16px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.notification-settings__legend {
+    @include text(label);
+
+    margin-bottom: 8px;
+    padding: 0;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+}
+
+.notification-settings__max {
+    display: grid;
+    gap: 4px;
+}
+
+.notification-settings__hint {
+    @include muted(label);
+
+    grid-column: 1 / -1;
+    margin: 0;
+
+    &--nested {
+        padding-left: 28px;
+    }
+}

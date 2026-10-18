@@ -11,7 +11,7 @@ export type SlaState = {
     text: string;
 };
 
-type SlaTicket = SlaFields & Pick<Ticket, 'status'>;
+export type SlaTicket = SlaFields & Pick<Ticket, 'status'>;
 
 const MINUTE = 60000;
 const HOUR = 60 * MINUTE;

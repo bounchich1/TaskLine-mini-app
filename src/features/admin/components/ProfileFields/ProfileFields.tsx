@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-import { ChoiceList } from '@/features/admin/components/ChoiceList/ChoiceList';
 import { glossaryText, PROFILE_LIMITS, TONE_OPTIONS } from '@/features/admin/model/profile-form';
 import type { BusinessProfile } from '@/features/admin/model/types';
-import { FormField } from '@/shared/ui';
+import { ChoiceList, FormField } from '@/shared/ui';
 
 import { CompanyFields } from './CompanyFields';
 

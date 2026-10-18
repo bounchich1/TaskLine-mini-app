@@ -29,7 +29,7 @@ for (const width of WIDTHS) {
 
         test('notifications', async ({ page }) => {
             await openSection(page, 'notifications');
-            await expect(page.getByText('Клиент оставил оценку')).toBeVisible();
+            await expect(page.getByText('Оценка 9 из 10')).toBeVisible();
             await expect(page).toHaveScreenshot(`notifications-${width}.png`, { fullPage: true });
         });
 

@@ -1,5 +1,5 @@
-import { ChoiceList } from '@/features/admin/components/ChoiceList/ChoiceList';
 import type { Preset, PresetPreview } from '@/features/admin/model/types';
+import { ChoiceList } from '@/shared/ui';
 
 import { PresetChanges } from './PresetChanges';
 

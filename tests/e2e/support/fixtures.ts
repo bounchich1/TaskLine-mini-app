@@ -213,20 +213,3 @@ export const MESSAGES = [
         revision: 1,
     },
 ];
-
-export const NOTIFICATIONS = [
-    {
-        id: 'n1',
-        type: 'ticket.created',
-        ticket_id: 't3',
-        read_at: null,
-        created_at: '2026-03-02T04:40:00Z',
-    },
-    {
-        id: 'n2',
-        type: 'rating.received',
-        ticket_id: 't9',
-        read_at: '2026-03-01T11:00:00Z',
-        created_at: '2026-03-01T10:00:00Z',
-    },
-];

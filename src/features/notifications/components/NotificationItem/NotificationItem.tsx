@@ -1,50 +1,82 @@
 import { clsx } from 'clsx';
 
-import { notificationLabel } from '@/shared/config/labels';
-import { formatDate } from '@/shared/lib/format-date';
-import type { Notification } from '@/shared/types/api';
-import { Icon, type IconName } from '@/shared/ui';
+import type { NotificationGroup } from '@/features/notifications/model/groups';
+import {
+    earlierSummary,
+    isStale,
+    notificationDetail,
+    notificationIcon,
+    notificationTitle,
+    notificationTone,
+} from '@/features/notifications/model/notification-copy';
+import { formatDate, formatTimeAgo } from '@/shared/lib/format-date';
+import { Icon } from '@/shared/ui';
+
+import { NotificationTicketLines } from './NotificationTicketLines';
 
 import './NotificationItem.scss';
 
-const ICONS: Partial<Record<string, IconName>> = {
-    'ticket.created': 'inbox',
-    'message.from_client': 'send',
-    'ticket.transferred': 'user',
-    'rating.received': 'star',
-};
-
 type NotificationItemProps = {
-    notification: Notification;
+    group: NotificationGroup;
+    me: string;
+    now: number;
     timezone: string;
-    onOpen: (notification: Notification) => void;
+    onOpen: (ticketId: string) => void;
 };
 
-export function NotificationItem({ notification, timezone, onOpen }: NotificationItemProps) {
-    const unread = !notification.read_at;
+export function NotificationItem({ group, me, now, timezone, onOpen }: NotificationItemProps) {
+    const { latest, earlier, unread } = group;
+    const { ticket } = latest;
 
     return (
         <li>
             <button
-                className={clsx('notification-item', unread && 'notification-item--unread')}
+                className={clsx(
+                    'notification-item',
+                    unread > 0 && 'notification-item--unread',
+                    isStale(latest, me) && 'notification-item--stale',
+                )}
+                disabled={!ticket}
                 onClick={() => {
-                    onOpen(notification);
+                    onOpen(group.ticketId);
                 }}
             >
-                <span className="notification-item__icon">
-                    <Icon name={ICONS[notification.type] ?? 'bell'} size={18} />
+                <span
+                    className={clsx('notification-item__icon', `notification-item__icon--${notificationTone(latest)}`)}
+                >
+                    <Icon name={notificationIcon(latest)} size={18} />
                 </span>
 
-                <span className="notification-item__title">
-                    {notificationLabel(notification.type)}
-                    {unread ? <span className="visually-hidden"> (не прочитано)</span> : null}
+                <span className="notification-item__body">
+                    <span className="notification-item__head">
+                        <span className="notification-item__title">
+                            {notificationTitle(latest)}
+                            {unread > 0 ? <span className="visually-hidden"> (не прочитано)</span> : null}
+                        </span>
+
+                        <time
+                            className="notification-item__time"
+                            dateTime={latest.created_at}
+                            title={formatDate(latest.created_at, timezone)}
+                        >
+                            {formatTimeAgo(latest.created_at, timezone, now)}
+                        </time>
+                    </span>
+
+                    <NotificationTicketLines
+                        ticket={ticket}
+                        detail={notificationDetail(latest)}
+                        earlier={earlierSummary(earlier)}
+                        me={me}
+                        timezone={timezone}
+                    />
                 </span>
 
-                <time className="notification-item__time" dateTime={notification.created_at}>
-                    {formatDate(notification.created_at, timezone)}
-                </time>
-
-                <Icon className="notification-item__arrow" name="arrow" size={16} />
+                {unread > 1 ? (
+                    <span className="notification-item__count" aria-label={`Непрочитанных: ${unread}`}>
+                        {unread}
+                    </span>
+                ) : null}
             </button>
         </li>
     );

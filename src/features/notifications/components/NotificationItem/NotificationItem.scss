@@ -3,18 +3,22 @@
 .notification-item {
     display: flex;
     gap: 12px;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     padding: 12px;
     border-radius: $radius-m;
     background: none;
-    color: $color-text-secondary;
+    color: $color-text;
     text-align: left;
 
     @include row-hover;
 
-    &--unread {
-        color: $color-text;
+    &:focus-visible {
+        @include focus-ring-inset;
+    }
+
+    &:disabled {
+        cursor: default;
     }
 }
 
@@ -29,6 +33,16 @@
     background: $color-bg-muted;
     color: $color-text-secondary;
 
+    &--warning {
+        background: $color-warning-bg;
+        color: $color-warning-text;
+    }
+
+    &--danger {
+        background: $color-negative-bg;
+        color: $color-negative;
+    }
+
     .notification-item--unread &::after {
         content: '';
         position: absolute;
@@ -40,25 +54,102 @@
         border-radius: 50%;
         background: $color-accent;
     }
+
+    .notification-item--stale & {
+        background: $color-bg-muted;
+        color: $color-icon-muted;
+    }
+}
+
+.notification-item__body {
+    display: grid;
+    flex: 1;
+    gap: 3px;
+    min-width: 0;
+}
+
+.notification-item__head {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    min-width: 0;
 }
 
 .notification-item__title {
+    @include truncate;
+
     flex: 1;
-    min-width: 0;
+    color: $color-text-secondary;
 
     .notification-item--unread & {
-        font-weight: $font-weight-medium;
+        color: $color-text;
+        font-weight: $font-weight-semibold;
     }
 }
 
 .notification-item__time {
     @include muted(label);
 
+    flex-shrink: 0;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
 
-.notification-item__arrow {
+.notification-item__subject {
+    @include text(small);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    align-items: center;
+    min-width: 0;
+}
+
+.notification-item__number {
+    font-weight: $font-weight-medium;
+    font-variant-numeric: tabular-nums;
+}
+
+.notification-item__topic {
+    @include truncate;
+
+    color: $color-text-secondary;
+}
+
+.notification-item__detail {
+    @include text(small);
+
+    display: -webkit-box;
+    overflow: hidden;
+    color: $color-text-secondary;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    .notification-item--stale & {
+        color: $color-text-muted;
+    }
+}
+
+.notification-item__meta {
+    @include muted(label);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 12px;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.notification-item__earlier {
+    color: $color-text-secondary;
+}
+
+.notification-item__count {
+    @include count;
+
     flex-shrink: 0;
-    color: $color-icon-muted;
+    margin-top: 2px;
+    background: $color-accent;
+    color: $color-text-inverse;
 }

@@ -13,9 +13,13 @@ test.beforeEach(async ({ page }) => {
 test('lists notifications and opens the ticket of one', async ({ page }) => {
     await page.getByRole('button', { name: /Уведомления/ }).click();
     await expect(page.getByRole('heading', { level: 1, name: /Уведомления/ })).toBeVisible();
-    await expect(page.getByText('Клиент оставил оценку')).toBeVisible();
+    await expect(page.getByText('Оценка 9 из 10')).toBeVisible();
     await page.getByRole('button', { name: /Новое обращение/ }).click();
-    await expect.poll(() => api.callsTo('POST', '/v1/notifications/n1/read').length).toBe(1);
+
+    await expect
+        .poll(() => api.callsTo('POST', '/v1/notifications/read').map((call) => call.body))
+        .toEqual([{ ticket_id: 't3' }]);
+
     await expect(ticketCard(page, '000003')).toBeVisible();
 });
 

@@ -11,6 +11,25 @@
     @include muted(small);
 }
 
+.notifications-page__settings {
+    @include icon-button;
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}
+
+.notifications-page__day {
+    display: grid;
+    gap: 4px;
+}
+
+.notifications-page__day-title {
+    @include section-title;
+
+    padding-top: 8px;
+}
+
 .notifications-page__list {
     display: grid;
     margin: 0 -12px;

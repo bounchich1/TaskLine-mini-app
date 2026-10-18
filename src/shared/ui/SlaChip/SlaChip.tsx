@@ -1,14 +1,13 @@
 import { clsx } from 'clsx';
 
 import { formatDate } from '@/shared/lib/format-date';
-import { slaState } from '@/shared/lib/sla';
+import { slaState, type SlaTicket } from '@/shared/lib/sla';
 import { useNow } from '@/shared/lib/use-now';
-import type { Ticket } from '@/shared/types/api';
 
 import './SlaChip.scss';
 
 type SlaChipProps = {
-    ticket: Ticket;
+    ticket: SlaTicket;
     timezone: string;
     className?: string;
 };

@@ -13,7 +13,7 @@ src/
     auth/           sign-in (deduplicated), session state, launch screen
     ticket-queue/   filters, the paged list, the queue table
     ticket-detail/  the ticket card: conversation, composer, uploads, commands, dialogs
-    notifications/  the notification list
+    notifications/  notifications grouped by ticket and day, read-on-open, personal notification settings
     admin/          employees, setup wizard and AI assistant profile, topics, client dialog, SLA, settings, diagnostics, audit
   shared/           Used everywhere; imports only shared/.
     api/            http (api, ApiError, session headers), event stream, downloads, query keys

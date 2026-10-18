@@ -2,8 +2,9 @@ import type { Page, Request, Route } from '@playwright/test';
 
 import { AUDIT, DIAGNOSTICS, SETTINGS, TEMPLATES } from './admin-fixtures';
 import { BOT, PRESETS, presetPreview, PROFILE } from './business-fixtures';
-import { CLOSED_TICKETS, DICTIONARIES, MESSAGES, NOTIFICATIONS, OPEN_TICKETS } from './fixtures';
+import { CLOSED_TICKETS, DICTIONARIES, MESSAGES, OPEN_TICKETS } from './fixtures';
 import { solidPng } from './media';
+import { NOTIFICATIONS } from './notification-fixtures';
 import { SLA_CONFIG, SLA_NOW } from './sla-fixtures';
 import { SOURCE_EXCERPT } from './source-fixtures';
 import { EMPLOYEES, SESSION } from './staff';
@@ -64,7 +65,7 @@ function ticketPage(search: URLSearchParams) {
 const GET_ROUTES: [RegExp, Handler][] = [
     [/^\/v1\/dictionaries$/, () => ({ items: DICTIONARIES })],
     [/^\/v1\/employees$/, () => ({ items: EMPLOYEES })],
-    [/^\/v1\/notifications$/, () => ({ items: NOTIFICATIONS })],
+    [/^\/v1\/notifications\/settings$/, () => ({ new_tickets: 'all', topics: [], max_alerts: false })],
     [/^\/v1\/tickets$/, (call) => ticketPage(call.search)],
     [/^\/v1\/tickets\/[^/]+\/messages$/, () => ({ items: MESSAGES, has_more: false, next_before: 0 })],
     [/^\/v1\/tickets\/t2\/sources\/m1$/, () => SOURCE_EXCERPT],
@@ -84,6 +85,10 @@ const GET_ROUTES: [RegExp, Handler][] = [
 function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
     if (call.path === '/v1/auth/dev') {
         return session;
+    }
+
+    if (call.path === '/v1/notifications/settings') {
+        return call.body;
     }
 
     if (call.path === '/v1/admin/profile') {
@@ -113,6 +118,7 @@ export class MockApi {
     readonly calls: RecordedCall[] = [];
     private readonly overrides: { method: string; path: RegExp; status: number }[] = [];
     private readonly replies = new Map<string, unknown>();
+    private readonly readTickets = new Set<string>();
 
     private constructor(private readonly session: typeof SESSION) {}
 
@@ -161,6 +167,11 @@ export class MockApi {
         };
 
         this.calls.push(call);
+
+        if (call.method === 'POST' && call.path === '/v1/notifications/read') {
+            this.readTickets.add((call.body as { ticket_id: string }).ticket_id);
+        }
+
         const index = this.overrides.findIndex((item) => item.method === call.method && item.path.test(call.path));
 
         if (index >= 0) {
@@ -182,9 +193,19 @@ export class MockApi {
         await route.fulfill({ status: body === undefined ? 404 : 200, json: body ?? {} });
     }
 
+    private markedRead<T extends { ticket_id: string; read_at: string | null }>(item: T): T {
+        return this.readTickets.has(item.ticket_id)
+            ? { ...item, read_at: item.read_at ?? new Date(SLA_NOW).toISOString() }
+            : item;
+    }
+
     private read(call: RecordedCall): unknown {
         if (this.replies.has(call.path)) {
             return this.replies.get(call.path);
+        }
+
+        if (call.path === '/v1/notifications') {
+            return { items: NOTIFICATIONS.map((item) => this.markedRead(item)) };
         }
 
         const handler = GET_ROUTES.find(([pattern]) => pattern.test(call.path))?.[1];

@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { useState } from 'react';
 
 import { AdminPanel } from '@/features/admin';
-import { countUnread, NotificationsPage, useNotifications } from '@/features/notifications';
+import { countUnread, NotificationsPage, useNotifications, useReadOpenTicket } from '@/features/notifications';
 import type { Draft } from '@/features/ticket-detail';
 import { TicketsPage, useTicketFilters, useTicketList } from '@/features/ticket-queue';
 import { dictionariesQuery, employeesQuery } from '@/shared/api/reference-data';
@@ -35,6 +35,8 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
 
     const notifications = useNotifications();
     const live = useLiveUpdates();
+
+    useReadOpenTicket(section === 'tickets' ? expanded : null, notifications);
     const ticketList = useTicketList(queue.query, live.connection);
 
     const openTicket = (id: string) => {
@@ -80,7 +82,12 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
                 ) : null}
 
                 {section === 'notifications' ? (
-                    <NotificationsPage notifications={notifications} timezone={timezone} onOpenTicket={openTicket} />
+                    <NotificationsPage
+                        notifications={notifications}
+                        me={session.employee.id}
+                        timezone={timezone}
+                        onOpenTicket={openTicket}
+                    />
                 ) : null}
 
                 {section === 'admin' ? <AdminPanel session={session} onTicket={openTicket} /> : null}

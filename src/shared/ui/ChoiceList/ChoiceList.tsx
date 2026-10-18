@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 
-import { Icon } from '@/shared/ui';
+import { Icon } from '../Icon/Icon';
 
 import './ChoiceList.scss';
 
