@@ -1,0 +1,46 @@
+@use 'abstracts' as *;
+
+.metric-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 112px;
+    gap: 16px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-line;
+
+    @include respond-to(phone) {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 2px 12px;
+    }
+}
+
+.metric-row__label {
+    display: grid;
+    gap: 2px;
+    color: $color-text-secondary;
+}
+
+.metric-row__hint {
+    @include muted(label);
+}
+
+.metric-row__value {
+    @include text(title);
+
+    font-weight: $font-weight-semibold;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.metric-row__compare {
+    text-align: right;
+
+    @include respond-to(phone) {
+        grid-column: 1 / -1;
+        text-align: left;
+    }
+}
+
+.metric-row__note {
+    @include muted(small);
+}

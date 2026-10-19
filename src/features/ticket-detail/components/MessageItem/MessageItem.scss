@@ -51,6 +51,11 @@
         background: $color-bubble-staff;
     }
 
+    .message--note & {
+        border: 1px dashed $color-line-strong;
+        background: $color-bubble-note;
+    }
+
     .message--bot &,
     .message--system & {
         @include text(small);
@@ -64,4 +69,9 @@
 
 .message__deleted {
     color: $color-text-muted;
+}
+
+.message__note-label {
+    color: $color-warning-text;
+    font-weight: $font-weight-medium;
 }

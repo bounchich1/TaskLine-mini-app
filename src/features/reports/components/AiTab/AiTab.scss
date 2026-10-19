@@ -1,0 +1,15 @@
+@use 'abstracts' as *;
+
+.ai-tab {
+    column-count: 2;
+    column-gap: 40px;
+
+    > * {
+        margin-bottom: 32px;
+        break-inside: avoid;
+    }
+
+    @include respond-to(tablet) {
+        column-count: 1;
+    }
+}

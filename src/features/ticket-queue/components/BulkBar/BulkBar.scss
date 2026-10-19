@@ -1,0 +1,32 @@
+@use 'abstracts' as *;
+
+.bulk-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: $radius-m;
+    background: $color-bg-selected;
+}
+
+.bulk-bar__count {
+    font-weight: $font-weight-semibold;
+}
+
+.bulk-bar__select {
+    min-width: 132px;
+}
+
+.bulk-bar__clear {
+    @include text-button(small);
+
+    margin-left: auto;
+}
+
+.bulk-bar__summary {
+    @include text(small);
+
+    width: 100%;
+    color: $color-text-secondary;
+}

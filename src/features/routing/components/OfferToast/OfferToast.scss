@@ -1,0 +1,44 @@
+@use 'abstracts' as *;
+
+.offer-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: $z-index-popover;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    max-width: min(420px, calc(100vw - 32px));
+    padding: 12px 12px 12px 16px;
+    border: 1px solid $color-line;
+    border-radius: $radius-l;
+    background: $color-bg-elevated;
+    box-shadow: $shadow-popover;
+
+    @include respond-to(phone) {
+        right: 16px;
+        bottom: calc(#{$tab-bar-height} + 16px + env(safe-area-inset-bottom));
+        left: 16px;
+    }
+}
+
+.offer-toast__icon {
+    flex-shrink: 0;
+    color: $color-text-accent;
+}
+
+.offer-toast__text {
+    display: grid;
+    flex: 1;
+    font-weight: $font-weight-medium;
+}
+
+.offer-toast__topic {
+    @include muted(label);
+
+    font-weight: $font-weight-regular;
+}
+
+.offer-toast__close {
+    @include icon-button(28px);
+}

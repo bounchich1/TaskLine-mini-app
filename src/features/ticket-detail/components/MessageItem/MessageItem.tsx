@@ -22,15 +22,27 @@ type MessageItemProps = {
     highlighted?: boolean;
 };
 
+const isNote = (message: Message) => message.visibility === 'internal' && message.author_type === 'staff';
+
+const messageClass = (message: Message, highlighted: boolean) =>
+    clsx(
+        'message',
+        `message--${message.author_type}`,
+        isNote(message) && 'message--note',
+        highlighted && 'message--highlighted',
+    );
+
 export function MessageItem({ message, attachments, timezone, highlighted = false, ...delivery }: MessageItemProps) {
     const own = attachments?.filter((file) => file.message_id === message.id) ?? [];
     const files = own.filter((file) => !isMedia(file));
     const hasBody = message.deleted || message.text.length > 0;
+    const note = isNote(message);
 
     return (
-        <li className={clsx('message', `message--${message.author_type}`, highlighted && 'message--highlighted')}>
+        <li className={messageClass(message, highlighted)}>
             <div className="message__meta">
                 <strong className="message__author">{authorLabel(message.author_type, message.author_name)}</strong>
+                {note ? <span className="message__note-label">заметка</span> : null}
                 <time dateTime={message.created_at}>{formatDate(message.created_at, timezone)}</time>
                 {message.revision > 1 ? <span>· изменено</span> : null}
             </div>
@@ -47,7 +59,7 @@ export function MessageItem({ message, attachments, timezone, highlighted = fals
                 <AttachmentItem file={file} key={file.id} />
             ))}
 
-            {message.author_type === 'staff' ? <DeliveryStatus message={message} {...delivery} /> : null}
+            {message.author_type === 'staff' && !note ? <DeliveryStatus message={message} {...delivery} /> : null}
         </li>
     );
 }

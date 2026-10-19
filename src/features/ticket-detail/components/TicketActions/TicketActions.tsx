@@ -10,7 +10,7 @@ type TicketActionsProps = {
     active: boolean;
     allowed: TicketPermissions;
     pending: boolean;
-    onOperate: (action: 'assign' | 'wait' | 'resume') => void;
+    onOperate: (action: 'assign' | 'wait' | 'resume' | 'release') => void;
     onOpenDialog: (dialog: TicketDialog) => void;
 };
 
@@ -57,6 +57,20 @@ export function TicketActions({ ticket, active, allowed, pending, onOperate, onO
                         }}
                     >
                         Передать сотруднику
+                    </Button>
+                ) : null}
+
+                {allowed.transfer ? (
+                    <Button
+                        variant="secondary"
+                        size="xsmall"
+                        disabled={pending}
+                        title="Снять исполнителя — обращение вернётся в очередь"
+                        onClick={() => {
+                            onOperate('release');
+                        }}
+                    >
+                        В очередь
                     </Button>
                 ) : null}
 

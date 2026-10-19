@@ -33,6 +33,20 @@
     &--locked {
         color: $color-text-muted;
     }
+
+    &--note {
+        background: $color-bubble-note;
+    }
+}
+
+.composer__field {
+    position: relative;
+}
+
+.composer__hint {
+    @include muted(label);
+
+    color: $color-warning-text;
 }
 
 .composer__input {

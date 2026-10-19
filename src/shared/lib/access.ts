@@ -2,9 +2,9 @@ import type { Permission, Role, Session, Ticket } from '@/shared/types/api';
 
 const ROLE_ORDER: readonly Role[] = ['support', 'supervisor', 'admin'];
 
-export type TicketAction = 'take' | 'classify' | 'reply' | 'transfer' | 'close' | 'reopen';
+export type TicketAction = 'take' | 'note' | 'classify' | 'reply' | 'transfer' | 'close' | 'reopen';
 
-const ON_OTHERS_TICKET: Record<Exclude<TicketAction, 'take'>, Permission> = {
+const ON_OTHERS_TICKET: Record<Exclude<TicketAction, 'take' | 'note'>, Permission> = {
     classify: 'tickets.classify_any',
     reply: 'tickets.reply_any',
     transfer: 'tickets.transfer_any',
@@ -25,7 +25,7 @@ export function canOnTicket(session: Session, ticket: Pick<Ticket, 'assignee_id'
         return false;
     }
 
-    if (action === 'take') {
+    if (action === 'take' || action === 'note') {
         return true;
     }
 

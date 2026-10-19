@@ -11,10 +11,12 @@ src/
     workspace/      Workspace layout, header, live updates (SSE → query invalidation)
   features/<name>/  Feature slices. Public API = index.ts, nothing else.
     auth/           sign-in (deduplicated), session state, launch screen
-    ticket-queue/   filters, the paged list, the queue table
-    ticket-detail/  the ticket card: conversation, composer, uploads, commands, dialogs
+    ticket-queue/   filters, scope chips (mine / team / all), the paged list, the queue table, bulk actions
+    ticket-detail/  the ticket card: conversation, composer (reply / note, macros, mentions), commands, dialogs, hotkeys
+    routing/        presence, ticket offers, macros, shift-end dialog
+    reports/        overview, team KPIs, topics, AI value, quality; period picker, charts, CSV/XLSX export
     notifications/  notifications grouped by ticket and day, read-on-open, personal notification settings
-    admin/          employees, setup wizard and AI assistant profile, topics, client dialog, SLA, settings, diagnostics, audit
+    admin/          employees, teams, routing rules, setup wizard and AI assistant profile, topics, client dialog, SLA, settings, diagnostics, audit
   shared/           Used everywhere; imports only shared/.
     api/            http (api, ApiError, session headers), event stream, downloads, query keys
     config/         typed env, labels for API codes

@@ -2,7 +2,7 @@ import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-tabl
 import { clsx } from 'clsx';
 import { useMemo } from 'react';
 
-import { buildTicketColumns } from '@/features/ticket-queue/model/columns';
+import { buildTicketColumns, selectColumn, type Selection } from '@/features/ticket-queue/model/columns';
 import type { QueueTab } from '@/features/ticket-queue/model/filter-defaults';
 import type { Ticket } from '@/shared/types/api';
 
@@ -14,13 +14,18 @@ type TicketTableProps = {
     timezone: string;
     expanded: string | null;
     onToggle: (id: string) => void;
+    selection?: Selection;
 };
 
-export function TicketTable({ rows, tab, timezone, expanded, onToggle }: TicketTableProps) {
-    const columns = useMemo(
-        () => buildTicketColumns({ expanded, onToggle, tab, timezone }),
-        [expanded, onToggle, tab, timezone],
-    );
+const isControl = (target: EventTarget) =>
+    target instanceof HTMLButtonElement || target instanceof HTMLInputElement || target instanceof HTMLLabelElement;
+
+export function TicketTable({ rows, tab, timezone, expanded, onToggle, selection }: TicketTableProps) {
+    const columns = useMemo(() => {
+        const base = buildTicketColumns({ expanded, onToggle, tab, timezone });
+
+        return selection ? [selectColumn(rows, selection), ...base] : base;
+    }, [expanded, onToggle, tab, timezone, rows, selection]);
 
     const table = useReactTable({ data: rows, columns, getCoreRowModel: getCoreRowModel() });
 
@@ -45,9 +50,12 @@ export function TicketTable({ rows, tab, timezone, expanded, onToggle }: TicketT
                 {table.getRowModel().rows.map((row) => (
                     <tr
                         key={row.id}
-                        className="ticket-table__row"
+                        className={clsx(
+                            'ticket-table__row',
+                            selection?.selected.has(row.original.id) && 'ticket-table__row--selected',
+                        )}
                         onClick={(event) => {
-                            if (!(event.target instanceof HTMLButtonElement)) {
+                            if (!isControl(event.target)) {
                                 onToggle(row.original.id);
                             }
                         }}

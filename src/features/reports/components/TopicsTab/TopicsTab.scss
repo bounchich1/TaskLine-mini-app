@@ -1,0 +1,37 @@
+@use 'abstracts' as *;
+
+.topics-tab {
+    display: grid;
+    gap: 24px;
+}
+
+.topics-tab__growing {
+    display: grid;
+    gap: 8px;
+}
+
+.topics-tab__title {
+    @include section-title;
+}
+
+.topics-tab__growing-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    list-style: none;
+}
+
+.topics-tab__growing-item {
+    display: inline-flex;
+    gap: 8px;
+    align-items: baseline;
+    font-variant-numeric: tabular-nums;
+}
+
+.topics-tab__muted {
+    @include muted(small);
+}
+
+.topics-table td:nth-child(2) {
+    width: 104px;
+}

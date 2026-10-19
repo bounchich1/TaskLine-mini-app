@@ -11,6 +11,9 @@ const ICONS: Partial<Record<string, IconName>> = {
     'ticket.transferred': 'user',
     'rating.received': 'star',
     'ticket.auto_closed': 'clock',
+    'ticket.offered': 'inbox',
+    'note.mention': 'note',
+    'ticket.close_failed': 'alert',
 };
 
 const NOUNS: Partial<Record<string, PluralForms>> = {
@@ -19,6 +22,8 @@ const NOUNS: Partial<Record<string, PluralForms>> = {
     'ticket.transferred': ['передача', 'передачи', 'передач'],
     'rating.received': ['оценка', 'оценки', 'оценок'],
     'ticket.auto_closed': ['автозакрытие', 'автозакрытия', 'автозакрытий'],
+    'ticket.offered': ['предложение', 'предложения', 'предложений'],
+    'note.mention': ['упоминание', 'упоминания', 'упоминаний'],
 };
 
 const SLA_NOUN: PluralForms = ['предупреждение о сроке', 'предупреждения о сроке', 'предупреждений о сроке'];
@@ -52,6 +57,10 @@ export function notificationTitle({ type, payload, ticket }: Notification): stri
 }
 
 export function notificationDetail({ type, payload, preview, actor_name: actor, ticket }: Notification) {
+    if (type === 'note.mention' && actor) {
+        return `${actor} упомянул(а) вас`;
+    }
+
     if (type === 'ticket.transferred' && (actor ?? payload.comment)) {
         return [actor ? `От ${actor}` : null, payload.comment].filter(Boolean).join(': ');
     }

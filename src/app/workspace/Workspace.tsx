@@ -4,9 +4,12 @@ import { useState } from 'react';
 
 import { AdminPanel } from '@/features/admin';
 import { countUnread, NotificationsPage, useNotifications, useReadOpenTicket } from '@/features/notifications';
+import { ReportsPage } from '@/features/reports';
+import { OfferToast } from '@/features/routing';
 import type { Draft } from '@/features/ticket-detail';
 import { TicketsPage, useTicketFilters, useTicketList } from '@/features/ticket-queue';
 import { dictionariesQuery, employeesQuery } from '@/shared/api/reference-data';
+import { can } from '@/shared/lib/access';
 import { MEDIA, useMediaQuery } from '@/shared/lib/use-media-query';
 import type { Session } from '@/shared/types/api';
 
@@ -17,6 +20,14 @@ import { useTicketNavigation } from './use-ticket-navigation';
 
 import './Workspace.scss';
 
+function initialSection(session: Session): Section {
+    return session.start_param === 'reports' && can(session, 'reports.view') ? 'reports' : 'tickets';
+}
+
+function isFocused(section: Section, expanded: string | null, desktop: boolean): boolean {
+    return section === 'tickets' && expanded !== null && !desktop;
+}
+
 type WorkspaceProps = {
     session: Session;
     drafts: Map<string, Draft>;
@@ -25,7 +36,8 @@ type WorkspaceProps = {
 export function Workspace({ session, drafts }: WorkspaceProps) {
     const timezone = session.organization.timezone;
     const { expanded, expand, navigation } = useTicketNavigation();
-    const [section, setSection] = useState<Section>('tickets');
+
+    const [section, setSection] = useState<Section>(() => initialSection(session));
 
     const desktop = useMediaQuery(MEDIA.desktop);
     const queue = useTicketFilters(timezone);
@@ -44,7 +56,7 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
         expand(id);
     };
 
-    const focused = section === 'tickets' && expanded !== null && !desktop;
+    const focused = isFocused(section, expanded, desktop);
 
     return (
         <div className={clsx('workspace', focused && 'workspace--focused')}>
@@ -90,8 +102,11 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
                     />
                 ) : null}
 
+                {section === 'reports' ? <ReportsPage timezone={timezone} onTicket={openTicket} /> : null}
                 {section === 'admin' ? <AdminPanel session={session} onTicket={openTicket} /> : null}
             </main>
+
+            <OfferToast notifications={notifications.data?.items} onOpen={openTicket} />
         </div>
     );
 }

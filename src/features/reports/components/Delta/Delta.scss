@@ -1,0 +1,24 @@
+@use 'abstracts' as *;
+
+.delta {
+    @include text(small);
+
+    display: inline-flex;
+    gap: 2px;
+    align-items: baseline;
+    color: $color-text-muted;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+
+    &--good {
+        color: $color-positive;
+    }
+
+    &--bad {
+        color: $color-negative;
+    }
+}
+
+.delta__arrow {
+    font-weight: $font-weight-semibold;
+}

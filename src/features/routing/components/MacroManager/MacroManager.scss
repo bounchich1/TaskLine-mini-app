@@ -1,0 +1,44 @@
+@use 'abstracts' as *;
+
+.macro-manager__list {
+    display: grid;
+    list-style: none;
+    border-top: 1px solid $color-line;
+}
+
+.macro-manager__item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    border-bottom: 1px solid $color-line;
+}
+
+.macro-manager__open {
+    display: grid;
+    flex: 1;
+    gap: 2px;
+    min-width: 0;
+    padding: 10px 4px;
+    background: none;
+    color: $color-text;
+    text-align: left;
+
+    @include row-hover;
+
+    &:focus-visible {
+        @include focus-ring-inset;
+    }
+}
+
+.macro-manager__title {
+    font-weight: $font-weight-medium;
+}
+
+.macro-manager__body {
+    @include muted(small);
+    @include truncate;
+}
+
+.macro-manager__delete {
+    @include icon-button;
+}

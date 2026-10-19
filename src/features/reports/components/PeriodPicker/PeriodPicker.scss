@@ -1,0 +1,49 @@
+@use 'abstracts' as *;
+
+.period-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.period-picker__presets {
+    display: inline-flex;
+    padding: 2px;
+    border-radius: $radius-m;
+    background: $color-bg-muted;
+}
+
+.period-picker__preset {
+    @include text(small);
+
+    padding: 6px 12px;
+    border-radius: $radius-s;
+    background: transparent;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+
+    &:hover {
+        color: $color-text;
+    }
+
+    &--active {
+        background: $color-bg;
+        color: $color-text;
+        box-shadow: 0 1px 2px $color-line-strong;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}
+
+.period-picker__custom {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.period-picker__dash {
+    color: $color-text-muted;
+}

@@ -1,0 +1,95 @@
+@use 'abstracts' as *;
+
+.routing-tab__rules {
+    display: grid;
+    gap: 12px;
+    list-style: none;
+}
+
+.routing-tab__add {
+    justify-self: start;
+}
+
+.rule-row {
+    display: grid;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid $color-line;
+    border-radius: $radius-m;
+}
+
+.rule-row__head {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.rule-row__number {
+    @include count;
+}
+
+.rule-row__label {
+    color: $color-text-secondary;
+}
+
+.rule-row__team {
+    min-width: 200px;
+}
+
+.rule-row__tools {
+    display: flex;
+    gap: 2px;
+    margin-left: auto;
+
+    button {
+        @include icon-button(30px);
+
+        &:disabled {
+            opacity: 0.35;
+        }
+
+        &:focus-visible {
+            @include focus-ring;
+        }
+    }
+}
+
+.rule-row__up {
+    transform: rotate(180deg);
+}
+
+.rule-row__dimension {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.rule-row__legend {
+    @include muted(label);
+
+    width: 100%;
+    padding-bottom: 4px;
+}
+
+.rule-row__chip {
+    @include text(small);
+
+    padding: 3px 10px;
+    border: 1px solid $color-line-strong;
+    border-radius: 12px;
+    color: $color-text-secondary;
+    cursor: pointer;
+
+    &:has(:checked) {
+        border-color: transparent;
+        background: $color-bg-selected-strong;
+        color: $color-text-accent;
+    }
+
+    &:has(:focus-visible) {
+        @include focus-ring;
+    }
+}

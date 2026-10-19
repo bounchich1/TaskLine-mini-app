@@ -34,6 +34,9 @@ export function useTicketFilters(timezone: string) {
         change: (name: keyof Filters, value: string) => {
             setFilters((current) => ({ ...current, [name]: value }));
         },
+        selectScope: (scope: { assignee: string; team: string }) => {
+            setFilters((current) => ({ ...current, ...scope }));
+        },
         selectTab: (tab: QueueTab) => {
             setFilters((current) => ({ ...current, tab, status: '', sla: tab === 'open' ? current.sla : '' }));
         },

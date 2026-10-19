@@ -16,6 +16,10 @@ $palette-light: (
     negative-bg: #fff0f0,
     hover: rgb(9 9 9 / 4%),
     shadow: rgb(12 13 14 / 16%),
+    chart-primary: #007aff,
+    chart-secondary: #1f9d55,
+    chart-muted: rgb(6 7 8 / 30%),
+    note-bg: #fff8db,
 );
 $palette-dark: (
     urgency-critical: #ff6369,
@@ -35,6 +39,10 @@ $palette-dark: (
     negative-bg: rgb(255 99 105 / 14%),
     hover: rgb(255 255 255 / 5%),
     shadow: rgb(0 0 0 / 50%),
+    chart-primary: #3388f0,
+    chart-secondary: #25a86a,
+    chart-muted: rgb(255 255 255 / 32%),
+    note-bg: rgb(240 192 0 / 12%),
 );
 $canvas-light: #fff;
 $canvas-dark: #17181c;

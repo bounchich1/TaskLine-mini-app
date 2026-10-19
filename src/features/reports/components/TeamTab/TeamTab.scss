@@ -1,0 +1,10 @@
+@use 'abstracts' as *;
+
+.team-tab {
+    display: grid;
+    gap: 12px;
+}
+
+.team-tab__note {
+    @include muted(small);
+}

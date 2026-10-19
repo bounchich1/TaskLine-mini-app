@@ -1,0 +1,31 @@
+@use 'abstracts' as *;
+
+.quality-tab {
+    display: grid;
+    gap: 12px;
+}
+
+.quality-tab__note {
+    @include muted(small);
+}
+
+.quality-table__link {
+    @include text-button(body);
+
+    font-variant-numeric: tabular-nums;
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}
+
+.quality-table__rating {
+    display: inline-block;
+    min-width: 28px;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: $color-negative-bg;
+    color: $color-negative;
+    font-weight: $font-weight-semibold;
+    text-align: center;
+}

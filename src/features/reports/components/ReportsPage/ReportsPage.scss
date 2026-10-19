@@ -1,0 +1,61 @@
+@use 'abstracts' as *;
+
+.reports-page {
+    display: grid;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.reports-page__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.reports-tabs {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    border-bottom: 1px solid $color-line-strong;
+    scrollbar-width: none;
+}
+
+.reports-tabs__tab {
+    flex-shrink: 0;
+    margin-bottom: -1px;
+    padding: 8px 0 9px;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+
+    &:hover {
+        color: $color-text;
+    }
+
+    &--selected {
+        border-bottom-color: $color-text;
+        color: $color-text;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}
+
+.report-view {
+    transition: opacity 0.15s ease;
+
+    &--stale {
+        opacity: 0.55;
+    }
+}
+
+.report-view__loading {
+    @include muted(body);
+
+    padding: 24px 0;
+}

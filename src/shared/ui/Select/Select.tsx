@@ -28,7 +28,7 @@ export function Select(props: SelectProps) {
     const select = useSelect(options, props);
     const rootRef = useRef<HTMLDivElement>(null);
     const listId = useId();
-    const chosen = options.at(select.selected);
+    const chosen = select.selected >= 0 ? options[select.selected] : undefined;
 
     return (
         <div ref={rootRef} className={clsx('select', `select--${appearance}`, `select--${size}`, props.className)}>

@@ -1,0 +1,31 @@
+@use 'abstracts' as *;
+
+.metric-group {
+    display: grid;
+    gap: 4px;
+    align-content: start;
+}
+
+.metric-group__header {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 6px;
+    border-bottom: 1px solid $color-line-strong;
+}
+
+.metric-group__title {
+    @include text(lead);
+
+    font-weight: $font-weight-semibold;
+}
+
+.metric-group__note {
+    @include muted(label);
+}
+
+.metric-group__rows {
+    display: grid;
+    list-style: none;
+}

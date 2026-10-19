@@ -99,6 +99,19 @@ const ICON_PATHS = {
         </>
     ),
     moon: <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />,
+    chart: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
+    note: (
+        <>
+            <path d="M15 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <path d="M8 13h8M8 17h5" />
+        </>
+    ),
+    users: (
+        <>
+            <circle cx="9" cy="8" r="3.5" />
+            <path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 20a6.5 6.5 0 0 0-2.5-5.1" />
+        </>
+    ),
     contrast: (
         <>
             <circle cx="12" cy="12" r="9" />

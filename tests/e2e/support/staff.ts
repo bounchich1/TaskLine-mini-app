@@ -77,6 +77,9 @@ export const SESSION = {
         'organization.configure',
         'audit.view',
         'clients.privacy',
+        'reports.view',
+        'teams.manage',
+        'tickets.bulk',
     ],
 };
 
@@ -85,5 +88,5 @@ export const SUPPORT_SESSION = { ...SESSION, employee: BORIS, permissions: SUPPO
 export const SUPERVISOR_SESSION = {
     ...SESSION,
     employee: { ...BORIS, id: 'e6', name: 'Олег Руководитель', role: 'supervisor' },
-    permissions: SUPERVISOR_PERMISSIONS,
+    permissions: [...SUPERVISOR_PERMISSIONS, 'reports.view', 'tickets.bulk'],
 };

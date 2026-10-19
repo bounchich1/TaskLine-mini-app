@@ -1,0 +1,41 @@
+@use 'abstracts' as *;
+
+.queue-scope {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.queue-scope__chip {
+    @include text(small);
+
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 6px;
+    align-items: center;
+    padding: 4px 10px;
+    border: 1px solid $color-line-strong;
+    border-radius: 14px;
+    background: none;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+
+    &:hover {
+        color: $color-text;
+    }
+
+    &--selected {
+        border-color: transparent;
+        background: $color-bg-selected-strong;
+        color: $color-text-accent;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}
+
+.queue-scope__count {
+    @include count;
+}

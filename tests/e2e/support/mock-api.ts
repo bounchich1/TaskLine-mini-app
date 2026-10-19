@@ -5,6 +5,7 @@ import { BOT, PRESETS, presetPreview, PROFILE } from './business-fixtures';
 import { CLOSED_TICKETS, DICTIONARIES, MESSAGES, OPEN_TICKETS } from './fixtures';
 import { solidPng } from './media';
 import { NOTIFICATIONS } from './notification-fixtures';
+import { MACROS, REPORTS, RULES, TEAMS } from './routing-fixtures';
 import { SLA_CONFIG, SLA_NOW } from './sla-fixtures';
 import { SOURCE_EXCERPT } from './source-fixtures';
 import { EMPLOYEES, SESSION } from './staff';
@@ -80,6 +81,11 @@ const GET_ROUTES: [RegExp, Handler][] = [
     [/^\/v1\/admin\/presets\/[^/]+\/preview$/, (call) => presetPreview(call.path.split('/')[4] ?? '')],
     [/^\/v1\/admin\/diagnostics$/, () => DIAGNOSTICS],
     [/^\/v1\/admin\/audit$/, () => ({ items: AUDIT })],
+    [/^\/v1\/teams$/, () => ({ items: TEAMS })],
+    [/^\/v1\/macros$/, () => ({ items: MACROS })],
+    [/^\/v1\/admin\/routing-rules$/, () => RULES],
+    [/^\/v1\/reports\/\w+$/, (call) => REPORTS[call.path.split('/')[3] ?? '']],
+    [/^\/v1\/reports\/\w+\/export$/, () => 'Сотрудник;Взято'],
 ];
 
 function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
@@ -89,6 +95,16 @@ function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
 
     if (call.path === '/v1/notifications/settings') {
         return call.body;
+    }
+
+    if (call.path === '/v1/presence') {
+        return { ...(call.body as object), presence_at: null, active: 0 };
+    }
+
+    if (call.path === '/v1/tickets/bulk') {
+        const { ids } = call.body as { ids: string[] };
+
+        return { results: ids.map((id, index) => ({ id, number: index + 1, ok: true })) };
     }
 
     if (call.path === '/v1/admin/profile') {
@@ -116,7 +132,7 @@ function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
 
 export class MockApi {
     readonly calls: RecordedCall[] = [];
-    private readonly overrides: { method: string; path: RegExp; status: number }[] = [];
+    private readonly overrides: { method: string; path: RegExp; status: number; body?: object }[] = [];
     private readonly replies = new Map<string, unknown>();
     private readonly readTickets = new Set<string>();
 
@@ -139,8 +155,8 @@ export class MockApi {
         this.replies.set(path, body);
     }
 
-    failNext(method: string, path: RegExp, status: number): void {
-        this.overrides.push({ method, path, status });
+    failNext(method: string, path: RegExp, status: number, body?: object): void {
+        this.overrides.push({ method, path, status, body });
     }
 
     callsTo(method: string, path: string | RegExp): RecordedCall[] {
@@ -175,9 +191,9 @@ export class MockApi {
         const index = this.overrides.findIndex((item) => item.method === call.method && item.path.test(call.path));
 
         if (index >= 0) {
-            const [{ status }] = this.overrides.splice(index, 1);
+            const [{ status, body }] = this.overrides.splice(index, 1);
 
-            await route.fulfill({ status, json: { code: 'test_failure', message: `HTTP ${status}` } });
+            await route.fulfill({ status, json: body ?? { code: 'test_failure', message: `HTTP ${status}` } });
 
             return;
         }

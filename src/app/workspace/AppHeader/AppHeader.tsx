@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 
 import { adminTabsFor } from '@/features/admin';
 import type { ConnectionState } from '@/shared/api/events-stream';
+import { can } from '@/shared/lib/access';
 import type { Session } from '@/shared/types/api';
 import { Icon, type IconName } from '@/shared/ui';
 
@@ -10,7 +11,7 @@ import { AccountMenu } from '../AccountMenu/AccountMenu';
 
 import './AppHeader.scss';
 
-export type Section = 'tickets' | 'notifications' | 'admin';
+export type Section = 'tickets' | 'notifications' | 'reports' | 'admin';
 
 type AppHeaderProps = {
     session: Session;
@@ -36,6 +37,10 @@ export function AppHeader(props: AppHeaderProps) {
             alert: true,
         },
     ];
+
+    if (can(session, 'reports.view')) {
+        items.push({ section: 'reports', icon: 'chart', label: 'Отчёты' });
+    }
 
     if (adminTabsFor(session).length > 0) {
         items.push({ section: 'admin', icon: 'settings', label: 'Управление' });

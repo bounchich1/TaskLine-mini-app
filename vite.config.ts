@@ -3,6 +3,8 @@ import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
+const apiTarget = process.env.API_PROXY_TARGET ?? 'http://127.0.0.1:3000';
+
 export default defineConfig({
     plugins: [react()],
     resolve: {
@@ -14,12 +16,12 @@ export default defineConfig({
         },
     },
     server: {
-        port: 5173,
+        port: Number(process.env.VITE_PORT ?? 5173),
         strictPort: true,
         proxy: {
-            '/v1': 'http://127.0.0.1:3000',
-            '/download': 'http://127.0.0.1:3000',
-            '/health': 'http://127.0.0.1:3000',
+            '/v1': apiTarget,
+            '/download': apiTarget,
+            '/health': apiTarget,
         },
     },
     build: {

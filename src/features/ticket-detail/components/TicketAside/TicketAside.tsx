@@ -1,10 +1,12 @@
 import type { Dimension } from '@/shared/config/labels';
 import type { Dictionary, Ticket } from '@/shared/types/api';
+import type { Team } from '@/shared/types/routing';
 
 import { AiSuggestionPanel } from '../AiSuggestionPanel/AiSuggestionPanel';
 import { ClassificationFields } from '../ClassificationFields/ClassificationFields';
 import { ClientPrivacy } from '../ClientPrivacy/ClientPrivacy';
 import { ClosureHistory } from '../ClosureHistory/ClosureHistory';
+import { TeamField } from '../TeamField/TeamField';
 import { TicketProperties } from '../TicketProperties/TicketProperties';
 
 import './TicketAside.scss';
@@ -12,11 +14,13 @@ import './TicketAside.scss';
 type TicketAsideProps = {
     ticket: Ticket;
     dictionaries: Dictionary[];
+    teams: Team[];
     timezone: string;
     disabled: boolean;
     canInsert: boolean;
     canManagePrivacy: boolean;
     onClassify: (field: Dimension, value: string) => void;
+    onTeam: (teamId: string | null) => void;
     onInsertSuggestion: (text: string) => void;
     onOpenSource: (sourceId: string) => void;
 };
@@ -34,6 +38,8 @@ export function TicketAside(props: TicketAsideProps) {
                         disabled={props.disabled}
                         onChange={props.onClassify}
                     />
+
+                    <TeamField ticket={ticket} teams={props.teams} disabled={props.disabled} onChange={props.onTeam} />
                 </TicketProperties>
             </section>
 

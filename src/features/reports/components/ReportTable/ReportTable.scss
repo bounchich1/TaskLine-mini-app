@@ -1,0 +1,112 @@
+@use 'abstracts' as *;
+
+.report-table-scroll {
+    overflow-x: auto;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+
+    th,
+    td {
+        padding: 10px 8px;
+        border-bottom: 1px solid $color-line;
+        text-align: right;
+        vertical-align: top;
+        white-space: nowrap;
+    }
+
+    thead th {
+        @include text(label);
+
+        border-bottom-color: $color-line-strong;
+        color: $color-text-secondary;
+        font-weight: $font-weight-medium;
+        vertical-align: bottom;
+    }
+
+    thead th:first-child,
+    .report-table__person,
+    .report-table__text {
+        text-align: left;
+    }
+
+    @include respond-to(phone) {
+        thead {
+            display: none;
+        }
+
+        tbody,
+        tr,
+        th,
+        td {
+            display: block;
+        }
+
+        tr {
+            padding: 12px 0;
+            border-bottom: 1px solid $color-line;
+        }
+
+        th,
+        td {
+            padding: 2px 0;
+            border: 0;
+        }
+
+        td {
+            display: flex;
+            justify-content: space-between;
+
+            &::before {
+                color: $color-text-muted;
+                content: attr(data-label);
+            }
+        }
+    }
+}
+
+.report-table__hint {
+    display: block;
+    color: $color-text-muted;
+    font-weight: $font-weight-regular;
+}
+
+.report-table__person {
+    font-weight: $font-weight-regular;
+}
+
+.report-table__name {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    font-weight: $font-weight-medium;
+}
+
+.report-table__role {
+    @include muted(label);
+
+    display: block;
+    padding-left: 16px;
+}
+
+.report-table__presence {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $color-icon-muted;
+
+    &--online {
+        background: $color-positive;
+    }
+
+    &--break {
+        background: $color-urgency-medium;
+    }
+}
+
+.report-table__row--blocked {
+    color: $color-text-muted;
+}

@@ -10,6 +10,7 @@ export type Filters = {
     complexity: string;
     status: string;
     assignee: string;
+    team: string;
     sla: string;
     from: string;
     to: string;
@@ -35,6 +36,7 @@ export const DEFAULT_FILTERS: Filters = {
     complexity: '',
     status: '',
     assignee: '',
+    team: '',
     sla: '',
     from: '',
     to: '',

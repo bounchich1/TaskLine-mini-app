@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { api } from '@/shared/api/http';
 import { queryKeys } from '@/shared/api/query-keys';
-import { dictionariesQuery } from '@/shared/api/reference-data';
+import { dictionariesQuery, macrosQuery, teamsQuery } from '@/shared/api/reference-data';
 import type { Employee, SlaConfig } from '@/shared/types/api';
 
 import type {
@@ -13,22 +13,62 @@ import type {
     Diagnostics,
     OrganizationSettings,
     Preset,
+    StoredRoutingRule,
     ServerHealth,
     Template,
 } from '../model/types';
 
 const DIAGNOSTICS_REFETCH_MS = 15000;
 
+function useRoutingQueries(tab: AdminTab) {
+    const teams = useQuery({ ...teamsQuery, enabled: tab === 'teams' || tab === 'routing' });
+
+    const rules = useQuery({
+        queryKey: queryKeys.routingRules,
+        queryFn: () => api<{ items: StoredRoutingRule[]; version: number }>('/v1/admin/routing-rules'),
+        enabled: tab === 'routing',
+    });
+
+    const macros = useQuery({ ...macrosQuery, enabled: tab === 'macros' });
+
+    return { teams, rules, macros };
+}
+
+function useOperationsQueries(tab: AdminTab) {
+    const diagnostics = useQuery({
+        queryKey: queryKeys.diagnostics,
+        queryFn: () => api<Diagnostics>('/v1/admin/diagnostics'),
+        enabled: tab === 'diagnostics',
+        refetchInterval: DIAGNOSTICS_REFETCH_MS,
+    });
+
+    const health = useQuery({
+        queryKey: queryKeys.health,
+        queryFn: () => api<ServerHealth>('/health/live'),
+        enabled: tab === 'diagnostics',
+    });
+
+    const audit = useQuery({
+        queryKey: queryKeys.audit,
+        queryFn: () => api<{ items: AuditEntry[] }>('/v1/admin/audit'),
+        enabled: tab === 'audit',
+    });
+
+    return { diagnostics, health, audit };
+}
+
 export function useAdminQueries(tab: AdminTab, configure: boolean) {
     const employees = useQuery({
         queryKey: queryKeys.adminEmployees,
         queryFn: () => api<{ items: Employee[] }>('/v1/admin/employees'),
-        enabled: tab === 'employees',
+        enabled: tab === 'employees' || tab === 'teams',
     });
+
+    const { teams, rules, macros } = useRoutingQueries(tab);
 
     const dictionaries = useQuery({
         ...dictionariesQuery,
-        enabled: tab === 'dictionaries' || tab === 'sla' || tab === 'assistant',
+        enabled: ['dictionaries', 'sla', 'assistant', 'teams', 'routing', 'macros'].includes(tab),
     });
 
     const templates = useQuery({
@@ -67,26 +107,24 @@ export function useAdminQueries(tab: AdminTab, configure: boolean) {
         enabled: tab === 'sla',
     });
 
-    const diagnostics = useQuery({
-        queryKey: queryKeys.diagnostics,
-        queryFn: () => api<Diagnostics>('/v1/admin/diagnostics'),
-        enabled: tab === 'diagnostics',
-        refetchInterval: DIAGNOSTICS_REFETCH_MS,
-    });
+    const { diagnostics, health, audit } = useOperationsQueries(tab);
 
-    const health = useQuery({
-        queryKey: queryKeys.health,
-        queryFn: () => api<ServerHealth>('/health/live'),
-        enabled: tab === 'diagnostics',
-    });
-
-    const audit = useQuery({
-        queryKey: queryKeys.audit,
-        queryFn: () => api<{ items: AuditEntry[] }>('/v1/admin/audit'),
-        enabled: tab === 'audit',
-    });
-
-    return { employees, dictionaries, templates, profile, bot, presets, sla, settings, diagnostics, health, audit };
+    return {
+        employees,
+        teams,
+        rules,
+        macros,
+        dictionaries,
+        templates,
+        profile,
+        bot,
+        presets,
+        sla,
+        settings,
+        diagnostics,
+        health,
+        audit,
+    };
 }
 
 export type AdminQueries = ReturnType<typeof useAdminQueries>;

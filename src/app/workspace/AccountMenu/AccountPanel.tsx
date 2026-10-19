@@ -1,6 +1,7 @@
 import { clsx } from 'clsx';
 import { useEffect, useRef, type RefObject } from 'react';
 
+import { PresenceOptions, type PresenceState } from '@/features/routing';
 import { roleLabel } from '@/shared/config/labels';
 import { setSchemePreference, useSchemePreference, type SchemePreference } from '@/shared/lib/color-scheme';
 import { useAnchoredPopover } from '@/shared/lib/use-anchored-popover';
@@ -10,8 +11,10 @@ import { Avatar, Icon, type IconName } from '@/shared/ui';
 type AccountPanelProps = {
     id: string;
     session: Session;
+    presence: PresenceState;
     anchor: RefObject<HTMLElement | null>;
     onClose: () => void;
+    onMacros: () => void;
 };
 
 const SCHEMES: { value: SchemePreference; label: string; icon: IconName }[] = [
@@ -20,7 +23,7 @@ const SCHEMES: { value: SchemePreference; label: string; icon: IconName }[] = [
     { value: 'dark', label: 'Тёмная', icon: 'moon' },
 ];
 
-export function AccountPanel({ id, session, anchor, onClose }: AccountPanelProps) {
+export function AccountPanel({ id, session, presence, anchor, onClose, onMacros }: AccountPanelProps) {
     const ref = useRef<HTMLDivElement>(null);
     const preference = useSchemePreference();
 
@@ -77,6 +80,13 @@ export function AccountPanel({ id, session, anchor, onClose }: AccountPanelProps
                     </label>
                 ))}
             </fieldset>
+
+            <PresenceOptions state={presence} />
+
+            <button type="button" className="account-panel__action" onClick={onMacros}>
+                <Icon name="note" size={18} className="account-panel__scheme-icon" />
+                Мои шаблоны ответов
+            </button>
         </div>
     );
 }

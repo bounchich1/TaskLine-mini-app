@@ -1,14 +1,16 @@
-import { Button } from '@maxhub/max-ui';
 import { clsx } from 'clsx';
-import type { Dispatch, FormEvent, KeyboardEvent, SetStateAction } from 'react';
+import type { Dispatch, FormEvent, RefObject, SetStateAction } from 'react';
 
 import type { useAttachmentUpload } from '@/features/ticket-detail/hooks/use-attachment-upload';
-import { canSubmitDraft, isDraftDirty, type Draft } from '@/features/ticket-detail/model/draft';
-import { MAX_REPLY_LENGTH } from '@/features/ticket-detail/model/limits';
-import type { Ticket } from '@/shared/types/api';
-import { ErrorNotice, Icon } from '@/shared/ui';
+import { useComposerSuggest } from '@/features/ticket-detail/hooks/use-composer-suggest';
+import { canSubmitDraft, emptyDraft, isDraftDirty, type Draft } from '@/features/ticket-detail/model/draft';
+import type { Employee, Ticket } from '@/shared/types/api';
+import type { Macro } from '@/shared/types/routing';
+import { ErrorNotice } from '@/shared/ui';
 
-import { AttachButton } from '../AttachButton/AttachButton';
+import { ComposerBar } from '../ComposerBar/ComposerBar';
+import { ComposerInput } from '../ComposerInput/ComposerInput';
+import { ComposerModes } from '../ComposerModes/ComposerModes';
 import { DraftFiles } from '../DraftFiles/DraftFiles';
 
 import './Composer.scss';
@@ -17,11 +19,21 @@ type ComposerProps = {
     ticket: Ticket;
     draft: Draft;
     setDraft: Dispatch<SetStateAction<Draft>>;
+    inputRef: RefObject<HTMLTextAreaElement | null>;
     canSend: boolean;
+    canNote: boolean;
     pending: boolean;
     uploads: ReturnType<typeof useAttachmentUpload>;
+    employees: Employee[];
+    macros: Macro[];
+    macroContext: { ticketNumber: string; agentName: string; eta: string };
+    me: string;
+    onTyping: () => void;
     onSend: () => void;
 };
+
+const switchMode = (mode: Draft['mode']) => (current: Draft) =>
+    current.text || current.uploads.length ? { ...current, mode } : emptyDraft(mode);
 
 function sendBlockedReason(ticket: Ticket) {
     if (ticket.status === 'open') {
@@ -35,24 +47,33 @@ function sendBlockedReason(ticket: Ticket) {
     return 'Отвечает назначенный сотрудник.';
 }
 
-export function Composer({ ticket, draft, setDraft, canSend, pending, uploads, onSend }: ComposerProps) {
-    const sendable = canSend && canSubmitDraft(draft, uploads.uploading || pending);
+function composerState({ draft, canSend, canNote, pending, uploads }: ComposerProps) {
+    const note = draft.mode === 'note';
+    const allowed = note ? canNote : canSend;
 
-    const submit = (event: FormEvent) => {
-        event.preventDefault();
+    return {
+        note,
+        allowed,
+        sendable: allowed && canSubmitDraft(draft, uploads.uploading || pending),
+        idle: !canSend && !canNote && !isDraftDirty(draft, false),
+        boxClass: clsx('composer__box', !allowed && 'composer__box--locked', note && 'composer__box--note'),
+    };
+}
+
+export function Composer(props: ComposerProps) {
+    const { ticket, draft, setDraft, canSend, canNote, pending, uploads } = props;
+    const { note, allowed, sendable, idle, boxClass } = composerState(props);
+    const suggest = useComposerSuggest({ ...props, draft, setDraft });
+
+    const submit = (event?: FormEvent) => {
+        event?.preventDefault();
 
         if (sendable) {
-            onSend();
+            props.onSend();
         }
     };
 
-    const shortcut = (event: KeyboardEvent) => {
-        if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
-            submit(event);
-        }
-    };
-
-    if (!canSend && !isDraftDirty(draft, false)) {
+    if (idle) {
         return (
             <div className="composer">
                 <p className="composer__notice">{sendBlockedReason(ticket)}</p>
@@ -62,50 +83,40 @@ export function Composer({ ticket, draft, setDraft, canSend, pending, uploads, o
 
     return (
         <form className="composer" onSubmit={submit}>
-            {canSend ? null : (
-                <p className="composer__notice">
-                    {sendBlockedReason(ticket)} Черновик сохранён, его можно скопировать.
-                </p>
-            )}
-
-            <div className={clsx('composer__box', !canSend && 'composer__box--locked')}>
-                {draft.uploads.length > 0 ? <DraftFiles uploads={draft.uploads} setDraft={setDraft} /> : null}
-
-                <textarea
-                    className="composer__input"
-                    aria-label="Текст ответа клиенту"
-                    placeholder={canSend ? 'Ответ клиенту от имени бота' : 'Отправка недоступна'}
-                    value={draft.text}
-                    onChange={(event) => {
-                        setDraft((current) => ({ ...current, text: event.target.value }));
+            {canNote ? (
+                <ComposerModes
+                    mode={draft.mode}
+                    onMode={(mode) => {
+                        setDraft(switchMode(mode));
+                        props.inputRef.current?.focus();
                     }}
-                    onKeyDown={shortcut}
-                    maxLength={MAX_REPLY_LENGTH}
-                    rows={3}
-                    readOnly={!canSend}
-                    disabled={pending}
+                />
+            ) : null}
+
+            {allowed ? null : <p className="composer__notice">{sendBlockedReason(ticket)} Черновик сохранён.</p>}
+
+            <div className={boxClass}>
+                {!note && draft.uploads.length > 0 ? <DraftFiles uploads={draft.uploads} setDraft={setDraft} /> : null}
+
+                <ComposerInput
+                    inputRef={props.inputRef}
+                    draft={draft}
+                    setDraft={setDraft}
+                    suggest={suggest}
+                    locked={!allowed}
+                    pending={pending}
+                    onTyping={props.onTyping}
+                    onSubmit={submit}
                 />
 
-                <div className="composer__bar">
-                    <AttachButton uploads={uploads} disabled={!canSend || pending} />
-
-                    {draft.text.length > 0 ? (
-                        <span className="composer__count">
-                            {draft.text.length} / {MAX_REPLY_LENGTH}
-                        </span>
-                    ) : null}
-
-                    <Button
-                        type="submit"
-                        size="xsmall"
-                        title="Ctrl+Enter"
-                        iconAfter={<Icon name="send" size={15} />}
-                        loading={pending}
-                        disabled={!sendable && !pending}
-                    >
-                        Отправить
-                    </Button>
-                </div>
+                <ComposerBar
+                    note={note}
+                    length={draft.text.length}
+                    uploads={uploads}
+                    attachDisabled={!canSend || pending}
+                    pending={pending}
+                    sendable={sendable}
+                />
             </div>
 
             <ErrorNotice className="composer__error" error={uploads.uploadError} />

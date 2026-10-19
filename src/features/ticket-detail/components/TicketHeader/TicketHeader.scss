@@ -50,3 +50,14 @@
 
     color: $color-text-secondary;
 }
+
+.ticket-header__offer {
+    @include text(label);
+
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: $color-bg-selected;
+    color: $color-text-accent;
+    font-weight: $font-weight-medium;
+    white-space: nowrap;
+}

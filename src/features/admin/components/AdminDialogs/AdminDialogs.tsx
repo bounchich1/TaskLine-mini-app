@@ -5,8 +5,10 @@ import type { Session } from '@/shared/types/api';
 import { BlockEmployeeDialog } from '../dialogs/BlockEmployeeDialog/BlockEmployeeDialog';
 import { DictionaryDialog } from '../dialogs/DictionaryDialog/DictionaryDialog';
 import { EmployeeDialog } from '../dialogs/EmployeeDialog/EmployeeDialog';
+import { MacroDialog } from '../dialogs/MacroDialog/MacroDialog';
 import { PresetDialog } from '../dialogs/PresetDialog/PresetDialog';
 import { ResolutionDialog } from '../dialogs/ResolutionDialog/ResolutionDialog';
+import { TeamDialog } from '../dialogs/TeamDialog/TeamDialog';
 import { TemplateDialog } from '../dialogs/TemplateDialog/TemplateDialog';
 import { SetupWizard } from '../SetupWizard/SetupWizard';
 
@@ -35,5 +37,9 @@ export function AdminDialogs({ dialog, session, ...props }: AdminDialogsProps) {
             return <PresetDialog profile={dialog.profile} {...props} />;
         case 'setup':
             return <SetupWizard profile={dialog.profile} onClose={props.onClose} />;
+        case 'team':
+            return <TeamDialog team={dialog.team} {...props} />;
+        case 'macro':
+            return <MacroDialog macro={dialog.macro} {...props} />;
     }
 }

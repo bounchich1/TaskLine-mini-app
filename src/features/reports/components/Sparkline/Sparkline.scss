@@ -1,0 +1,18 @@
+@use 'abstracts' as *;
+
+.sparkline {
+    display: block;
+    overflow: visible;
+}
+
+.sparkline__line {
+    fill: none;
+    stroke: $color-chart-muted;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.sparkline__dot {
+    fill: $color-chart-primary;
+}

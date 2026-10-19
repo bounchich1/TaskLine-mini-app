@@ -1,3 +1,5 @@
+import type { Presence } from './routing';
+
 export type Role = 'support' | 'supervisor' | 'admin';
 
 export type EmployeeStatus = 'pending' | 'active' | 'blocked';
@@ -16,7 +18,10 @@ export type Permission =
     | 'employees.manage'
     | 'organization.configure'
     | 'audit.view'
-    | 'clients.privacy';
+    | 'clients.privacy'
+    | 'reports.view'
+    | 'teams.manage'
+    | 'tickets.bulk';
 
 export type Employee = {
     id: string;
@@ -26,6 +31,8 @@ export type Employee = {
     version: number;
     max_user_id?: string;
     activated_at?: string | null;
+    presence?: Presence;
+    presence_at?: string | null;
 };
 
 export type Session = {
@@ -143,6 +150,11 @@ export type Ticket = {
     closures?: Closure[];
     attachments?: Attachment[];
     purged_at?: string | null;
+    team_id?: string | null;
+    team_name?: string | null;
+    offered_to?: string | null;
+    offered_to_name?: string | null;
+    offer_due_at?: string | null;
 } & SlaFields;
 
 export type SlaClock = 'first_response' | 'resolution';
@@ -193,6 +205,10 @@ export type Message = {
     delivery_state: string;
     deleted: boolean;
     revision: number;
+    visibility?: 'client' | 'internal';
+    learnable?: boolean;
+    mentions?: string[];
+    draft_origin?: 'ai' | 'macro' | null;
 };
 
 export type SourceExcerpt = {
@@ -243,7 +259,7 @@ export type Notification = {
     ticket_id: string;
     read_at: string | null;
     created_at: string;
-    payload: { value?: number; comment?: string; topic?: boolean; clock?: SlaClock; stage?: number };
+    payload: { value?: number; comment?: string; topic?: boolean; clock?: SlaClock; stage?: number; reason?: string };
     preview: string | null;
     actor_name: string | null;
     ticket: NotificationTicket | null;

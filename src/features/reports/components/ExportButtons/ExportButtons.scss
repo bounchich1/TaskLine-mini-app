@@ -1,0 +1,45 @@
+@use 'abstracts' as *;
+
+.export-buttons {
+    display: grid;
+    gap: 8px;
+    justify-items: end;
+}
+
+.export-buttons__row {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.export-buttons__label {
+    @include muted(small);
+
+    margin-right: 4px;
+}
+
+.export-buttons__button {
+    @include text(small);
+
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    padding: 5px 10px;
+    border: 1px solid $color-line-strong;
+    border-radius: $radius-s;
+    background: $color-bg;
+    color: $color-text;
+    font-weight: $font-weight-medium;
+
+    &:hover:not(:disabled) {
+        background: $color-bg-hover;
+    }
+
+    &:disabled {
+        color: $color-text-muted;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}

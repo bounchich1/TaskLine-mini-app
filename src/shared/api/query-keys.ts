@@ -22,4 +22,8 @@ export const queryKeys = {
     diagnostics: ['diagnostics'],
     audit: ['audit'],
     health: ['health'],
+    report: (name: string, from: string, to: string) => ['report', name, from, to],
+    teams: ['teams'],
+    routingRules: ['routing-rules'],
+    macros: ['macros'],
 } as const;

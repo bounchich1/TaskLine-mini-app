@@ -1,0 +1,35 @@
+@use 'abstracts' as *;
+
+.composer-modes {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.composer-modes__tab {
+    @include text(label);
+
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: none;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+
+    &:hover {
+        color: $color-text;
+    }
+
+    &--reply {
+        background: $color-bg-selected;
+        color: $color-text-accent;
+    }
+
+    &--note {
+        background: $color-bubble-note;
+        color: $color-warning-text;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}

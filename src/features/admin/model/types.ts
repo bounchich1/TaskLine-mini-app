@@ -1,13 +1,27 @@
 import { can } from '@/shared/lib/access';
 import type { Dictionary, Employee, Permission, Session } from '@/shared/types/api';
+import type { Macro, Team } from '@/shared/types/routing';
 
 export type AdminTab =
-    'employees' | 'assistant' | 'dictionaries' | 'templates' | 'sla' | 'settings' | 'diagnostics' | 'audit';
+    | 'employees'
+    | 'teams'
+    | 'routing'
+    | 'macros'
+    | 'assistant'
+    | 'dictionaries'
+    | 'templates'
+    | 'sla'
+    | 'settings'
+    | 'diagnostics'
+    | 'audit';
 
 type AdminTabDefinition = { tab: AdminTab; label: string; permission: Permission };
 
 const ADMIN_TABS: readonly AdminTabDefinition[] = [
     { tab: 'employees', label: 'Сотрудники', permission: 'employees.manage' },
+    { tab: 'teams', label: 'Команды', permission: 'teams.manage' },
+    { tab: 'routing', label: 'Маршрутизация', permission: 'teams.manage' },
+    { tab: 'macros', label: 'Шаблоны ответов', permission: 'organization.configure' },
     { tab: 'assistant', label: 'ИИ-помощник', permission: 'organization.configure' },
     { tab: 'dictionaries', label: 'Темы и уровни', permission: 'organization.configure' },
     { tab: 'templates', label: 'Диалог с клиентом', permission: 'organization.configure' },
@@ -95,4 +109,14 @@ export type AdminDialog =
     | { kind: 'template'; template: Template }
     | { kind: 'preset'; profile: BusinessProfile }
     | { kind: 'setup'; profile: BusinessProfile }
-    | { kind: 'resolution'; resolution: Resolution };
+    | { kind: 'resolution'; resolution: Resolution }
+    | { kind: 'team'; team: Team | null }
+    | { kind: 'macro'; macro: Macro | null };
+
+export type RoutingRule = {
+    id?: string;
+    team_id: string;
+    match: { tag: string[]; urgency: string[]; complexity: string[] };
+};
+
+export type StoredRoutingRule = Omit<RoutingRule, 'match'> & { match: Partial<RoutingRule['match']> };

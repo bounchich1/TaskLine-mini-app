@@ -2,6 +2,7 @@ import { API_BASE } from '@/shared/config/env';
 
 import { authHeaders, hasSession } from './http';
 import { notifySessionExpired } from './session-events';
+import { setTicketViewers } from './ticket-viewers';
 
 export type ConnectionState = 'live' | 'reconnecting';
 
@@ -33,6 +34,20 @@ function parseEvent(packet: string): LiveEvent | null {
     }
 }
 
+function applyViewers(packet: string): void {
+    const data = /^data: (.*)$/m.exec(packet);
+
+    try {
+        const update = data ? (JSON.parse(data[1]) as { ticket_id?: string; viewers?: [] }) : null;
+
+        if (update?.ticket_id && Array.isArray(update.viewers)) {
+            setTicketViewers(update.ticket_id, update.viewers);
+        }
+    } catch {
+        return;
+    }
+}
+
 function handlePacket(packet: string, stream: StreamState, result: ChunkResult): void {
     const id = /^id: (\d+)$/m.exec(packet);
 
@@ -44,6 +59,8 @@ function handlePacket(packet: string, stream: StreamState, result: ChunkResult):
         result.expired = true;
     } else if (packet.includes('event: resync')) {
         result.resync = true;
+    } else if (packet.includes('event: viewers')) {
+        applyViewers(packet);
     } else if (packet.includes('event: change')) {
         result.events.push(parseEvent(packet) ?? { type: 'unknown', ticket_id: null });
     }

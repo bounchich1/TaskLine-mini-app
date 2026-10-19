@@ -11,6 +11,7 @@ const LIVE_QUERIES: QueryKey[] = [
     queryKeys.notifications,
     queryKeys.dictionaries,
     queryKeys.employees,
+    queryKeys.teams,
 ];
 
 const BATCH_MS = 300;
@@ -25,7 +26,14 @@ function affectedQueries(event: LiveEvent): QueryKey[] {
             queryKeys.adminEmployees,
             queryKeys.adminSla,
             queryKeys.tickets,
+            queryKeys.teams,
+            queryKeys.routingRules,
+            queryKeys.macros,
         ];
+    }
+
+    if (event.type === 'presence.changed') {
+        return [queryKeys.employees, queryKeys.teams];
     }
 
     const id = event.ticket_id;
@@ -77,7 +85,7 @@ export function useLiveUpdates() {
                 onEvents: (batch) => {
                     schedule(batch.flatMap(affectedQueries));
 
-                    if (!batch.every(isAdminEvent)) {
+                    if (!batch.every((event) => isAdminEvent(event) || event.type === 'presence.changed')) {
                         setChanged(true);
                     }
                 },

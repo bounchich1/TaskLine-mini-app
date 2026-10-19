@@ -1,3 +1,4 @@
+import type { Selection } from '@/features/ticket-queue/model/columns';
 import type { QueueTab } from '@/features/ticket-queue/model/filter-defaults';
 import type { Ticket } from '@/shared/types/api';
 import { Empty } from '@/shared/ui';
@@ -16,9 +17,10 @@ type QueueContentProps = {
     timezone: string;
     expanded: string | null;
     onToggle: (id: string) => void;
+    selection?: Selection;
 };
 
-export function QueueContent({ rows, loading, searching, compact, ...view }: QueueContentProps) {
+export function QueueContent({ rows, loading, searching, compact, selection, ...view }: QueueContentProps) {
     if (loading) {
         return (
             <div className="queue-content__skeleton" aria-label="Загрузка обращений">
@@ -37,5 +39,5 @@ export function QueueContent({ rows, loading, searching, compact, ...view }: Que
         );
     }
 
-    return compact ? <TicketList rows={rows} {...view} /> : <TicketTable rows={rows} {...view} />;
+    return compact ? <TicketList rows={rows} {...view} /> : <TicketTable rows={rows} selection={selection} {...view} />;
 }

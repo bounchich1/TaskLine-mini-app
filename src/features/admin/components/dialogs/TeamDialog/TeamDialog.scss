@@ -1,0 +1,89 @@
+@use 'abstracts' as *;
+
+.team-dialog {
+    display: grid;
+    gap: 14px;
+}
+
+.team-dialog__archive {
+    justify-self: start;
+}
+
+.team-dialog__row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+
+    @include respond-to(phone) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.team-members {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.team-members__legend {
+    @include section-title;
+
+    padding-bottom: 6px;
+}
+
+.team-members__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 12px;
+    align-items: start;
+    padding: 8px 0;
+    border-bottom: 1px solid $color-line;
+}
+
+.team-members__person {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.team-members__role {
+    @include muted(label);
+
+    display: block;
+}
+
+.team-members__check {
+    @include checkbox-control(16px);
+}
+
+.team-members__skills {
+    @include text(small);
+
+    color: $color-text-secondary;
+
+    summary {
+        cursor: pointer;
+        text-align: right;
+    }
+
+    &[open] {
+        grid-column: 1 / -1;
+    }
+}
+
+.team-members__skill-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 6px 12px;
+    padding: 8px 0 4px 26px;
+}
+
+.team-members__skill {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: $color-text;
+    cursor: pointer;
+}

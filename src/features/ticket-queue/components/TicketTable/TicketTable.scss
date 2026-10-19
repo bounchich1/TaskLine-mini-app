@@ -137,3 +137,15 @@
 .ticket-table__assignee-name {
     @include truncate;
 }
+
+.ticket-table__check {
+    @include checkbox-control(16px);
+}
+
+.ticket-table__head-cell--select {
+    width: 52px;
+}
+
+.ticket-table__row--selected {
+    background: $color-bg-selected;
+}

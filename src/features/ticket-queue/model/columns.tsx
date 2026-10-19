@@ -8,6 +8,44 @@ import { Avatar, SlaChip, Status, Urgency } from '@/shared/ui';
 import type { QueueTab } from './filter-defaults';
 import { complexityText, isClassifying, ratingText, tagText, urgencyText } from './ticket-fields';
 
+export type Selection = {
+    selected: ReadonlySet<string>;
+    onSelect: (ids: string[], checked: boolean) => void;
+};
+
+export function selectColumn(rows: Ticket[], { selected, onSelect }: Selection): ColumnDef<Ticket> {
+    const all = rows.length > 0 && rows.every((ticket) => selected.has(ticket.id));
+
+    return {
+        id: 'select',
+        header: () => (
+            <input
+                type="checkbox"
+                className="ticket-table__check"
+                aria-label="Выбрать все обращения на странице"
+                checked={all}
+                onChange={(event) => {
+                    onSelect(
+                        rows.map((ticket) => ticket.id),
+                        event.target.checked,
+                    );
+                }}
+            />
+        ),
+        cell: ({ row: { original: ticket } }) => (
+            <input
+                type="checkbox"
+                className="ticket-table__check"
+                aria-label={`Выбрать обращение №${ticket.number}`}
+                checked={selected.has(ticket.id)}
+                onChange={(event) => {
+                    onSelect([ticket.id], event.target.checked);
+                }}
+            />
+        ),
+    };
+}
+
 type ColumnOptions = {
     expanded: string | null;
     onToggle: (id: string) => void;

@@ -1,0 +1,174 @@
+@use 'abstracts' as *;
+
+.report-chart {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+}
+
+.report-chart__header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.report-chart__title {
+    @include section-title;
+}
+
+.report-chart__value {
+    @include text(title);
+
+    font-weight: $font-weight-semibold;
+}
+
+.report-chart__legend {
+    display: flex;
+    gap: 14px;
+}
+
+.report-chart__legend-item {
+    @include muted(label);
+
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.report-chart__swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+
+    &--primary {
+        background: $color-chart-primary;
+    }
+
+    &--secondary {
+        background: $color-chart-secondary;
+    }
+}
+
+.report-chart__canvas {
+    position: relative;
+    min-height: 168px;
+
+    svg {
+        display: block;
+        overflow: visible;
+    }
+}
+
+.report-chart__grid {
+    stroke: $color-line;
+    stroke-width: 1;
+}
+
+.report-chart__tick,
+.report-chart__day {
+    @include text(caption);
+
+    fill: $color-text-muted;
+    font-variant-numeric: tabular-nums;
+}
+
+.report-chart__tick {
+    text-anchor: end;
+}
+
+.report-chart__day {
+    text-anchor: middle;
+}
+
+.report-chart__bar {
+    &--primary {
+        fill: $color-chart-primary;
+    }
+
+    &--secondary {
+        fill: $color-chart-secondary;
+    }
+}
+
+.report-chart__band--active .report-chart__bar {
+    opacity: 0.8;
+}
+
+.report-chart__hit {
+    fill: transparent;
+}
+
+.report-chart__line {
+    fill: none;
+    stroke: $color-chart-primary;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.report-chart__area {
+    fill: $color-chart-primary;
+    opacity: 0.1;
+}
+
+.report-chart__crosshair {
+    stroke: $color-line-strong;
+    stroke-width: 1;
+}
+
+.report-chart__dot {
+    fill: $color-chart-primary;
+    stroke: $color-bg;
+    stroke-width: 2;
+}
+
+.report-chart__tooltip {
+    position: absolute;
+    top: -8px;
+    display: grid;
+    gap: 2px;
+    padding: 8px 10px;
+    border: 1px solid $color-line;
+    border-radius: $radius-s;
+    background: $color-bg-elevated;
+    box-shadow: $shadow-popover;
+    pointer-events: none;
+    transform: translateY(-100%);
+}
+
+.report-chart__tooltip-title {
+    @include muted(label);
+}
+
+.report-chart__tooltip-row {
+    @include text(small);
+
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.report-chart__tooltip-value {
+    font-variant-numeric: tabular-nums;
+}
+
+.report-chart__tooltip-label {
+    color: $color-text-secondary;
+}
+
+.report-chart__key {
+    width: 10px;
+    height: 2px;
+    border-radius: 1px;
+
+    &--primary {
+        background: $color-chart-primary;
+    }
+
+    &--secondary {
+        background: $color-chart-secondary;
+    }
+}

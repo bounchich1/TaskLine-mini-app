@@ -72,6 +72,9 @@ const NOTIFICATION_LABELS: Labels = {
     'sla.resolution_warning': 'Решение под угрозой',
     'sla.resolution_breached': 'Решение просрочено',
     'sla.resolution_escalated': 'Решение просрочено вдвое',
+    'ticket.offered': 'Вам предложено обращение',
+    'note.mention': 'Вас упомянули в заметке',
+    'ticket.close_failed': 'Не удалось закрыть обращение после ответа',
 };
 
 export const notificationLabel = (type: string) => NOTIFICATION_LABELS[type] ?? 'Изменение обращения';
@@ -146,6 +149,9 @@ const DIAGNOSTIC_REASON_LABELS: Labels = {
     job_ineligible: 'Больше не требуется',
     worker_recovery: 'Перезапущено после сбоя',
     worker_error: 'Внутренняя ошибка',
+    gateway_lost: 'Связь со шлюзом ИИ прервалась',
+    failed: 'Вызов завершился ошибкой',
+    unknown: 'Причина не записана',
 };
 
 export const diagnosticReasonLabel = (reason: string) => DIAGNOSTIC_REASON_LABELS[reason] ?? reason;

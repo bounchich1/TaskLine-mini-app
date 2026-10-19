@@ -1,17 +1,19 @@
 import { clsx } from 'clsx';
 import { useCallback, type Dispatch, type SetStateAction } from 'react';
 
-import { TicketCard, type Draft, type TicketNavigation } from '@/features/ticket-detail';
+import type { Draft, TicketNavigation } from '@/features/ticket-detail';
+import { useBulk } from '@/features/ticket-queue/hooks/use-bulk';
+import { useQueueKeys } from '@/features/ticket-queue/hooks/use-queue-keys';
 import type { TicketFilters } from '@/features/ticket-queue/hooks/use-ticket-filters';
 import type { TicketList as TicketListData } from '@/features/ticket-queue/hooks/use-ticket-list';
+import { useTeams } from '@/shared/api/reference-data';
+import { can } from '@/shared/lib/access';
 import type { Dictionary, Employee, Session } from '@/shared/types/api';
-import { ErrorNotice, Icon, PageHeader } from '@/shared/ui';
 
 import { QueueContent } from '../QueueContent/QueueContent';
-import { QueueFilters } from '../QueueFilters/QueueFilters';
+import { QueueDetail } from '../QueueDetail/QueueDetail';
 import { QueueFooter } from '../QueueFooter/QueueFooter';
-import { QueueTabs } from '../QueueTabs/QueueTabs';
-import { QueueToolbar } from '../QueueToolbar/QueueToolbar';
+import { QueueHead } from '../QueueHead/QueueHead';
 
 import './TicketsPage.scss';
 
@@ -31,12 +33,22 @@ type TicketsPageProps = {
     onAcknowledge: () => void;
 };
 
+const pageClass = ({ expanded, split, compact }: { expanded: string | null; split: boolean; compact: boolean }) =>
+    clsx('tickets-page', {
+        'tickets-page--open': expanded,
+        'tickets-page--split': split,
+        'tickets-page--compact': compact,
+    });
+
 export function TicketsPage(props: TicketsPageProps) {
     const { session, queue, ticketList, expanded, onExpand, navigation, split } = props;
     const { list, rows, counts } = ticketList;
     const timezone = session.organization.timezone;
     const tab = queue.filters.tab;
     const compact = !split || expanded !== null;
+    const teams = useTeams();
+    const bulk = useBulk();
+    const bulkAllowed = can(session, 'tickets.bulk') && !compact;
 
     const onToggle = useCallback(
         (id: string) => {
@@ -45,46 +57,23 @@ export function TicketsPage(props: TicketsPageProps) {
         [onExpand],
     );
 
+    useQueueKeys({ rows, expanded, onExpand, enabled: split });
+
     return (
-        <div
-            className={clsx(
-                'tickets-page',
-                expanded && 'tickets-page--open',
-                split && 'tickets-page--split',
-                compact && 'tickets-page--compact',
-            )}
-        >
+        <div className={pageClass({ expanded, split, compact })}>
             <section className="tickets-page__queue" aria-label="Очередь обращений">
-                <div className="tickets-page__head">
-                    <PageHeader
-                        title="Обращения"
-                        actions={
-                            <button className="tickets-page__refresh" aria-label="Обновить" onClick={props.onRefresh}>
-                                <Icon name="refresh" size={18} />
-                            </button>
-                        }
-                    />
-
-                    <QueueTabs
-                        tab={tab}
-                        counts={counts}
-                        onSelect={queue.selectTab}
-                        riskOnly={queue.filters.sla === 'at_risk'}
-                        onToggleRisk={() => {
-                            queue.change('sla', queue.filters.sla === 'at_risk' ? '' : 'at_risk');
-                        }}
-                        changed={props.changed}
-                        onAcknowledge={props.onAcknowledge}
-                    />
-
-                    <QueueToolbar queue={queue} />
-
-                    {queue.filterOpen ? (
-                        <QueueFilters queue={queue} dictionaries={props.dictionaries} employees={props.employees} />
-                    ) : null}
-
-                    <ErrorNotice error={list.error} />
-                </div>
+                <QueueHead
+                    session={session}
+                    queue={queue}
+                    ticketList={ticketList}
+                    teams={teams}
+                    bulk={bulkAllowed ? bulk : null}
+                    dictionaries={props.dictionaries}
+                    employees={props.employees}
+                    changed={props.changed}
+                    onRefresh={props.onRefresh}
+                    onAcknowledge={props.onAcknowledge}
+                />
 
                 <div className="tickets-page__scroll">
                     <QueueContent
@@ -96,6 +85,7 @@ export function TicketsPage(props: TicketsPageProps) {
                         timezone={timezone}
                         expanded={expanded}
                         onToggle={onToggle}
+                        selection={bulkAllowed ? bulk : undefined}
                     />
 
                     <QueueFooter ticketList={ticketList} total={counts?.[tab]} />
@@ -103,24 +93,15 @@ export function TicketsPage(props: TicketsPageProps) {
             </section>
 
             {expanded ? (
-                <div className="tickets-page__detail">
-                    <TicketCard
-                        key={expanded}
-                        id={expanded}
-                        session={session}
-                        employees={props.employees ?? []}
-                        dictionaries={props.dictionaries ?? []}
-                        drafts={props.drafts}
-                        navigation={navigation}
-                        onClose={() => {
-                            if (navigation.returnTo) {
-                                navigation.goBack();
-                            } else {
-                                onExpand(null);
-                            }
-                        }}
-                    />
-                </div>
+                <QueueDetail
+                    id={expanded}
+                    session={session}
+                    drafts={props.drafts}
+                    dictionaries={props.dictionaries}
+                    employees={props.employees}
+                    navigation={navigation}
+                    onExpand={onExpand}
+                />
             ) : null}
         </div>
     );

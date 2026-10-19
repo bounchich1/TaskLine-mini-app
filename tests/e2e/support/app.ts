@@ -24,10 +24,10 @@ export function ticketCard(page: Page, number: string) {
     return page.getByRole('region', { name: `Обращение №${number}` });
 }
 
-const SECTIONS = { tickets: 0, notifications: 1, admin: 2 };
+const SECTIONS = { tickets: 'Обращения', notifications: 'Уведомления', reports: 'Отчёты', admin: 'Управление' };
 
 export async function openSection(page: Page, section: keyof typeof SECTIONS): Promise<void> {
     const navigation = page.getByRole('navigation', { name: 'Основная навигация' });
 
-    await navigation.getByRole('button').nth(SECTIONS[section]).click();
+    await navigation.getByRole('button', { name: new RegExp(`^${SECTIONS[section]}`) }).click();
 }
