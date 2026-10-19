@@ -1,0 +1,58 @@
+@use 'abstracts' as *;
+
+.incident-row {
+    @include row-hover;
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    padding: 12px 4px;
+    border-bottom: 1px solid $color-line;
+    background: none;
+    color: $color-text;
+    text-align: left;
+
+    &:focus-visible {
+        @include focus-ring-inset;
+    }
+}
+
+.incident-row__status {
+    @include text(label);
+
+    min-width: 72px;
+    padding: 2px 8px;
+    border-radius: $radius-s;
+    background: $color-bg-muted;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+    text-align: center;
+
+    &--open {
+        background: $color-negative-bg;
+        color: $color-negative;
+    }
+}
+
+.incident-row__main {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.incident-row__title {
+    @include truncate;
+
+    font-weight: $font-weight-medium;
+}
+
+.incident-row__meta {
+    @include muted(label);
+    @include truncate;
+}
+
+.incident-row__arrow {
+    color: $color-icon-muted;
+}

@@ -1,0 +1,19 @@
+@use 'abstracts' as *;
+
+.link-incident {
+    display: grid;
+    gap: 14px;
+}
+
+.link-incident__help,
+.link-incident__result {
+    @include text(small);
+
+    color: $color-text-secondary;
+}
+
+.link-incident__create {
+    @include text-button(small);
+
+    justify-self: start;
+}

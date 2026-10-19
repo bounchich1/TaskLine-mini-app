@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 
+import { IncidentBanner } from '@/features/incidents';
 import { useTicketCard } from '@/features/ticket-detail/hooks/use-ticket-card';
 import { useTicketShortcuts } from '@/features/ticket-detail/hooks/use-ticket-shortcuts';
 import { logTicketEvent } from '@/features/ticket-detail/hooks/use-viewing';
@@ -73,6 +74,8 @@ export function TicketCard(props: TicketCardProps) {
                     onOpenDialog={setDialog}
                 />
             </TicketHeader>
+
+            <IncidentBanner ticket={ticket} session={session} />
 
             <div className="ticket-card__panes">
                 <TicketThread

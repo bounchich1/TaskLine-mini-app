@@ -1,0 +1,51 @@
+@use 'abstracts' as *;
+
+.incident-timeline {
+    display: grid;
+    gap: 8px;
+}
+
+.incident-timeline__title {
+    @include section-title;
+}
+
+.incident-timeline__list {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+    padding-left: 14px;
+    border-left: 2px solid $color-line;
+}
+
+.incident-timeline__item {
+    display: grid;
+    gap: 4px;
+}
+
+.incident-timeline__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    align-items: baseline;
+}
+
+.incident-timeline__kind {
+    @include text(small);
+
+    font-weight: $font-weight-semibold;
+}
+
+.incident-timeline__time,
+.incident-timeline__author {
+    @include muted(label);
+}
+
+.incident-timeline__text {
+    @include text(small);
+
+    white-space: pre-wrap;
+}
+
+.incident-timeline__sent {
+    @include muted(label);
+}

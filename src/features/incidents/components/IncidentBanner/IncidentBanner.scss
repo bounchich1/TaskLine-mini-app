@@ -1,0 +1,40 @@
+@use 'abstracts' as *;
+
+.incident-banner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    align-items: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid $color-line;
+    background: $color-negative-bg;
+}
+
+.incident-banner__icon {
+    flex-shrink: 0;
+    color: $color-negative;
+}
+
+.incident-banner__text {
+    @include text(small);
+
+    display: grid;
+    flex: 1;
+    min-width: 0;
+    font-weight: $font-weight-medium;
+}
+
+.incident-banner__hint {
+    @include text(label);
+
+    color: $color-text-secondary;
+    font-weight: $font-weight-regular;
+}
+
+.incident-banner__action {
+    @include text-button(label);
+}
+
+.incident-banner__error {
+    flex-basis: 100%;
+}

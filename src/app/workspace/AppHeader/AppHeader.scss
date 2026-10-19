@@ -70,8 +70,9 @@
         @include text(caption);
 
         position: relative;
-        flex: 1;
+        flex: 1 1 auto;
         flex-direction: column;
+        min-width: 0;
         gap: 3px;
         justify-content: center;
         height: 100%;
@@ -82,6 +83,14 @@
             background: none;
             color: $color-text-accent;
         }
+    }
+}
+
+.app-header__nav-label {
+    @include respond-to(phone) {
+        @include truncate;
+
+        max-width: 100%;
     }
 }
 

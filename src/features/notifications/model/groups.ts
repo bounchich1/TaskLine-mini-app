@@ -1,8 +1,9 @@
 import { dayKey, formatDayTitle } from '@/shared/lib/format-date';
-import type { Notification } from '@/shared/types/api';
+import type { Notification } from '@/shared/types/notifications';
 
 export type NotificationGroup = {
-    ticketId: string;
+    key: string;
+    ticketId: string | null;
     latest: Notification;
     earlier: Notification[];
     unread: number;
@@ -14,15 +15,18 @@ export type DaySection = {
     groups: NotificationGroup[];
 };
 
+export const groupKey = (item: Notification): string => item.ticket_id ?? `notification:${item.id}`;
+
 export function groupNotifications(items: readonly Notification[]): NotificationGroup[] {
-    const byTicket = new Map<string, Notification[]>();
+    const byKey = new Map<string, Notification[]>();
 
     for (const item of items) {
-        byTicket.set(item.ticket_id, [...(byTicket.get(item.ticket_id) ?? []), item]);
+        byKey.set(groupKey(item), [...(byKey.get(groupKey(item)) ?? []), item]);
     }
 
-    return [...byTicket].map(([ticketId, [latest, ...earlier]]) => ({
-        ticketId,
+    return [...byKey].map(([key, [latest, ...earlier]]) => ({
+        key,
+        ticketId: latest.ticket_id,
         latest,
         earlier,
         unread: [latest, ...earlier].filter((item) => !item.read_at).length,

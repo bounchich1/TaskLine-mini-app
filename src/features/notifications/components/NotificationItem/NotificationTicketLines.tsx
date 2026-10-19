@@ -1,5 +1,5 @@
 import { ticketState } from '@/features/notifications/model/notification-copy';
-import type { NotificationTicket } from '@/shared/types/api';
+import type { NotificationTicket } from '@/shared/types/notifications';
 import { SlaChip, Urgency } from '@/shared/ui';
 
 type NotificationTicketLinesProps = {
@@ -12,7 +12,11 @@ type NotificationTicketLinesProps = {
 
 export function NotificationTicketLines({ ticket, detail, earlier, me, timezone }: NotificationTicketLinesProps) {
     if (!ticket) {
-        return <span className="notification-item__meta">Обращение недоступно</span>;
+        return detail ? (
+            <span className="notification-item__detail">{detail}</span>
+        ) : (
+            <span className="notification-item__meta">Обращение недоступно</span>
+        );
     }
 
     const classified = ticket.ai_status !== 'pending' && ticket.tag !== 'undefined';

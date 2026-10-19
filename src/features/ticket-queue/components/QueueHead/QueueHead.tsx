@@ -71,6 +71,8 @@ export function QueueHead(props: QueueHeadProps) {
             {bulk ? (
                 <BulkBar
                     bulk={bulk}
+                    timezone={session.organization.timezone}
+                    canLinkIncident={can(session, 'incidents.manage')}
                     employees={props.employees ?? []}
                     teams={teams}
                     dictionaries={props.dictionaries}

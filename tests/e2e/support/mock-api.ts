@@ -3,6 +3,7 @@ import type { Page, Request, Route } from '@playwright/test';
 import { AUDIT, DIAGNOSTICS, SETTINGS, TEMPLATES } from './admin-fixtures';
 import { BOT, PRESETS, presetPreview, PROFILE } from './business-fixtures';
 import { CLOSED_TICKETS, DICTIONARIES, MESSAGES, OPEN_TICKETS } from './fixtures';
+import { incidentGet, incidentMutation } from './incident-fixtures';
 import { solidPng } from './media';
 import { NOTIFICATIONS } from './notification-fixtures';
 import { MACROS, REPORTS, RULES, TEAMS } from './routing-fixtures';
@@ -83,6 +84,7 @@ const GET_ROUTES: [RegExp, Handler][] = [
     [/^\/v1\/admin\/audit$/, () => ({ items: AUDIT })],
     [/^\/v1\/teams$/, () => ({ items: TEAMS })],
     [/^\/v1\/macros$/, () => ({ items: MACROS })],
+    [/^\/v1\/incidents/, (call) => incidentGet(call.path, call.search)],
     [/^\/v1\/admin\/routing-rules$/, () => RULES],
     [/^\/v1\/reports\/\w+$/, (call) => REPORTS[call.path.split('/')[3] ?? '']],
     [/^\/v1\/reports\/\w+\/export$/, () => 'Сотрудник;Взято'],
@@ -95,6 +97,10 @@ function mutationResult(call: RecordedCall, session: typeof SESSION): unknown {
 
     if (call.path === '/v1/notifications/settings') {
         return call.body;
+    }
+
+    if (call.path.startsWith('/v1/incidents')) {
+        return incidentMutation(call.path, call.body);
     }
 
     if (call.path === '/v1/presence') {

@@ -1,0 +1,79 @@
+@use 'abstracts' as *;
+
+.incident-tickets {
+    display: grid;
+    gap: 8px;
+}
+
+.incident-tickets__title {
+    @include section-title;
+}
+
+.incident-tickets__list {
+    list-style: none;
+    border-top: 1px solid $color-line;
+}
+
+.incident-tickets__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 12px;
+    align-items: center;
+    border-bottom: 1px solid $color-line;
+
+    @include respond-to(phone) {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+}
+
+.incident-tickets__open {
+    @include row-hover;
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    min-width: 0;
+    padding: 10px 4px;
+    background: none;
+    color: $color-text;
+    text-align: left;
+
+    &:focus-visible {
+        @include focus-ring-inset;
+    }
+}
+
+.incident-tickets__number {
+    @include text(label);
+
+    color: $color-text-secondary;
+    font-variant-numeric: tabular-nums;
+}
+
+.incident-tickets__text {
+    @include text(small);
+    @include truncate;
+}
+
+.incident-tickets__date {
+    @include muted(label);
+
+    @include respond-to(phone) {
+        display: none;
+    }
+}
+
+.incident-tickets__status {
+    @include respond-to(phone) {
+        display: none;
+    }
+}
+
+.incident-tickets__unlink {
+    @include text-button(label);
+}
+
+.incident-tickets__empty {
+    @include muted(small);
+}

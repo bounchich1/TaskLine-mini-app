@@ -21,7 +21,7 @@ type NotificationItemProps = {
     me: string;
     now: number;
     timezone: string;
-    onOpen: (ticketId: string) => void;
+    onOpen: (group: NotificationGroup) => void;
 };
 
 export function NotificationItem({ group, me, now, timezone, onOpen }: NotificationItemProps) {
@@ -36,9 +36,9 @@ export function NotificationItem({ group, me, now, timezone, onOpen }: Notificat
                     unread > 0 && 'notification-item--unread',
                     isStale(latest, me) && 'notification-item--stale',
                 )}
-                disabled={!ticket}
+                disabled={!ticket && !latest.payload.incident_id}
                 onClick={() => {
-                    onOpen(group.ticketId);
+                    onOpen(group);
                 }}
             >
                 <span

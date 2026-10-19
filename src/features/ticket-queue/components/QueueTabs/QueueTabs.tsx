@@ -8,6 +8,7 @@ import './QueueTabs.scss';
 
 const TABS: readonly (readonly [QueueTab, string])[] = [
     ['open', 'Открытые'],
+    ['incident', 'Инциденты'],
     ['closed', 'Закрытые'],
 ];
 
@@ -25,11 +26,12 @@ export function QueueTabs(props: QueueTabsProps) {
     const { tab, counts, onSelect, riskOnly, changed, onAcknowledge } = props;
     const atRisk = counts?.at_risk ?? 0;
     const showRisk = tab === 'open' && (riskOnly || atRisk > 0);
+    const tabs = TABS.filter(([value]) => value !== 'incident' || tab === 'incident' || Boolean(counts?.incident));
 
     return (
         <div className="queue-tabs">
             <div className="queue-tabs__list" role="tablist" aria-label="Статус обращений">
-                {TABS.map(([value, label]) => (
+                {tabs.map(([value, label]) => (
                     <button
                         role="tab"
                         key={value}

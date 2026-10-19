@@ -1,0 +1,16 @@
+@use 'abstracts' as *;
+
+.eta-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.eta-fields__time {
+    width: 88px;
+}
+
+.eta-fields__clear {
+    @include text-button(small);
+}

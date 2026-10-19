@@ -11,7 +11,7 @@ import { AccountMenu } from '../AccountMenu/AccountMenu';
 
 import './AppHeader.scss';
 
-export type Section = 'tickets' | 'notifications' | 'reports' | 'admin';
+export type Section = 'tickets' | 'notifications' | 'incidents' | 'reports' | 'admin';
 
 type AppHeaderProps = {
     session: Session;
@@ -19,6 +19,7 @@ type AppHeaderProps = {
     onSection: (section: Section) => void;
     openCount: number | undefined;
     unread: number;
+    incidents: { active: number; suggested: number } | undefined;
     connection: ConnectionState;
 };
 
@@ -37,6 +38,16 @@ export function AppHeader(props: AppHeaderProps) {
             alert: true,
         },
     ];
+
+    if (can(session, 'incidents.manage')) {
+        items.push({
+            section: 'incidents',
+            icon: 'zap',
+            label: 'Инциденты',
+            count: props.incidents?.active,
+            alert: Boolean(props.incidents?.suggested),
+        });
+    }
 
     if (can(session, 'reports.view')) {
         items.push({ section: 'reports', icon: 'chart', label: 'Отчёты' });

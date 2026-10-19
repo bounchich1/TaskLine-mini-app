@@ -2,9 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { clsx } from 'clsx';
 import { useState } from 'react';
 
-import { AdminPanel } from '@/features/admin';
-import { countUnread, NotificationsPage, useNotifications, useReadOpenTicket } from '@/features/notifications';
-import { ReportsPage } from '@/features/reports';
+import { useIncidentBadge } from '@/features/incidents';
+import { countUnread, useNotifications, useReadOpenTicket } from '@/features/notifications';
 import { OfferToast } from '@/features/routing';
 import type { Draft } from '@/features/ticket-detail';
 import { TicketsPage, useTicketFilters, useTicketList } from '@/features/ticket-queue';
@@ -14,6 +13,7 @@ import { MEDIA, useMediaQuery } from '@/shared/lib/use-media-query';
 import type { Session } from '@/shared/types/api';
 
 import { AppHeader, type Section } from './AppHeader/AppHeader';
+import { SectionPage } from './SectionPage/SectionPage';
 import { StatusBanners } from './StatusBanners/StatusBanners';
 import { useLiveUpdates } from './use-live-updates';
 import { useTicketNavigation } from './use-ticket-navigation';
@@ -38,6 +38,8 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
     const { expanded, expand, navigation } = useTicketNavigation();
 
     const [section, setSection] = useState<Section>(() => initialSection(session));
+    const [incident, setIncident] = useState<string | null>(null);
+    const incidents = useIncidentBadge(can(session, 'incidents.manage'));
 
     const desktop = useMediaQuery(MEDIA.desktop);
     const queue = useTicketFilters(timezone);
@@ -56,6 +58,11 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
         expand(id);
     };
 
+    const openIncident = (id: string | null) => {
+        setSection('incidents');
+        setIncident(id);
+    };
+
     const focused = isFocused(section, expanded, desktop);
 
     return (
@@ -68,6 +75,7 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
                 onSection={setSection}
                 openCount={ticketList.counts?.open}
                 unread={countUnread(notifications)}
+                incidents={incidents}
                 connection={live.connection}
             />
 
@@ -93,17 +101,16 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
                     />
                 ) : null}
 
-                {section === 'notifications' ? (
-                    <NotificationsPage
+                {section === 'tickets' ? null : (
+                    <SectionPage
+                        section={section}
+                        session={session}
                         notifications={notifications}
-                        me={session.employee.id}
-                        timezone={timezone}
-                        onOpenTicket={openTicket}
+                        incident={incident}
+                        onIncident={openIncident}
+                        onTicket={openTicket}
                     />
-                ) : null}
-
-                {section === 'reports' ? <ReportsPage timezone={timezone} onTicket={openTicket} /> : null}
-                {section === 'admin' ? <AdminPanel session={session} onTicket={openTicket} /> : null}
+                )}
             </main>
 
             <OfferToast notifications={notifications.data?.items} onOpen={openTicket} />

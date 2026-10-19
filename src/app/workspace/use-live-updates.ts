@@ -12,6 +12,7 @@ const LIVE_QUERIES: QueryKey[] = [
     queryKeys.dictionaries,
     queryKeys.employees,
     queryKeys.teams,
+    queryKeys.incidents,
 ];
 
 const BATCH_MS = 300;
@@ -34,6 +35,10 @@ function affectedQueries(event: LiveEvent): QueryKey[] {
 
     if (event.type === 'presence.changed') {
         return [queryKeys.employees, queryKeys.teams];
+    }
+
+    if (event.type.startsWith('incident.')) {
+        return [queryKeys.incidents, queryKeys.tickets, queryKeys.notifications, queryKeys.ticket];
     }
 
     const id = event.ticket_id;

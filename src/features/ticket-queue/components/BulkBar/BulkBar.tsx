@@ -8,17 +8,20 @@ import type { Team } from '@/shared/types/routing';
 import { DictionarySelect, ErrorNotice, Select } from '@/shared/ui';
 
 import { BulkCloseDialog } from '../BulkCloseDialog/BulkCloseDialog';
+import { BulkIncidentLink } from '../BulkIncidentLink/BulkIncidentLink';
 
 import './BulkBar.scss';
 
 type BulkBarProps = {
     bulk: Bulk;
+    timezone: string;
+    canLinkIncident: boolean;
     employees: Employee[];
     teams: Team[];
     dictionaries: Dictionary[] | undefined;
 };
 
-export function BulkBar({ bulk, employees, teams, dictionaries }: BulkBarProps) {
+export function BulkBar({ bulk, timezone, canLinkIncident, employees, teams, dictionaries }: BulkBarProps) {
     const [closing, setClosing] = useState(false);
     const count = bulk.selected.size;
     const busy = bulk.run.isPending;
@@ -93,6 +96,8 @@ export function BulkBar({ bulk, employees, teams, dictionaries }: BulkBarProps) 
                             bulk.run.mutate({ action: 'classify', urgency: value });
                         }}
                     />
+
+                    {canLinkIncident ? <BulkIncidentLink bulk={bulk} timezone={timezone} disabled={busy} /> : null}
 
                     <Button
                         size="xsmall"

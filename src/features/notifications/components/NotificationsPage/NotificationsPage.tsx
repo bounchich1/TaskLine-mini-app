@@ -2,10 +2,11 @@ import { useState } from 'react';
 
 import {
     countUnread,
+    useMarkNotificationRead,
     useMarkTicketRead,
     type NotificationsQuery,
 } from '@/features/notifications/hooks/use-notifications';
-import { groupNotifications, sectionsByDay } from '@/features/notifications/model/groups';
+import { groupNotifications, sectionsByDay, type NotificationGroup } from '@/features/notifications/model/groups';
 import { plural } from '@/shared/lib/plural';
 import { useNow } from '@/shared/lib/use-now';
 import { Empty, ErrorNotice, Icon, PageHeader } from '@/shared/ui';
@@ -20,14 +21,27 @@ type NotificationsPageProps = {
     me: string;
     timezone: string;
     onOpenTicket: (id: string) => void;
+    onOpenIncident: (id: string) => void;
 };
 
-export function NotificationsPage({ notifications, me, timezone, onOpenTicket }: NotificationsPageProps) {
+export function NotificationsPage(props: NotificationsPageProps) {
+    const { notifications, me, timezone, onOpenTicket, onOpenIncident } = props;
     const markRead = useMarkTicketRead();
+    const markOneRead = useMarkNotificationRead();
     const now = useNow();
     const [settingsOpen, setSettingsOpen] = useState(false);
     const unread = countUnread(notifications);
     const sections = sectionsByDay(groupNotifications(notifications.data?.items ?? []), timezone, now);
+
+    const open = ({ ticketId, latest }: NotificationGroup) => {
+        if (ticketId) {
+            markRead(ticketId);
+            onOpenTicket(ticketId);
+        } else if (latest.payload.incident_id) {
+            markOneRead(latest.id);
+            onOpenIncident(latest.payload.incident_id);
+        }
+    };
 
     return (
         <div className="notifications-page">
@@ -63,15 +77,12 @@ export function NotificationsPage({ notifications, me, timezone, onOpenTicket }:
                         <ul className="notifications-page__list">
                             {section.groups.map((group) => (
                                 <NotificationItem
-                                    key={group.ticketId}
+                                    key={group.key}
                                     group={group}
                                     me={me}
                                     now={now}
                                     timezone={timezone}
-                                    onOpen={(ticketId) => {
-                                        markRead(ticketId);
-                                        onOpenTicket(ticketId);
-                                    }}
+                                    onOpen={open}
                                 />
                             ))}
                         </ul>

@@ -1,0 +1,15 @@
+@use 'abstracts' as *;
+
+.incident-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.incident-actions__resolve {
+    margin-left: auto;
+
+    @include respond-to(phone) {
+        margin-left: 0;
+    }
+}

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useSaveNotificationSettings } from '@/features/notifications/hooks/use-notifications';
 import { dictionariesQuery } from '@/shared/api/reference-data';
-import type { NotificationSettings } from '@/shared/types/api';
+import type { NotificationSettings } from '@/shared/types/notifications';
 import { CheckboxField, ChoiceList, ErrorNotice, Modal } from '@/shared/ui';
 
 const NEW_TICKET_OPTIONS = [

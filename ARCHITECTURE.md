@@ -15,6 +15,7 @@ src/
     ticket-detail/  the ticket card: conversation, composer (reply / note, macros, mentions), commands, dialogs, hotkeys
     routing/        presence, ticket offers, macros, shift-end dialog
     reports/        overview, team KPIs, topics, AI value, quality; period picker, charts, CSV/XLSX export
+    incidents/      detector suggestions, incident page (broadcast, ETA, resolve), queue linking, ticket banner
     notifications/  notifications grouped by ticket and day, read-on-open, personal notification settings
     admin/          employees, teams, routing rules, setup wizard and AI assistant profile, topics, client dialog, SLA, settings, diagnostics, audit
   shared/           Used everywhere; imports only shared/.

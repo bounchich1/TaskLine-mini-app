@@ -1,0 +1,15 @@
+@use 'abstracts' as *;
+
+.incident-form {
+    display: grid;
+    gap: 16px;
+}
+
+.incident-form__options {
+    display: grid;
+    gap: 8px;
+}
+
+.incident-form__linked {
+    @include muted(small);
+}

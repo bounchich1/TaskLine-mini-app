@@ -1,0 +1,11 @@
+@use 'abstracts' as *;
+
+.incidents-tab__cards {
+    display: grid;
+    gap: 12px;
+}
+
+.incidents-tab__list {
+    list-style: none;
+    border-top: 1px solid $color-line;
+}

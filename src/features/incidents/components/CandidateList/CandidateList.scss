@@ -1,0 +1,62 @@
+@use 'abstracts' as *;
+
+.candidate-list {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.candidate-list__legend {
+    @include section-title;
+
+    padding: 0;
+}
+
+.candidate-list__items {
+    list-style: none;
+    max-height: 260px;
+    overflow-y: auto;
+    border: 1px solid $color-line;
+    border-radius: $radius-m;
+}
+
+.candidate-list__item {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 12px;
+    border-top: 1px solid $color-line;
+    cursor: pointer;
+
+    li:first-child > & {
+        border-top: 0;
+    }
+
+    &:hover {
+        background: $color-bg-hover;
+    }
+}
+
+.candidate-list__check {
+    @include checkbox-control;
+}
+
+.candidate-list__number {
+    @include text(label);
+
+    color: $color-text-secondary;
+    font-variant-numeric: tabular-nums;
+}
+
+.candidate-list__text {
+    @include text(small);
+    @include truncate;
+}
+
+.candidate-list__note {
+    @include muted(label);
+}

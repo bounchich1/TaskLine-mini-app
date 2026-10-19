@@ -80,6 +80,7 @@ export const SESSION = {
         'reports.view',
         'teams.manage',
         'tickets.bulk',
+        'incidents.manage',
     ],
 };
 
@@ -88,5 +89,5 @@ export const SUPPORT_SESSION = { ...SESSION, employee: BORIS, permissions: SUPPO
 export const SUPERVISOR_SESSION = {
     ...SESSION,
     employee: { ...BORIS, id: 'e6', name: 'Олег Руководитель', role: 'supervisor' },
-    permissions: [...SUPERVISOR_PERMISSIONS, 'reports.view', 'tickets.bulk'],
+    permissions: [...SUPERVISOR_PERMISSIONS, 'reports.view', 'tickets.bulk', 'incidents.manage'],
 };

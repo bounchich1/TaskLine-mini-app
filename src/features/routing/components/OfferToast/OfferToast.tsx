@@ -2,7 +2,7 @@ import { Button } from '@maxhub/max-ui';
 import { useEffect, useRef, useState } from 'react';
 
 import { playChime } from '@/features/routing/model/chime';
-import type { Notification } from '@/shared/types/api';
+import type { Notification } from '@/shared/types/notifications';
 import { Icon } from '@/shared/ui';
 
 import './OfferToast.scss';
@@ -56,7 +56,10 @@ export function OfferToast({ notifications, onOpen }: OfferToastProps) {
                 size="xsmall"
                 onClick={() => {
                     dismiss();
-                    onOpen(offer.ticket_id);
+
+                    if (offer.ticket_id) {
+                        onOpen(offer.ticket_id);
+                    }
                 }}
             >
                 Открыть

@@ -1,0 +1,89 @@
+@use 'abstracts' as *;
+
+.incident-view {
+    display: grid;
+    gap: 16px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.incident-view__back {
+    @include text-button(small);
+
+    justify-self: start;
+}
+
+.incident-view__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+}
+
+.incident-view__title {
+    @include text(heading);
+
+    font-weight: $font-weight-semibold;
+}
+
+.incident-view__status {
+    @include text(label);
+
+    padding: 2px 8px;
+    border-radius: $radius-s;
+    background: $color-bg-muted;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+
+    &--open {
+        background: $color-negative-bg;
+        color: $color-negative;
+    }
+}
+
+.incident-view__meta {
+    @include muted(small);
+}
+
+.incident-view__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid $color-line;
+    border-radius: $radius-l;
+
+    dt {
+        @include muted(label);
+    }
+
+    dd {
+        @include text(title);
+
+        font-weight: $font-weight-semibold;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.incident-view__section {
+    display: grid;
+    gap: 6px;
+}
+
+.incident-view__section-title {
+    @include section-title;
+}
+
+.incident-view__message {
+    @include text(body);
+
+    white-space: pre-wrap;
+}
+
+.incident-view__terms {
+    @include muted(small);
+}
+
+.incident-view__loading {
+    @include muted(body);
+}

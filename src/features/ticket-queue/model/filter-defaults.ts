@@ -1,6 +1,6 @@
 import { dayBoundary } from '@/shared/lib/day-boundary';
 
-export type QueueTab = 'open' | 'closed';
+export type QueueTab = 'open' | 'closed' | 'incident';
 
 export type Filters = {
     tab: QueueTab;

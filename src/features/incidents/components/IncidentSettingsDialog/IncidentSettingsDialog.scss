@@ -1,0 +1,20 @@
+@use 'abstracts' as *;
+
+.incident-settings {
+    display: grid;
+    gap: 14px;
+}
+
+.incident-settings__help {
+    @include muted(small);
+}
+
+.incident-settings__numbers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+
+    @include respond-to(phone) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

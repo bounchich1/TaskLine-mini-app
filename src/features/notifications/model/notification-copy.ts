@@ -1,6 +1,6 @@
 import { notificationLabel } from '@/shared/config/labels';
 import { plural, type PluralForms } from '@/shared/lib/plural';
-import type { Notification, NotificationTicket } from '@/shared/types/api';
+import type { Notification, NotificationTicket } from '@/shared/types/notifications';
 import type { IconName } from '@/shared/ui';
 
 export type NotificationTone = 'neutral' | 'warning' | 'danger';
@@ -14,6 +14,7 @@ const ICONS: Partial<Record<string, IconName>> = {
     'ticket.offered': 'inbox',
     'note.mention': 'note',
     'ticket.close_failed': 'alert',
+    'incident.suggested': 'alert',
 };
 
 const NOUNS: Partial<Record<string, PluralForms>> = {
@@ -37,6 +38,10 @@ export function notificationIcon({ type }: Notification): IconName {
 }
 
 export function notificationTone({ type }: Notification): NotificationTone {
+    if (type === 'incident.suggested') {
+        return 'danger';
+    }
+
     if (!isSla(type)) {
         return 'neutral';
     }
@@ -56,7 +61,17 @@ export function notificationTitle({ type, payload, ticket }: Notification): stri
     return notificationLabel(type);
 }
 
+function incidentDetail({ count, baseline, label }: Notification['payload']): string {
+    const tickets = `${count ?? 0} ${plural(count ?? 0, ['обращение', 'обращения', 'обращений'])}`;
+
+    return `${tickets} «${label ?? 'тема'}», обычно ${Math.round(baseline ?? 0)}. Откройте, чтобы создать инцидент`;
+}
+
 export function notificationDetail({ type, payload, preview, actor_name: actor, ticket }: Notification) {
+    if (type === 'incident.suggested') {
+        return incidentDetail(payload);
+    }
+
     if (type === 'note.mention' && actor) {
         return `${actor} упомянул(а) вас`;
     }
@@ -96,6 +111,10 @@ export function ticketState(ticket: NotificationTicket, me: string): string {
 }
 
 export function isStale({ type, payload, ticket }: Notification, me: string): boolean {
+    if (type === 'incident.suggested') {
+        return false;
+    }
+
     if (!ticket || ticket.purged_at) {
         return true;
     }

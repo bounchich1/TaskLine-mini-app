@@ -26,4 +26,8 @@ export const queryKeys = {
     teams: ['teams'],
     routingRules: ['routing-rules'],
     macros: ['macros'],
+    incidents: ['incidents'],
+    incidentList: (status: string) => ['incidents', 'list', status],
+    incident: (id: string) => ['incidents', 'detail', id],
+    incidentSettings: ['incidents', 'settings'],
 } as const;

@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 
+import { groupKey } from '@/features/notifications/model/groups';
 import { api } from '@/shared/api/http';
 import { queryKeys } from '@/shared/api/query-keys';
-import type { Notification, NotificationSettings } from '@/shared/types/api';
+import type { Notification, NotificationSettings } from '@/shared/types/notifications';
 
 const REFETCH_MS = 15000;
 
@@ -20,7 +21,7 @@ export function useNotifications() {
 export type NotificationsQuery = ReturnType<typeof useNotifications>;
 
 export function countUnread(notifications: NotificationsQuery): number {
-    const tickets = new Set(notifications.data?.items.filter((item) => !item.read_at).map((item) => item.ticket_id));
+    const tickets = new Set(notifications.data?.items.filter((item) => !item.read_at).map(groupKey));
 
     return tickets.size;
 }
@@ -43,6 +44,19 @@ export function useMarkTicketRead() {
             );
 
             void api('/v1/notifications/read', { method: 'POST', body: { ticket_id: ticketId } }).finally(() =>
+                cache.invalidateQueries({ queryKey: queryKeys.notifications }),
+            );
+        },
+        [cache],
+    );
+}
+
+export function useMarkNotificationRead() {
+    const cache = useQueryClient();
+
+    return useCallback(
+        (id: string) => {
+            void api(`/v1/notifications/${id}/read`, { method: 'POST' }).finally(() =>
                 cache.invalidateQueries({ queryKey: queryKeys.notifications }),
             );
         },

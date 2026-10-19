@@ -1,0 +1,89 @@
+@use 'abstracts' as *;
+
+.suggestion-card {
+    display: grid;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid $color-line;
+    border-left: 3px solid $color-negative;
+    border-radius: $radius-l;
+    background: $color-bg-elevated;
+}
+
+.suggestion-card__head {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.suggestion-card__icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: $color-negative;
+}
+
+.suggestion-card__titles {
+    display: grid;
+    flex: 1;
+    gap: 2px;
+    min-width: 0;
+}
+
+.suggestion-card__title {
+    @include text(lead);
+
+    font-weight: $font-weight-semibold;
+}
+
+.suggestion-card__summary {
+    @include text(small);
+
+    color: $color-text-secondary;
+}
+
+.suggestion-card__time {
+    @include muted(label);
+
+    flex-shrink: 0;
+}
+
+.suggestion-card__terms {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.suggestion-card__term {
+    @include text(label);
+
+    padding: 2px 8px;
+    border-radius: $radius-s;
+    background: $color-bg-muted;
+    color: $color-text-secondary;
+}
+
+.suggestion-card__samples {
+    list-style: none;
+    display: grid;
+    gap: 4px;
+}
+
+.suggestion-card__sample {
+    @include text(small);
+    @include truncate;
+
+    color: $color-text-secondary;
+}
+
+.suggestion-card__number {
+    margin-right: 8px;
+    color: $color-text-muted;
+    font-variant-numeric: tabular-nums;
+}
+
+.suggestion-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}

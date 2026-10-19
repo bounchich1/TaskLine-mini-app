@@ -75,6 +75,7 @@ const NOTIFICATION_LABELS: Labels = {
     'ticket.offered': 'Вам предложено обращение',
     'note.mention': 'Вас упомянули в заметке',
     'ticket.close_failed': 'Не удалось закрыть обращение после ответа',
+    'incident.suggested': 'Возможная авария',
 };
 
 export const notificationLabel = (type: string) => NOTIFICATION_LABELS[type] ?? 'Изменение обращения';
