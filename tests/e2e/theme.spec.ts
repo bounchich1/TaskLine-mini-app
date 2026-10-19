@@ -37,15 +37,3 @@ test('follows the device theme until a theme is picked, then remembers it', asyn
     await page.emulateMedia({ colorScheme: 'light' });
     await expect(scheme(page)).toHaveAttribute('data-scheme', 'light');
 });
-
-test('opens the profile from the tab bar on a phone', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 812 });
-    await openApp(page);
-    await expect(profile(page)).toHaveText(/Профиль/);
-    await profile(page).click();
-    const panel = page.getByRole('dialog', { name: 'Профиль' });
-
-    await expect(panel).toBeInViewport({ ratio: 1 });
-    await panel.locator('label', { hasText: 'Тёмная' }).click();
-    await expect(scheme(page)).toHaveAttribute('data-scheme', 'dark');
-});

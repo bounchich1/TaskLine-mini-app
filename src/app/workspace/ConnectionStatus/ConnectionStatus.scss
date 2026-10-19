@@ -1,0 +1,27 @@
+@use 'abstracts' as *;
+
+.connection-status {
+    @include muted(label);
+
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    white-space: nowrap;
+
+    &--reconnecting {
+        color: $color-warning-text;
+    }
+}
+
+.connection-status__dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: $color-positive;
+
+    .connection-status--reconnecting & {
+        background: $color-urgency-medium;
+        animation: pulse 1.6s ease-in-out infinite;
+    }
+}

@@ -28,6 +28,14 @@ const SECTIONS = { tickets: 'Обращения', notifications: 'Уведомл
 
 export async function openSection(page: Page, section: keyof typeof SECTIONS): Promise<void> {
     const navigation = page.getByRole('navigation', { name: 'Основная навигация' });
+    const tab = navigation.getByRole('button', { name: new RegExp(`^${SECTIONS[section]}`) });
 
-    await navigation.getByRole('button', { name: new RegExp(`^${SECTIONS[section]}`) }).click();
+    if (section === 'admin' && (await tab.count()) === 0) {
+        await page.getByRole('banner').getByRole('button', { name: 'Ещё' }).click();
+        await page.getByRole('dialog', { name: 'Ещё' }).getByRole('button', { name: 'Управление' }).click();
+
+        return;
+    }
+
+    await tab.click();
 }

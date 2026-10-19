@@ -73,7 +73,6 @@ export function Workspace({ session, drafts }: WorkspaceProps) {
                 session={session}
                 section={section}
                 onSection={setSection}
-                openCount={ticketList.counts?.open}
                 unread={countUnread(notifications)}
                 incidents={incidents}
                 connection={live.connection}

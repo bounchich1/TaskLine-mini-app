@@ -43,8 +43,8 @@ for (const width of WIDTHS) {
         });
 
         test('profile menu', async ({ page }) => {
-            await page.getByRole('button', { name: /^Профиль/ }).click();
-            await expect(page.getByRole('dialog', { name: 'Профиль' })).toBeVisible();
+            await page.getByRole('button', { name: /^(Профиль|Ещё)/ }).click();
+            await expect(page.getByRole('dialog', { name: /^(Профиль|Ещё)$/ })).toBeVisible();
             await expect(page).toHaveScreenshot(`profile-${width}.png`);
         });
 

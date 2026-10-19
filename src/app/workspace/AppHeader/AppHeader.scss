@@ -42,6 +42,7 @@
 
     @include respond-to(phone) {
         flex: var(--nav-items) 1 0;
+        gap: 0;
         height: 100%;
     }
 }
@@ -70,10 +71,10 @@
         @include text(caption);
 
         position: relative;
-        flex: 1 1 auto;
+        flex: 1 1 0;
         flex-direction: column;
         min-width: 0;
-        gap: 3px;
+        gap: 4px;
         justify-content: center;
         height: 100%;
         padding: 0;
@@ -94,13 +95,20 @@
     }
 }
 
-.app-header__nav-icon {
+.app-header__nav-glyph {
     display: none;
 
     @include respond-to(phone) {
-        display: block;
-        width: 24px;
-        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 28px;
+        border-radius: 14px;
+
+        .app-header__nav-item--active & {
+            background: $color-bg-selected;
+        }
     }
 }
 
@@ -114,43 +122,36 @@
 
     @include respond-to(phone) {
         position: absolute;
-        top: 5px;
+        top: 3px;
         left: calc(50% + 6px);
+        box-shadow: 0 0 0 2px $color-bg;
+    }
+}
+
+.app-header__nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $color-negative;
+
+    @include respond-to(phone) {
+        position: absolute;
+        top: 6px;
+        left: calc(50% + 10px);
+        box-shadow: 0 0 0 2px $color-bg;
     }
 }
 
 .app-header__connection {
-    @include muted(label);
-
-    display: flex;
-    gap: 6px;
-    align-items: center;
     margin-left: auto;
-    white-space: nowrap;
 
-    &--reconnecting {
-        color: $color-warning-text;
+    @include respond-to(tablet) {
+        .connection-status__text {
+            @include visually-hidden;
+        }
     }
 
     @include respond-to(phone) {
         display: none;
-    }
-}
-
-.app-header__connection-text {
-    @include respond-to(tablet) {
-        @include visually-hidden;
-    }
-}
-
-.app-header__connection-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: $color-positive;
-
-    .app-header__connection--reconnecting & {
-        background: $color-urgency-medium;
-        animation: pulse 1.6s ease-in-out infinite;
     }
 }

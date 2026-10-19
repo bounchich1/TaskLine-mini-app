@@ -40,6 +40,7 @@ const ICON_PATHS = {
     close: <path d="M18 6 6 18M6 6l12 12" />,
     spark: <path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.5l-1.9-5.7-5.6-1.9L10.1 9zM19 3v4M21 5h-4" />,
     filter: <path d="M3 6h18M7 12h10M10 18h4" />,
+    menu: <path d="M4 6h16M4 12h16M4 18h16" />,
     refresh: (
         <>
             <path d="M21 12a9 9 0 1 1-2.6-6.4L21 8" />

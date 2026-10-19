@@ -1,61 +1,45 @@
 import { clsx } from 'clsx';
 import type { CSSProperties } from 'react';
 
-import { adminTabsFor } from '@/features/admin';
 import type { ConnectionState } from '@/shared/api/events-stream';
-import { can } from '@/shared/lib/access';
+import { MEDIA, useMediaQuery } from '@/shared/lib/use-media-query';
 import type { Session } from '@/shared/types/api';
-import { Icon, type IconName } from '@/shared/ui';
+import { Icon } from '@/shared/ui';
 
 import { AccountMenu } from '../AccountMenu/AccountMenu';
+import { ConnectionStatus } from '../ConnectionStatus/ConnectionStatus';
+
+import { navItems, type IncidentBadge, type Section } from './nav-items';
+import { NavBadge } from './NavBadge';
 
 import './AppHeader.scss';
 
-export type Section = 'tickets' | 'notifications' | 'incidents' | 'reports' | 'admin';
+export type { Section };
 
 type AppHeaderProps = {
     session: Session;
     section: Section;
     onSection: (section: Section) => void;
-    openCount: number | undefined;
     unread: number;
-    incidents: { active: number; suggested: number } | undefined;
+    incidents: IncidentBadge | undefined;
     connection: ConnectionState;
 };
 
-type NavItem = { section: Section; icon: IconName; label: string; count?: number; alert?: boolean };
-
 export function AppHeader(props: AppHeaderProps) {
     const { session, section, onSection, connection } = props;
+    const phone = useMediaQuery(MEDIA.phone);
+    const items = navItems(session, props.unread, props.incidents);
+    const tabs = phone ? items.filter((item) => item.section !== 'admin') : items;
 
-    const items: NavItem[] = [
-        { section: 'tickets', icon: 'inbox', label: 'Обращения', count: props.openCount },
-        {
-            section: 'notifications',
-            icon: 'bell',
-            label: 'Уведомления',
-            count: props.unread,
-            alert: true,
-        },
-    ];
-
-    if (can(session, 'incidents.manage')) {
-        items.push({
-            section: 'incidents',
-            icon: 'zap',
-            label: 'Инциденты',
-            count: props.incidents?.active,
-            alert: Boolean(props.incidents?.suggested),
-        });
-    }
-
-    if (can(session, 'reports.view')) {
-        items.push({ section: 'reports', icon: 'chart', label: 'Отчёты' });
-    }
-
-    if (adminTabsFor(session).length > 0) {
-        items.push({ section: 'admin', icon: 'settings', label: 'Управление' });
-    }
+    const more =
+        tabs.length < items.length
+            ? {
+                  active: section === 'admin',
+                  onOpen: () => {
+                      onSection('admin');
+                  },
+              }
+            : undefined;
 
     return (
         <header className="app-header">
@@ -64,9 +48,9 @@ export function AppHeader(props: AppHeaderProps) {
             <nav
                 className="app-header__nav"
                 aria-label="Основная навигация"
-                style={{ '--nav-items': items.length } as CSSProperties}
+                style={{ '--nav-items': tabs.length } as CSSProperties}
             >
-                {items.map((item) => (
+                {tabs.map((item) => (
                     <button
                         key={item.section}
                         className={clsx(
@@ -78,32 +62,18 @@ export function AppHeader(props: AppHeaderProps) {
                             onSection(item.section);
                         }}
                     >
-                        <Icon className="app-header__nav-icon" name={item.icon} size={20} />
-                        <span className="app-header__nav-label">{item.label}</span>
+                        <span className="app-header__nav-glyph">
+                            <Icon name={item.icon} size={22} />
+                        </span>
 
-                        {item.count ? (
-                            <span
-                                className={clsx('app-header__nav-count', item.alert && 'app-header__nav-count--alert')}
-                            >
-                                {item.count}
-                            </span>
-                        ) : null}
+                        <span className="app-header__nav-label">{item.label}</span>
+                        <NavBadge item={item} />
                     </button>
                 ))}
             </nav>
 
-            <span
-                className={clsx('app-header__connection', `app-header__connection--${connection}`)}
-                title={connection === 'live' ? 'Обновляется в реальном времени' : undefined}
-            >
-                <i className="app-header__connection-dot" />
-
-                <span className="app-header__connection-text">
-                    {connection === 'live' ? 'В сети' : 'Нет связи, обновляем раз в 15 с'}
-                </span>
-            </span>
-
-            <AccountMenu session={session} />
+            <ConnectionStatus className="app-header__connection" connection={connection} />
+            <AccountMenu session={session} connection={phone ? connection : undefined} admin={more} />
         </header>
     );
 }

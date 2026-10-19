@@ -86,8 +86,10 @@ notifications and that ticket's card; `admin.changed` the dictionaries and emplo
 - Wide screens (≥ 1100 px): header with the navigation on top; the queue is a full table, and
   opening a ticket splits the screen into the queue as a list and the ticket beside it.
 - Narrower screens: one pane at a time; an open ticket replaces the queue and goes back with an
-  arrow (or MAX's Back button). On phones the navigation is a bottom tab bar, hidden while a
-  ticket is open.
+  arrow (or MAX's Back button). On phones the navigation is a bottom tab bar of at most five
+  equal tabs, hidden while a ticket is open. For administrators the last tab is «Ещё»: it holds
+  «Управление», the profile and the connection status. Badges show unread notifications (capped
+  at 99+) and open incidents; detector suggestions show as a dot.
 
 ## What goes where
 

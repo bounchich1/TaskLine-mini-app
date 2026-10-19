@@ -45,9 +45,28 @@
         color: $color-text-secondary;
         font-weight: $font-weight-medium;
 
-        &[aria-expanded='true'] {
+        &[aria-expanded='true'],
+        &--active {
             background: none;
             color: $color-text-accent;
+        }
+    }
+}
+
+.account-menu__glyph {
+    display: contents;
+
+    @include respond-to(phone) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 28px;
+        border-radius: 14px;
+
+        .account-menu__trigger[aria-expanded='true'] &,
+        .account-menu__trigger--active & {
+            background: $color-bg-selected;
         }
     }
 }
@@ -206,4 +225,49 @@
     &:focus-visible {
         @include focus-ring-inset;
     }
+}
+
+.account-panel__connection {
+    padding: 4px 8px 8px;
+}
+
+.account-panel__link {
+    @include text(body);
+
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    min-height: 40px;
+    margin-bottom: 6px;
+    padding: 6px 8px;
+    border-radius: $radius-s;
+    background: none;
+    color: $color-text;
+    text-align: left;
+
+    @include row-hover;
+
+    &:focus-visible {
+        @include focus-ring-inset;
+    }
+
+    &--active {
+        background: $color-bg-selected;
+        color: $color-text-accent;
+        font-weight: $font-weight-medium;
+    }
+}
+
+.account-panel__link-icon {
+    flex-shrink: 0;
+    color: $color-icon-muted;
+
+    .account-panel__link--active & {
+        color: currentcolor;
+    }
+}
+
+.account-panel__link-label {
+    flex: 1;
 }

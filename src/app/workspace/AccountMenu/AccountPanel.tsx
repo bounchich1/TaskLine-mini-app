@@ -2,15 +2,23 @@ import { clsx } from 'clsx';
 import { useEffect, useRef, type RefObject } from 'react';
 
 import { PresenceOptions, type PresenceState } from '@/features/routing';
+import type { ConnectionState } from '@/shared/api/events-stream';
 import { roleLabel } from '@/shared/config/labels';
 import { setSchemePreference, useSchemePreference, type SchemePreference } from '@/shared/lib/color-scheme';
 import { useAnchoredPopover } from '@/shared/lib/use-anchored-popover';
 import type { Session } from '@/shared/types/api';
 import { Avatar, Icon, type IconName } from '@/shared/ui';
 
+import { ConnectionStatus } from '../ConnectionStatus/ConnectionStatus';
+
+import { AdminLinkRow, type AdminLink } from './AdminLink';
+
 type AccountPanelProps = {
     id: string;
+    title: string;
     session: Session;
+    connection: ConnectionState | undefined;
+    admin: AdminLink | undefined;
     presence: PresenceState;
     anchor: RefObject<HTMLElement | null>;
     onClose: () => void;
@@ -23,7 +31,8 @@ const SCHEMES: { value: SchemePreference; label: string; icon: IconName }[] = [
     { value: 'dark', label: 'Тёмная', icon: 'moon' },
 ];
 
-export function AccountPanel({ id, session, presence, anchor, onClose, onMacros }: AccountPanelProps) {
+export function AccountPanel(props: AccountPanelProps) {
+    const { id, title, session, presence, anchor, onClose, onMacros } = props;
     const ref = useRef<HTMLDivElement>(null);
     const preference = useSchemePreference();
 
@@ -38,7 +47,7 @@ export function AccountPanel({ id, session, presence, anchor, onClose, onMacros 
             ref={ref}
             id={id}
             role="dialog"
-            aria-label="Профиль"
+            aria-label={title}
             popover="manual"
             tabIndex={-1}
             className="account-panel"
@@ -51,6 +60,12 @@ export function AccountPanel({ id, session, presence, anchor, onClose, onMacros 
                     <small className="account-panel__role">{roleLabel(session.employee.role)}</small>
                 </span>
             </div>
+
+            {props.connection ? (
+                <ConnectionStatus className="account-panel__connection" connection={props.connection} detailed />
+            ) : null}
+
+            {props.admin ? <AdminLinkRow link={props.admin} /> : null}
 
             <fieldset className="account-panel__schemes">
                 <legend className="account-panel__legend">Тема</legend>
